@@ -14,7 +14,7 @@ class FaqsController < ApplicationController
 
   # GET /faqs/1
   # GET /faqs/1.xml
-  def show
+  def show 
     @faq = Faq.find(params[:id])
 
     respond_to do |format|
@@ -62,7 +62,7 @@ class FaqsController < ApplicationController
 
     respond_to do |format|
       if @faq.update_attributes(params[:faq])
-        format.html { redirect_to(@faq, :notice => 'Faq was successfully updated.') }
+        format.html { redirect_to(root_url, :notice => 'Faq was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

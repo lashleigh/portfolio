@@ -15,12 +15,16 @@
 <%= render 'networks' %>
 
 <ul id="qanda">
-  <% @faqs.each do |q| %>
+  <% @faqs.each do |faq| %>
     <li class="question">
-      <%= red(q.question) %>
+      <%= red(faq.question) %>
     </li>
     <li class="answer">
-      <%= red(q.answer) %>
+    <%= red(faq.answer) %>
+    <% if current_user and current_user.admin %>
+      <%= link_to 'Edit', edit_faq_path(faq) %>
+      <%= link_to 'Destroy', faq, :confirm => 'Are you sure?', :method => :delete %>
+    <% end %>
     </li>
   <% end %>
 </ul>
