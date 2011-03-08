@@ -1,16 +1,14 @@
 <%= link_to "Sign Out", signout_path %>  
 <%= link_to "Home", root_url %>  
 
+<a href="#" id="toggle_all">Hide all</a>
 <ul id="qanda">
-  <% @faqs.each do |faq| %>
-    <li class="preview">
-    <h1><%= red(faq.question) %></h1>
-    <div class="faqs_answer">
-      <%= red(faq.answer) %>
-      <%= link_to 'Edit', edit_faq_path(faq) %>
-      <%= link_to 'Destroy', faq, :confirm => 'Are you sure?', :method => :delete %>
-    </div>
-    </li>
-  <% end %>
+  <%= render :partial => 'home/faq', :collection => @faqs %>
   <%= link_to 'New Faq', new_faq_path %>
 </ul>
+
+<script>
+  $(".answer").show();
+  $(".question").css("cursor", "n-resize");
+</script>
+
