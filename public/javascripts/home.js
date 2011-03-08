@@ -1,4 +1,7 @@
 $(function() {
+  $("code").addClass("prettyprint");
+  prettyPrint();
+
   $(".question").bind("click", function() {
       var question = $(this);
       var answer = $(this).next();

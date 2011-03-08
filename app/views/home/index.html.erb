@@ -2,8 +2,6 @@
   <% if current_user %>  
     Welcome, <%= current_user.name %>!  
     <%= link_to "Sign Out", signout_path %>  
-  <% else %>  
-    <%= link_to "Sign in with Twitter", "/auth/twitter" %>  
   <% end %>  
 </div>
 
@@ -43,13 +41,28 @@
 </ul>
 
 <ul id="qanda">
-  <% @faqs.each do |q| %>
-    <li class="question">
-      <%= q.question %>
-    </li>
-    <li class="answer">
-      <%= q.answer %>
-    </li>
+  <% if current_user %>
+    <div class="pair">
+      <% @faqs.each do |faq| %>
+        <div class="editable">
+          <%= render :partial => 'faqs/home_form', :object => faq %>
+        </div>
+        <div class="preview">
+          <%= red(faq.answer) %>
+        </div>
+      </div>
+    <% end %>
+    <%= link_to 'New Faq', new_faq_path %>
+  <% else %>
+    <% @faqs.each do |q| %>
+      <li class="question">
+      <%= red(q.question) %>
+      </li>
+      <li class="answer">
+      <%= red(q.answer) %>
+      </li>
+    <% end %>
   <% end %>
+</ul>
     
 </div>
