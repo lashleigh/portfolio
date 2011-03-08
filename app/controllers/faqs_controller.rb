@@ -1,5 +1,6 @@
 class FaqsController < ApplicationController
   before_filter :must_be_admin
+  layout 'home'
   # GET /faqs
   # GET /faqs.xml
   def index

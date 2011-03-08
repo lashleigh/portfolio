@@ -1,25 +1,20 @@
-<h1>Listing faqs</h1>
+<%= link_to "Sign Out", signout_path %>  
+<%= link_to "Home", root_url %>  
 
-<table>
-  <tr>
-    <th>Question</th>
-    <th>Answer</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @faqs.each do |faq| %>
-  <tr>
-    <td><%= faq.question %></td>
-    <td><%= faq.answer %></td>
-    <td><%= link_to 'Show', faq %></td>
-    <td><%= link_to 'Edit', edit_faq_path(faq) %></td>
-    <td><%= link_to 'Destroy', faq, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Faq', new_faq_path %>
+<ul id="qanda">
+  <% @faqs.each do |faq| %>
+    <li class="pair">
+    <div class="editable">
+      <%= render :partial => 'faqs/home_form', :object => faq %>
+    </div>
+    <div class="preview">
+      <%= red(faq.question) %>
+      <%= red(faq.answer) %>
+      <%= link_to 'Show', faq %>
+      <%= link_to 'Edit', edit_faq_path(faq) %>
+      <%= link_to 'Destroy', faq, :confirm => 'Are you sure?', :method => :delete %>
+    </div>
+    </li>
+  <% end %>
+  <%= link_to 'New Faq', new_faq_path %>
+</ul>
