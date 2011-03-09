@@ -19,7 +19,7 @@ production:
   adapter: mysql
   database: lashleigh 
   username: lashleigh
-  password: lydiabaumgardner
+  password: 
   host: mysql.lashleigh.com
   pool: 5
   timeout: 5000
