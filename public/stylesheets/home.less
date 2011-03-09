@@ -1,9 +1,19 @@
+@light_blue: #B9D9F3;
+@dark_blue: #293e6a;
+@orange: #ffee01;
+//@orange: #ff9100;
 body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, p, blockquote {
   margin: 0;
   padding: 0;
 }
 ul {
   list-style: none;
+}
+p {
+  margin: 5px 0 10px 0;
+}
+.draft {
+  border: 1px dashed red;
 }
 .preview {
   width: 900px;
@@ -29,6 +39,7 @@ ul {
 }
 body {
   background: #ddd;
+  font-size: 100%;
 }
 #content {
   width: 900px;
@@ -36,7 +47,7 @@ body {
   
   #name_header {
     .rounded-top-corners(20px);
-    background: #B9D9F3;
+    background: @light_blue;
     padding: 10px 0;
     h1 {
       padding: 20px;
@@ -51,6 +62,9 @@ ul#qanda {
   background: #fff;
   li.question {
     cursor: s-resize;
+    :hover {
+      color: @dark_blue;
+    }
   }
   li.answer {
     display: none;

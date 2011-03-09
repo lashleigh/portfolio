@@ -1,7 +1,7 @@
 <li class="question">
-  <%= red(faq.question) %>
+  <h3><%= faq.question %></h3>
 </li>
-<li class="answer">
+<li class="answer<%= faq.visible ? "":" draft"%>">
 <%= red(faq.answer) %>
 <% if current_user and current_user.admin %>
   <%= link_to 'Edit', edit_faq_path(faq) %>
