@@ -10,23 +10,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110308214240) do
+ActiveRecord::Schema.define(:version => 20110311191527) do
 
   create_table "faqs", :force => true do |t|
-    t.string   "question"
-    t.text     "answer"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "visible",    :default => true
+    t.string    "question"
+    t.text      "answer"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
+    t.boolean   "visible",    :default => true
+    t.integer   "position"
   end
 
   create_table "users", :force => true do |t|
-    t.string   "provider"
-    t.string   "uid"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "admin",      :default => false
+    t.string    "provider"
+    t.string    "uid"
+    t.string    "name"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
+    t.boolean   "admin",      :default => false
   end
 
 end

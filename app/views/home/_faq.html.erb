@@ -1,11 +1,13 @@
-<li class="question">
-  <h3><%= faq.question %></h3>
-</li>
-<li class="answer<%= faq.visible ? "":" draft"%>">
-<%= red(faq.answer) %>
-<% if current_user and current_user.admin %>
-  <%= link_to 'Edit', edit_faq_path(faq) %>
-  <%= link_to 'Destroy', faq, :confirm => 'Are you sure?', :method => :delete %>
-<% end %>
-</li>
+<div class="<%= faq.visible ? "":" draft"%>">
+  <div class="question">
+    <h3><%= faq.question %></h3>
+  </div>
+  <div class="answer">
+    <%= red(faq.answer) %>
+    <% if current_user and current_user.admin %>
+      <%= link_to 'Edit', edit_faq_path(faq) %>
+      <%= link_to 'Destroy', faq, :confirm => 'Are you sure?', :method => :delete %>
+    <% end %>
+  </div>
+</div>
 

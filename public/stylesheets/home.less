@@ -54,19 +54,24 @@ body {
     }
   }
 }
-
-ul#qanda {
+.same_bg {
+  background:#fff;
+}
+#about {
+  margin: 30px auto;
+  width: 660px;
+}
+#qanda {
   .rounded-bottom-corners(20px);
   padding: 20px;
   overflow: hidden;
-  background: #fff;
-  li.question {
+  .question {
     cursor: s-resize;
     :hover {
       color: @dark_blue;
     }
   }
-  li.answer {
+  .answer {
     display: none;
     margin: 10px;
     width: 800px;
@@ -75,7 +80,6 @@ ul#qanda {
 
 ul#networks {
   overflow: hidden;
-  background: #fff;
   img {
     width: 16px;
     height: auto;
@@ -87,7 +91,7 @@ ul#networks {
     margin: 10px;
   }
   a {
-    top: 2px;
+    //top: 2px;
     position: relative;
   }
 }

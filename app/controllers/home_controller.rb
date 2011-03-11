@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   def index
-    @faqs = Faq.find_all_by_visible(true)
+    @about = Faq.find_by_question('about')
+    @faqs = Faq.find(:all, :order => 'position ASC', :conditions => {:visible => true}) - @about.to_a
   end
 
 end

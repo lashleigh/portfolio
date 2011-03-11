@@ -4,7 +4,7 @@ class FaqsController < ApplicationController
   # GET /faqs
   # GET /faqs.xml
   def index
-    @faqs = Faq.all
+    @faqs = Faq.all(:order => 'position ASC')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,6 +27,7 @@ class FaqsController < ApplicationController
   # GET /faqs/new.xml
   def new
     @faq = Faq.new
+    @faq.position = Faq.maximum('position') + 1
 
     respond_to do |format|
       format.html # new.html.erb
@@ -46,7 +47,7 @@ class FaqsController < ApplicationController
 
     respond_to do |format|
       if @faq.save
-        format.html { redirect_to(@faq, :notice => 'Faq was successfully created.') }
+        format.html { redirect_to(faqs_url, :notice => 'Faq was successfully created.') }
         format.xml  { render :xml => @faq, :status => :created, :location => @faq }
       else
         format.html { render :action => "new" }

@@ -1,14 +1,15 @@
-<%= link_to "Sign Out", signout_path %>  
-<%= link_to "Home", root_url %>  
+<div class="same_bg">
+  <%= link_to "Sign Out", signout_path %>  
+  <%= link_to "Home", root_url %>  
 
-<a href="#" id="toggle_all">Hide all</a>
-<ul id="qanda">
-  <%= render :partial => 'home/faq', :collection => @faqs %>
-  <%= link_to 'New Faq', new_faq_path %>
-</ul>
+  <a href="#" id="toggle_all">Hide all</a>
+  <ul id="qanda">
+    <%= render :partial => 'home/faq', :collection => @faqs %>
+    <%= link_to 'New Faq', new_faq_path %>
+  </ul>
+</div>
 
 <script>
   $(".answer").show();
   $(".question").css("cursor", "n-resize");
 </script>
-

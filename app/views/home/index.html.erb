@@ -12,11 +12,14 @@
   <h1> ashleigh baumgardner </h1>
 </div>
 
-<%= render 'networks' %>
+<div class="same_bg">
+  <%= render 'networks' %>
+  <div id="about">
+    <%= red(@about.answer) %>
+  </div>
+  <div id="qanda">
+    <a href="#" id="toggle_all">Show all</a>
+    <%= render :partial => 'faq', :collection => @faqs %>
+  </div>
 
-<ul id="qanda">
-  <a href="#" id="toggle_all">Show all</a>
-  <%= render :partial => 'faq', :collection => @faqs %>
-</ul>
-    
 </div>
