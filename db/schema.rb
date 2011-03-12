@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110311191527) do
+ActiveRecord::Schema.define(:version => 20110312040709) do
 
   create_table "faqs", :force => true do |t|
     t.string    "question"
@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(:version => 20110311191527) do
     t.timestamp "updated_at"
     t.boolean   "visible",    :default => true
     t.integer   "position"
+  end
+
+  create_table "networks", :force => true do |t|
+    t.string   "src"
+    t.string   "href"
+    t.string   "title"
+    t.integer  "position"
+    t.string   "which",      :default => "primary"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|

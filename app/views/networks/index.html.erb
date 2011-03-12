@@ -1,0 +1,31 @@
+<h1>Listing networks</h1>
+
+<table>
+  <tr>
+    <th>Src</th>
+    <th>Href</th>
+    <th>Title</th>
+    <th>Position</th>
+    <th>Which</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @networks.each do |network| %>
+  <tr>
+    <td><%= network.src %></td>
+    <td><%= network.href %></td>
+    <td><%= network.title %></td>
+    <td><%= network.position %></td>
+    <td><%= network.which %></td>
+    <td><%= link_to 'Show', network %></td>
+    <td><%= link_to 'Edit', edit_network_path(network) %></td>
+    <td><%= link_to 'Destroy', network, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Network', new_network_path %>

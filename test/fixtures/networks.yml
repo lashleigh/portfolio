@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  src: MyString
+  href: MyString
+  title: MyString
+  position: 1
+  which: MyString
+
+two:
+  src: MyString
+  href: MyString
+  title: MyString
+  position: 1
+  which: MyString

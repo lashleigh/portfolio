@@ -14,7 +14,9 @@
 </div>
 
 <div class="same_bg">
-  <%= render 'networks' %>
+  <ul id="networks">
+    <%= render :partial => 'network', :collection => @networks %>
+  </ul>
   <div id="about">
     <%= red(@about.answer) %>
   </div>
