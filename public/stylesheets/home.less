@@ -1,8 +1,8 @@
 @light_blue: #B9D9F3;
 @dark_blue: #293e6a;
 @orange: #ffee01;
-//@orange: #ff9100;
-body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, p, blockquote {
+@width: 900px;
+body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, p, blockquote, a {
   margin: 0;
   padding: 0;
 }
@@ -16,7 +16,7 @@ p {
   border: 1px dashed red;
 }
 .preview {
-  width: 900px;
+  width: @width;
   position: relative;
   margin: 40px 0;
   .faqs_answer{
@@ -42,11 +42,12 @@ body {
   font-size: 100%;
 }
 #content {
-  width: 900px;
+  width: @width;
   margin: 40px auto;
   
   #name_header {
     .rounded-top-corners(20px);
+    overflow:hidden;
     background: @light_blue;
     padding: 20px 0;
     height: 80px;
@@ -59,14 +60,15 @@ body {
   background:#fff;
 }
 #about {
+  clear: both;
   margin: 30px auto;
-  width: 660px;
+  width: @width - 200px;
 }
 .gravatar {
-position: relative;
-top: -80px;
-right: 20px;
-float: right;
+  position: relative;
+  top: -78px;
+  right: 20px;
+  float: right;
 }
 #qanda {
   .rounded-bottom-corners(20px);
@@ -81,12 +83,13 @@ float: right;
   .answer {
     display: none;
     margin: 10px;
-    width: 800px;
+    width: @width - 60px;
   }
 }
 
 ul#networks {
   overflow: hidden;
+  width: @width;
   img {
     width: 16px;
     height: auto;
@@ -95,8 +98,7 @@ ul#networks {
   }
   li {
     float: left;
-    padding: 10px;
-    margin: 10px;
+    margin: 20px;
   }
   a {
     top: 7px;

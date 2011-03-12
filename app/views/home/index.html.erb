@@ -4,18 +4,19 @@
     <%= link_to "Sign Out", signout_path %>  
     <% if current_user.admin %>
       <%= link_to "Edit faqs", faqs_path %>  
+      <%= link_to "Edit networks", networks_path %>  
     <% end %>
   <% end %>  
 </div>
 
 <div id="name_header">
   <h1> ashleigh baumgardner </h1>
-  <%= link_to image_tag('http://www.gravatar.com/avatar/3be78cd4d00d1de7591f489d02830dd5?s=80', :class=>"gravatar"), href="http://www.flickr.com/people/lashleigh/photosof/" %>
+  <%= link_to image_tag('http://www.gravatar.com/avatar/3be78cd4d00d1de7591f489d02830dd5?s=80'), href="http://www.flickr.com/people/lashleigh/photosof/", :class=>"gravatar" %>
 </div>
 
 <div class="same_bg">
   <ul id="networks">
-    <%= render :partial => 'network', :collection => @networks %>
+    <%= render :partial => 'network', :collection => @primary %>
   </ul>
   <div id="about">
     <%= red(@about.answer) %>
