@@ -15,6 +15,7 @@
     <% if current_user %>  
       Welcome, <%= current_user.name %>!  
       <%= link_to "Sign Out", signout_path %>  
+      <%= link_to "Home", root_url %>
       <% if current_user.admin %>
         <%= link_to "Edit faqs", faqs_path %>  
         <%= link_to "Edit networks", networks_path %>  
@@ -22,10 +23,10 @@
     <% end %>  
   </div>
 
-  <% flash.each do |name, msg| %>  
-    <%= content_tag :div, msg, :id => "flash#{name}" %>  
-  <% end %> 
-  <div id="content">
+  <div id="content" class="padded">
+    <% flash.each do |name, msg| %>  
+      <%= content_tag :div, msg, :id => "flash#{name}" %>  
+    <% end %> 
     <%= yield %>
   </div>
 </body></html>

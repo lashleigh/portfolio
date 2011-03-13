@@ -6,11 +6,20 @@ body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, p, blockquote, a {
   margin: 0;
   padding: 0;
 }
+body {
+  font-family: sans-serif;//"proxima-nova-1","proxima-nova-2",Tahoma,Helvetica,Verdana,sans-serif;
+  background: #fefefe;
+  font-size: 100%;
+}
 ul {
   list-style: none;
 }
 p {
   margin: 5px 0 10px 0;
+}
+.padded {
+  margin: 20px;
+  padding: 40px 20px;
 }
 .draft {
   border: 1px dashed red;
@@ -23,6 +32,35 @@ p {
     padding-left: 30px;
   }
 }
+.transition(@duration) {
+  -moz-transition: -moz-transform @duration ease;
+  -webkit-transition: -webkit-transform @duration ease;
+  -o-transition: -o-transform @duration ease;
+  transition: all @duration ease;
+}
+.rotate(@deg: 0deg) {
+  -moz-transform: rotate(@deg);
+  -webkit-transform: rotate(@deg);
+  -o-transform: rotate(@deg);
+}
+#arrow {
+}
+.arrow_down {
+  .rotate(180deg);
+}
+.arrow_up {
+  .rotate();
+}
+.fast_transition {
+  .transition(0.6s);
+}
+.slow_transition {
+  .transition(10s);
+}
+.hidden {
+  display: none;
+}
+
 .rounded-top-corners (@radius: 35px) {
   //-moz-border-radius: @radius 0;
   //border-radius: @radius 0; /* includes Opera 10.5+ */
@@ -38,10 +76,6 @@ p {
 
 .drop_shadow(@blur: 10px, @offset: 1px, @color: rgba(0,0,0,0.5)) {
   box-shadow: @color 0px 0px @blur @offset; 
-}
-body {
-  background: #fff;
-  font-size: 100%;
 }
 #content {
   width: @width;

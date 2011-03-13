@@ -1,14 +1,3 @@
-<div id="user_nav">  
-  <% if current_user %>  
-    Welcome, <%= current_user.name %>!  
-    <%= link_to "Sign Out", signout_path %>  
-    <% if current_user.admin %>
-      <%= link_to "Edit faqs", faqs_path %>  
-      <%= link_to "Edit networks", networks_path %>  
-    <% end %>
-  <% end %>  
-</div>
-
 <div id="name_header">
   <h1> ashleigh baumgardner </h1>
   <%= link_to image_tag('http://www.gravatar.com/avatar/3be78cd4d00d1de7591f489d02830dd5?s=80'), href="http://www.flickr.com/people/lashleigh/photosof/", :class=>"gravatar" %>
@@ -23,6 +12,8 @@
   </div>
   <div id="qanda">
     <a href="#" id="toggle_all">Show all</a>
+    <%= image_tag 'up_arrow.png', :id => "arrow", :class=> 'arrow_up fast_transition' %>
+    <h3>Responses to a few common interview questions </h3>
     <%= render :partial => 'faq', :collection => @faqs %>
   </div>
 
