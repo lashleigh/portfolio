@@ -11,9 +11,8 @@
     <%= red(@about.answer) %>
   </div>
   <div id="qanda">
-    <a href="#" id="toggle_all">Show all</a>
-    <%= image_tag 'up_arrow.png', :id => "arrow", :class=> 'arrow_up fast_transition' %>
     <h3>Responses to a few common interview questions </h3>
+    <%= image_tag 'up_arrow.png', :id => "arrow", :class=> 'arrow_up fast_transition' %>
     <%= render :partial => 'faq', :collection => @faqs %>
   </div>
 
