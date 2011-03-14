@@ -62,7 +62,11 @@ p {
 .hidden {
   display: none;
 }
-
+.updated_at {
+  float: right;
+  color: #888;
+  font-size: 75%;
+}
 .rounded-top-corners (@radius: 35px) {
   //-moz-border-radius: @radius 0;
   //border-radius: @radius 0; /* includes Opera 10.5+ */
@@ -94,7 +98,7 @@ p {
     height: 80px;
     h1 {
       padding: 20px;
-      text-shadow: rgba(99,116,171,0.7) 3px 3px 3px;
+      text-shadow: rgba(99,116,171,0.5) 3px 3px 3px;
     }
   }
 }
@@ -118,17 +122,20 @@ p {
   overflow: hidden;
   h3 {
     float: left;
+    //font-weight:normal;
   }
   .question {
+    margin: 4px 0 0 10px;
     cursor: s-resize;
+    clear: both;
     :hover {
       color: @dark_blue;
     }
   }
   .answer {
     display: none;
-    margin: 10px;
-    width: @width - 60px;
+    margin: 10px 20px;
+    width: @width - 100px;
   }
 }
 

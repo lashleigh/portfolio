@@ -1,8 +1,10 @@
 class PostsController < ApplicationController
+  before_filter :must_be_admin, :except => ['index', 'show']
+  layout 'faqs'
   # GET /posts
   # GET /posts.xml
   def index
-    @posts = Post.all
+    @posts = Post.find_all_by_visible(true)
 
     respond_to do |format|
       format.html # index.html.erb

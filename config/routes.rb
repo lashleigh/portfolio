@@ -1,9 +1,14 @@
 Portfolio::Application.routes.draw do
-  resources :posts
-
-  resources :networks
-  resources :faqs
-  match '/' => 'posts#index', :constraints => { :subdomain => /^blog$/ }  
+  #match '/' => 'posts#index', :constraints => { :subdomain => /^blog$/ }  
+  constraints(:subdomain => /^blog$/) do
+    resources :posts
+    match '/' => 'posts#index'
+  end
+  constraints(:subdomain => /^admin$/) do
+    resources :faqs
+    resources :networks
+    match '/' => 'home#admin'
+  end
 
   match "/auth/:provider/callback" => "sessions#create"  
   match "/signout" => "sessions#destroy", :as => :signout  

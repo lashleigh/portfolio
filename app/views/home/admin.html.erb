@@ -1,0 +1,7 @@
+<% if !current_user %>
+  <%= link_to "Sign in with Twitter", "/auth/twitter" %>  
+<% end %>
+<% if current_user and current_user.admin %>
+  <%= link_to 'View and edit Faqs', faqs_path %>
+  <%= link_to 'View and edit Networks', networks_path %>
+<% end %>
