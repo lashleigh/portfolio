@@ -12,14 +12,11 @@
 </head>
 <body>
   <div id="user_nav">  
-    <% if current_user %>  
-      Welcome, <%= current_user.name %>!  
+    <% if current_user and current_user.admin %>  
       <%= link_to "Sign Out", signout_path %>  
       <%= link_to "Home", root_url %>
-      <% if current_user.admin %>
-        <%= link_to "Edit faqs", faqs_path %>  
-        <%= link_to "Edit networks", networks_path %>  
-      <% end %>
+      <%= link_to "Faqs", faqs_path %>  
+      <%= link_to "Networks", networks_path %>  
     <% end %>  
   </div>
 

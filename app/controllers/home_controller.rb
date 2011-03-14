@@ -5,4 +5,8 @@ class HomeController < ApplicationController
     @primary = Network.find(:all, :order => 'position ASC', :conditions => {:which => 'primary'})
   end
 
+  def admin
+    render :layout => 'faqs'
+  end
+
 end

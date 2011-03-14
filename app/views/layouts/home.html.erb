@@ -11,17 +11,6 @@
 
 </head>
 <body>
-  <div id="user_nav">  
-    <% if current_user %>  
-      Welcome, <%= current_user.name %>!  
-      <%= link_to "Sign Out", signout_path %>  
-      <% if current_user.admin %>
-        <%= link_to "Edit faqs", faqs_path %>  
-        <%= link_to "Edit networks", networks_path %>  
-      <% end %>
-    <% end %>  
-  </div>
-
   <% flash.each do |name, msg| %>  
     <%= content_tag :div, msg, :id => "flash#{name}" %>  
   <% end %> 
