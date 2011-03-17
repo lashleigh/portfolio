@@ -1,17 +1,21 @@
 @blue: #274B9C;
 @orange: #ffee01;
 @width: 900px;
+@white: #eee;
 body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, p, blockquote, a {
   margin: 0;
   padding: 0;
 }
-html, body {
+html {
   height: 100%;
 }
 body {
+  height: 100%;
   font-family: sans-serif;//"proxima-nova-1","proxima-nova-2",Tahoma,Helvetica,Verdana,sans-serif;
-  background: #fefefe;
   font-size: 100%;
+  //background: -moz-radial-gradient(@white, @white - #222);
+  //background: -webkit-gradient(radial, center center, 0, center center, 95, from(@white), to(@white - #222));
+  background: -webkit-gradient(linear, left top, right bottom, from(@white), to(@white - #222)) fixed;
 }
 ul {
   list-style: none;
@@ -66,6 +70,7 @@ p {
 }
 .updated_at {
   float: right;
+  margin-right: 25px;
   color: #888;
   font-size: 75%;
 }
@@ -85,10 +90,14 @@ p {
 .drop_shadow(@blur: 10px, @offset: 1px, @color: rgba(0,0,0,0.5)) {
   box-shadow: @color 0px 0px @blur @offset; 
 }
-#page_wrapper {
-  min-height: 100%;
-  width: 100%;
+#content_wrap {
+  width: @width;
+  margin: 40px auto;
+  .rounded-top-corners();
+  .rounded-bottom-corners();
+  .drop_shadow();
   #name_header {
+    .rounded-top-corners();
     background: @blue;
     background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(@blue+#222), to(@blue));
     padding: 20px 0;
@@ -96,17 +105,19 @@ p {
     h1 {
       padding: 20px;
       text-shadow: rgba(99,116,171,0.5) 3px 3px 3px;
+      color: @white;
     }
   }
-
+}
+#not_footer {
+  .rounded-top-corners();
 }
 #content {
-  overflow: auto;
-  padding-bottom: 150px;
+  padding-bottom: 100px;
 }
 .same_bg {
-  .rounded-bottom-corners();
   background:#fff;
+  .rounded-bottom-corners();
 }
 #about {
   clear: both;
@@ -137,7 +148,7 @@ p {
   .answer {
     display: none;
     margin: 10px 20px;
-    width: @width - 100px;
+    width: @width - 150px;
   }
 }
 
@@ -161,7 +172,7 @@ ul#networks {
 }
 footer {
   position: relative;
-  margin-top: -150px;
+  margin-top: -250px;
   height: 150px;
   clear: both;
   color: #555;
@@ -172,6 +183,9 @@ footer {
 }
 #ribbon_wrapper {
   overflow: hidden;
+  position: relative;
+  right: -750px;
+  width: 150px;
 }
 .ribbon {
   background: @blue - #222;
@@ -201,22 +215,4 @@ footer {
   /* shadow */
   text-shadow: 0 0 0.5em #444;
 }
-/*Opera Fix*/
-body:before {/* thanks to Maleika (Kohoutec)*/
-content:"";
-height:100%;
-float:left;
-width:0;
-margin-top:-32767px;/* thank you Erik J - negate effect of float*/
-}
-/* IMPORTANT
 
-You also need to include this conditional style in the <head> of your HTML file to feed this style to IE 6 and lower and 8 and higher.
-
-<!--[if !IE 7]>
-  <style type="text/css">
-    #page_wrapper{display:table;height:100%}
-  </style>
-<![endif]-->
-
-*/

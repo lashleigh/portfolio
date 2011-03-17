@@ -12,11 +12,12 @@
   margin: 0;
   padding: 0;
 }
-html, body { height: 100%; }
+html { height: 100%; }
 body {
+  height: 100%;
   font-family: sans-serif;
-  background: #fefefe;
   font-size: 100%;
+  background: -webkit-gradient(linear, left top, right bottom, from(#eeeeee), to(#cccccc)) fixed;
 }
 ul { list-style: none; }
 p { margin: 5px 0 10px 0; }
@@ -60,30 +61,34 @@ p { margin: 5px 0 10px 0; }
 .hidden { display: none; }
 .updated_at {
   float: right;
+  margin-right: 25px;
   color: #888888;
   font-size: 75%;
 }
-#page_wrapper {
-  min-height: 100%;
-  width: 100%;
+#content_wrap {
+  width: 900px;
+  margin: 40px auto;
+  -webkit-border-top-left-radius: 35px;
+  -webkit-border-bottom-right-radius: 35px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px 1px;
 }
-#page_wrapper #name_header {
+#content_wrap #name_header {
+  -webkit-border-top-left-radius: 35px;
   background: #274b9c;
   background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(#496dbe), to(#274b9c));
   padding: 20px 0;
   height: 80px;
 }
-#page_wrapper #name_header h1 {
+#content_wrap #name_header h1 {
   padding: 20px;
   text-shadow: rgba(99, 116, 171, 0.5) 3px 3px 3px;
+  color: #eeeeee;
 }
-#content {
-  overflow: auto;
-  padding-bottom: 150px;
-}
+#not_footer { -webkit-border-top-left-radius: 35px; }
+#content { padding-bottom: 100px; }
 .same_bg {
-  -webkit-border-bottom-right-radius: 35px;
   background: #ffffff;
+  -webkit-border-bottom-right-radius: 35px;
 }
 #about {
   clear: both;
@@ -110,7 +115,7 @@ p { margin: 5px 0 10px 0; }
 #qanda .answer {
   display: none;
   margin: 10px 20px;
-  width: 800px;
+  width: 750px;
 }
 ul#networks {
   overflow: hidden;
@@ -132,14 +137,19 @@ ul#networks a {
 }
 footer {
   position: relative;
-  margin-top: -150px;
+  margin-top: -250px;
   height: 150px;
   clear: both;
   color: #555555;
   font-size: 8pt;
 }
 footer img { vertical-align: middle; }
-#ribbon_wrapper { overflow: hidden; }
+#ribbon_wrapper {
+  overflow: hidden;
+  position: relative;
+  right: -750px;
+  width: 150px;
+}
 .ribbon {
   background: #05297a;
   background: -moz-radial-gradient(#274b9c, #05297a);
@@ -164,11 +174,4 @@ footer img { vertical-align: middle; }
   text-align: center;
   text-decoration: none !important;
   text-shadow: 0 0 0.5em #444444;
-}
-body:before {
-  content: "";
-  height: 100%;
-  float: left;
-  width: 0;
-  margin-top: -32767px;
 }

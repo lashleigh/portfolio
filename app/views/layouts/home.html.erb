@@ -12,12 +12,14 @@
   <% flash.each do |name, msg| %>  
     <%= content_tag :div, msg, :id => "flash#{name}" %>  
   <% end %> 
-  <div id="page_wrapper">
-    <%= render 'home/header' %>
-    <div id="content">
-      <%= yield %>
+  <div id="content_wrap">
+    <div id="not_footer">
+      <%= render 'home/header' %>
+      <div id="content">
+        <%= yield %>
+      </div>
     </div>
+    <%= render 'home/footer' %>
   </div>
-  <%= render 'home/footer' %>
 </body></html>
 
