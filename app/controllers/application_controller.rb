@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   protected
   def must_be_admin
     unless current_user and current_user.admin?
-      redirect_to root_url, :notice => "You are not authorized to use this portion of the site."
+      redirect_to "/auth/twitter", :notice => "You are not authorized to use this portion of the site."
       return false
     end
   end

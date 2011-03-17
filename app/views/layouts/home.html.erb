@@ -1,6 +1,19 @@
 <!DOCTYPE html><head>
     <title>Ashleigh</title>
-    
+    <script src="http://platform.twitter.com/anywhere.js?id=Ld2DdvWAZLvm9lP5pcA&amp;v=1"> </script>
+    <script type="text/javascript">
+       twttr.anywhere(function(T) {
+          T("#login").connectButton();
+          T.hovercards({expanded: true});
+          T("#tbox").tweetBox({
+            height: 100,
+            width: 400,
+            defaultContent: "<YOUR DEFAULT TWEETBOX CONTENT HERE>", 
+            label: "What the what?"
+          });
+       });
+    </script>
+
     <%= javascript_include_tag "jquery-1.4.4.min", "jquery.rails.js" %>
     <%= javascript_include_tag 'prettify/prettify' %>
     <%= javascript_include_tag 'home' %>

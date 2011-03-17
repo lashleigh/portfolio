@@ -18,9 +18,19 @@
     <%= render :partial => 'faq', :collection => @faqs %>
   </div>
 </div>
+<div id="tbox"></div>
+  <span id="follow-placeholder"></span>
+  <span id="login"></span>
+  <script type="text/javascript">
+
+    twttr.anywhere(function (T) {
+      T("#follow-placeholder").followButton('lashleigh');
+    });
+
+  </script>
 <div id="footer">
-  <%= link_to image_tag('http://i.creativecommons.org/l/by/3.0/us/88x31.png'), href="http://creativecommons.org/licenses/by/3.0/us" %>
-  This work is licensed under a 
+  <%= link_to image_tag("http://i.creativecommons.org/l/by/3.0/80x15.png"), href="http://creativecommons.org/licenses/by/3.0/us" %>
+  Unless otherwise noted, the content on this site is licensed under a 
   <a rel="license" href="http://creativecommons.org/licenses/by/3.0/us/">Creative Commons Attribution 3.0 United States License</a>.
 </div>
 <div id="ribbon_wrapper">
