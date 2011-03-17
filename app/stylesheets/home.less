@@ -87,13 +87,10 @@ p {
 }
 #page_wrapper {
   min-height: 100%;
-}
-#not_footer_wrapper {
-  min-height: 100%;
+  width: 100%;
   #name_header {
-    .rounded-top-corners();
-    overflow:hidden;
     background: @blue;
+    background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(@blue+#222), to(@blue));
     padding: 20px 0;
     height: 80px;
     h1 {
@@ -101,6 +98,7 @@ p {
       text-shadow: rgba(99,116,171,0.5) 3px 3px 3px;
     }
   }
+
 }
 #content {
   overflow: auto;
@@ -203,3 +201,22 @@ footer {
   /* shadow */
   text-shadow: 0 0 0.5em #444;
 }
+/*Opera Fix*/
+body:before {/* thanks to Maleika (Kohoutec)*/
+content:"";
+height:100%;
+float:left;
+width:0;
+margin-top:-32767px;/* thank you Erik J - negate effect of float*/
+}
+/* IMPORTANT
+
+You also need to include this conditional style in the <head> of your HTML file to feed this style to IE 6 and lower and 8 and higher.
+
+<!--[if !IE 7]>
+  <style type="text/css">
+    #page_wrapper{display:table;height:100%}
+  </style>
+<![endif]-->
+
+*/
