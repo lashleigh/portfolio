@@ -72,7 +72,7 @@ p { margin: 5px 0 10px 0; }
 #content #name_header {
   -webkit-border-top-left-radius: 35px;
   overflow: hidden;
-  background: #b9d9f3;
+  background: #274b9c;
   padding: 20px 0;
   height: 80px;
 }
@@ -105,7 +105,7 @@ p { margin: 5px 0 10px 0; }
   cursor: s-resize;
   clear: both;
 }
-#qanda .question:hover { color: #293e6a; }
+#qanda .question:hover { color: #274b9c; }
 #qanda .answer {
   display: none;
   margin: 10px 20px;
@@ -128,4 +128,44 @@ ul#networks li {
 ul#networks a {
   top: 7px;
   position: relative;
+}
+#footer {
+  position: relative;
+  padding: 30px 0 20px 30px;
+}
+#ribbon_wrapper {
+  float: right;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  clear: both;
+  bottom: 150px;
+  height: 150px;
+  width: 150px;
+  overflow: hidden;
+}
+.ribbon {
+  background: #05297a;
+  background: -moz-radial-gradient(#274b9c, #05297a);
+  background: -webkit-gradient(radial, center center, 0, center center, 95, from(#274b9c), to(#05297a));
+  overflow: hidden;
+  position: absolute;
+  right: -50px;
+  top: 75px;
+  width: 220px;
+  -moz-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  -moz-box-shadow: 0 0 1em #888888;
+  -webkit-box-shadow: 0 2px 8px #888888, 0 -2px 8px #888888;
+}
+.ribbon a {
+  border: 1px solid #213454;
+  color: #ffffff !important;
+  display: block;
+  font: bold 81.25% 'Helvetiva Neue', Helvetica, Arial, sans-serif;
+  margin: 0.05em 0 0.075em 0;
+  padding: 0.5em 3.5em;
+  text-align: center;
+  text-decoration: none !important;
+  text-shadow: 0 0 0.5em #444444;
 }

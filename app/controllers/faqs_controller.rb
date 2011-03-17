@@ -3,7 +3,7 @@ class FaqsController < ApplicationController
   # GET /faqs
   # GET /faqs.xml
   def index
-    @faqs = Faq.all(:order => 'position ASC')
+    @faqs = Faq.order('position ASC')
 
     respond_to do |format|
       format.html # index.html.erb
