@@ -13,12 +13,10 @@
     <%= content_tag :div, msg, :id => "flash#{name}" %>  
   <% end %> 
   <div id="content_wrap">
-    <div id="not_footer">
       <%= render 'home/header' %>
       <div id="content">
         <%= yield %>
       </div>
-    </div>
     <%= render 'home/footer' %>
   </div>
 </body></html>

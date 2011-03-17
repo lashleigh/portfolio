@@ -93,6 +93,8 @@ p {
 #content_wrap {
   width: @width;
   margin: 40px auto;
+  overflow: hidden;
+  margin-bottom: -150px;
   .rounded-top-corners();
   .rounded-bottom-corners();
   .drop_shadow();
@@ -109,11 +111,7 @@ p {
     }
   }
 }
-#not_footer {
-  .rounded-top-corners();
-}
 #content {
-  padding-bottom: 100px;
 }
 .same_bg {
   background:#fff;
@@ -186,6 +184,9 @@ footer {
   position: relative;
   right: -750px;
   width: 150px;
+  height: 150px;
+  top: -150px;
+  margin-bottom: -150px;
 }
 .ribbon {
   background: @blue - #222;

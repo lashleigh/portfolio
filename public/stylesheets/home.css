@@ -68,6 +68,8 @@ p { margin: 5px 0 10px 0; }
 #content_wrap {
   width: 900px;
   margin: 40px auto;
+  overflow: hidden;
+  margin-bottom: -150px;
   -webkit-border-top-left-radius: 35px;
   -webkit-border-bottom-right-radius: 35px;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px 1px;
@@ -84,8 +86,6 @@ p { margin: 5px 0 10px 0; }
   text-shadow: rgba(99, 116, 171, 0.5) 3px 3px 3px;
   color: #eeeeee;
 }
-#not_footer { -webkit-border-top-left-radius: 35px; }
-#content { padding-bottom: 100px; }
 .same_bg {
   background: #ffffff;
   -webkit-border-bottom-right-radius: 35px;
@@ -149,6 +149,9 @@ footer img { vertical-align: middle; }
   position: relative;
   right: -750px;
   width: 150px;
+  height: 150px;
+  top: -150px;
+  margin-bottom: -150px;
 }
 .ribbon {
   background: #05297a;
