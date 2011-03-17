@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
-    @posts = Post.find_all_by_visible(true)
+    @posts = Post.find(:all, :conditions => {:visible => true})
 
     respond_to do |format|
       format.html # index.html.erb
