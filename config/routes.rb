@@ -4,7 +4,7 @@ Portfolio::Application.routes.draw do
 
   constraints(:subdomain => /^blog$/) do
     resources :posts
-    match '/' => 'posts#index'
+    match "/" => 'posts#index'
   end
 
   match "/auth/:provider/callback" => "sessions#create"  

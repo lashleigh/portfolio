@@ -4,6 +4,14 @@
     <script type="text/javascript">
        twttr.anywhere(function(T) {
           T.hovercards({expanded: true});
+          T("#login").connectButton();
+          T("#follow-placeholder").followButton('lashleigh');
+          T("#tbox").tweetBox({
+            height: 100,
+            width: 400,
+            defaultContent: "<YOUR DEFAULT TWEETBOX CONTENT HERE>", 
+            label: "What happening?"
+          });
        });
     </script>
 
@@ -19,7 +27,11 @@
   <% flash.each do |name, msg| %>  
     <%= content_tag :div, msg, :id => "flash#{name}" %>  
   <% end %> 
-  <div id="content">
+  <div id="content" class="padded">
+    <div id="tbox"></div>
+    <span id="follow-placeholder"></span>
+    <span id="login"></span>
+
     <%= yield %>
   </div>
 </body></html>
