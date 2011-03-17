@@ -5,6 +5,9 @@ body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, p, blockquote, a {
   margin: 0;
   padding: 0;
 }
+html, body {
+  height: 100%;
+}
 body {
   font-family: sans-serif;//"proxima-nova-1","proxima-nova-2",Tahoma,Helvetica,Verdana,sans-serif;
   background: #fefefe;
@@ -82,13 +85,11 @@ p {
 .drop_shadow(@blur: 10px, @offset: 1px, @color: rgba(0,0,0,0.5)) {
   box-shadow: @color 0px 0px @blur @offset; 
 }
-#content {
-  width: @width;
-  margin: 40px auto;
-  .rounded-top-corners();
-  .rounded-bottom-corners();
-  .drop_shadow();
-  
+#page_wrapper {
+  min-height: 100%;
+}
+#not_footer_wrapper {
+  min-height: 100%;
   #name_header {
     .rounded-top-corners();
     overflow:hidden;
@@ -100,6 +101,10 @@ p {
       text-shadow: rgba(99,116,171,0.5) 3px 3px 3px;
     }
   }
+}
+#content {
+  overflow: auto;
+  padding-bottom: 150px;
 }
 .same_bg {
   .rounded-bottom-corners();
@@ -156,9 +161,11 @@ ul#networks {
     position: relative;
   }
 }
-#footer {
+footer {
   position: relative;
-  padding: 30px 0 20px 30px;
+  margin-top: -150px;
+  height: 150px;
+  clear: both;
   color: #555;
   font-size: 8pt;
   img {
@@ -166,14 +173,6 @@ ul#networks {
   }
 }
 #ribbon_wrapper {
-  float: right;
-  position: relative;
-  margin:0;
-  padding:0;
-  clear: both;
-  bottom: 150px;
-  height: 150px;
-  width: 150px;
   overflow: hidden;
 }
 .ribbon {

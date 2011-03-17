@@ -1,12 +1,5 @@
 <!DOCTYPE html><head>
     <title>Ashleigh</title>
-    <script src="http://platform.twitter.com/anywhere.js?id=Ld2DdvWAZLvm9lP5pcA&amp;v=1"> </script>
-    <script type="text/javascript">
-       twttr.anywhere(function(T) {
-          T.hovercards({expanded: true});
-       });
-    </script>
-
     <%= javascript_include_tag "jquery-1.4.4.min", "jquery.rails.js" %>
     <%= javascript_include_tag 'prettify/prettify' %>
     <%= javascript_include_tag 'home' %>
@@ -19,8 +12,12 @@
   <% flash.each do |name, msg| %>  
     <%= content_tag :div, msg, :id => "flash#{name}" %>  
   <% end %> 
-  <div id="content">
-    <%= yield %>
+  <div id="page_wrapper">
+    <%= render 'home/header' %>
+    <div id="content">
+      <%= yield %>
+    </div>
   </div>
+  <%= render 'home/footer' %>
 </body></html>
 

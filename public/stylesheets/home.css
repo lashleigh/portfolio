@@ -12,6 +12,7 @@
   margin: 0;
   padding: 0;
 }
+html, body { height: 100%; }
 body {
   font-family: sans-serif;
   background: #fefefe;
@@ -62,23 +63,22 @@ p { margin: 5px 0 10px 0; }
   color: #888888;
   font-size: 75%;
 }
-#content {
-  width: 900px;
-  margin: 40px auto;
-  -webkit-border-top-left-radius: 35px;
-  -webkit-border-bottom-right-radius: 35px;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px 1px;
-}
-#content #name_header {
+#page_wrapper { min-height: 100%; }
+#not_footer_wrapper { min-height: 100%; }
+#not_footer_wrapper #name_header {
   -webkit-border-top-left-radius: 35px;
   overflow: hidden;
   background: #274b9c;
   padding: 20px 0;
   height: 80px;
 }
-#content #name_header h1 {
+#not_footer_wrapper #name_header h1 {
   padding: 20px;
   text-shadow: rgba(99, 116, 171, 0.5) 3px 3px 3px;
+}
+#content {
+  overflow: auto;
+  padding-bottom: 150px;
 }
 .same_bg {
   -webkit-border-bottom-right-radius: 35px;
@@ -129,24 +129,16 @@ ul#networks a {
   top: 7px;
   position: relative;
 }
-#footer {
+footer {
   position: relative;
-  padding: 30px 0 20px 30px;
+  margin-top: -150px;
+  height: 150px;
+  clear: both;
   color: #555555;
   font-size: 8pt;
 }
-#footer img { vertical-align: middle; }
-#ribbon_wrapper {
-  float: right;
-  position: relative;
-  margin: 0;
-  padding: 0;
-  clear: both;
-  bottom: 150px;
-  height: 150px;
-  width: 150px;
-  overflow: hidden;
-}
+footer img { vertical-align: middle; }
+#ribbon_wrapper { overflow: hidden; }
 .ribbon {
   background: #05297a;
   background: -moz-radial-gradient(#274b9c, #05297a);
