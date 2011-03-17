@@ -8,6 +8,7 @@ gem 'rails', '3.0.5'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem "omniauth"
 gem 'RedCloth', '4.2.3'
+gem 'less'
 
 # Use unicorn as the web server
 # gem 'unicorn'
