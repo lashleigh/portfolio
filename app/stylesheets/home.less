@@ -1,5 +1,4 @@
-@light_blue: #B9D9F3;
-@dark_blue: #293e6a;
+@blue: #274B9C;
 @orange: #ffee01;
 @width: 900px;
 body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, p, blockquote, a {
@@ -32,7 +31,7 @@ p {
     padding-left: 30px;
   }
 }
-.transition(@duration) {
+.transition(@duration: 10s) {
   -moz-transition: -moz-transform @duration ease;
   -webkit-transition: -webkit-transform @duration ease;
   -o-transition: -o-transform @duration ease;
@@ -93,7 +92,7 @@ p {
   #name_header {
     .rounded-top-corners();
     overflow:hidden;
-    background: @light_blue;
+    background: @blue;
     padding: 20px 0;
     height: 80px;
     h1 {
@@ -129,7 +128,7 @@ p {
     cursor: s-resize;
     clear: both;
     :hover {
-      color: @dark_blue;
+      color: @blue;
     }
   }
   .answer {
@@ -156,4 +155,47 @@ ul#networks {
     top: 7px;
     position: relative;
   }
+}
+#footer {
+  position: relative;
+  padding: 30px 0 20px 30px;
+}
+#ribbon_wrapper {
+  float: right;
+  position: relative;
+  margin:0;
+  padding:0;
+  clear: both;
+  bottom: 150px;
+  height: 150px;
+  width: 150px;
+  overflow: hidden;
+}
+.ribbon {
+  background: @blue - #222;
+  background: -moz-radial-gradient(@blue, @blue - #222);
+  background: -webkit-gradient(radial, center center, 0, center center, 95, from(@blue), to(@blue - #222));
+  overflow: hidden;
+  /* top left corner */
+  position: absolute;
+  right: -50px;
+  top: 75px;
+  width: 220px;
+  /* 45 deg ccw rotation */
+  -moz-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  -moz-box-shadow: 0 0 1em #888;
+  -webkit-box-shadow: 0 2px 8px #888, 0 -2px 8px #888;
+}
+.ribbon a {
+  border: 1px solid #213454;
+  color: #fff !important;
+  display: block;
+  font: bold 81.25% 'Helvetiva Neue', Helvetica, Arial, sans-serif;
+  margin: 0.05em 0 0.075em 0;
+  padding: 0.5em 3.5em;
+  text-align: center;
+  text-decoration: none !important;
+  /* shadow */
+  text-shadow: 0 0 0.5em #444;
 }

@@ -13,22 +13,22 @@
 ActiveRecord::Schema.define(:version => 20110314034417) do
 
   create_table "faqs", :force => true do |t|
-    t.string    "question"
-    t.text      "answer"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.boolean   "visible",    :default => true
-    t.integer   "position"
+    t.string   "question"
+    t.text     "answer"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "visible",    :default => true
+    t.integer  "position"
   end
 
   create_table "networks", :force => true do |t|
-    t.string    "src"
-    t.string    "href"
-    t.string    "title"
-    t.integer   "position"
-    t.string    "which",      :default => "primary"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.string   "src"
+    t.string   "href"
+    t.string   "title"
+    t.integer  "position"
+    t.string   "which",      :default => "primary"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "posts", :force => true do |t|
@@ -40,12 +40,12 @@ ActiveRecord::Schema.define(:version => 20110314034417) do
   end
 
   create_table "users", :force => true do |t|
-    t.string    "provider"
-    t.string    "uid"
-    t.string    "name"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.boolean   "admin",      :default => false
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "admin",      :default => false
   end
 
 end

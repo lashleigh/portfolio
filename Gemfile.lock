@@ -39,6 +39,9 @@ GEM
       multipart-post (~> 1.1.0)
       rack (< 2, >= 1.1.0)
     i18n (0.5.0)
+    less (1.2.21)
+      mutter (>= 0.4.2)
+      treetop (>= 1.4.2)
     mail (2.2.15)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -47,6 +50,7 @@ GEM
     mime-types (1.16)
     multi_json (0.0.5)
     multipart-post (1.1.0)
+    mutter (0.5.3)
     net-ldap (0.1.1)
     nokogiri (1.4.4)
     oa-basic (0.1.6)
@@ -125,6 +129,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth (= 4.2.3)
+  less
   omniauth
   rails (= 3.0.5)
   sqlite3-ruby
