@@ -9,15 +9,19 @@
 
 </head>
 <body>
-  <% flash.each do |name, msg| %>  
-    <%= content_tag :div, msg, :id => "flash#{name}" %>  
-  <% end %> 
-  <div id="content_wrap">
+  <div id="page_wrap">
+    <div id="flash_wrap">
+      <% flash.each do |name, msg| %>  
+        <%= content_tag :div, msg, :id => "flash#{name}" %>  
+      <% end %> 
+    </div>
+    <div id="content_wrap">
       <%= render 'home/header' %>
       <div id="content">
         <%= yield %>
       </div>
-    <%= render 'home/footer' %>
+      <%= render 'home/footer' %>
+    </div>
   </div>
 </body></html>
 

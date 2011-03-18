@@ -10,20 +10,24 @@
 
 </head>
 <body>
-  <div id="user_nav">  
-    <% if current_user and current_user.admin %>  
-      <%= link_to "Sign Out", signout_path %>  
-      <%= link_to "Home", root_url %>
-      <%= link_to "Faqs", faqs_path %>  
-      <%= link_to "Networks", networks_path %>  
-    <% end %>  
-  </div>
-
-  <div id="content" class="padded">
+ <div id="page_wrap">
     <% flash.each do |name, msg| %>  
       <%= content_tag :div, msg, :id => "flash#{name}" %>  
     <% end %> 
-    <%= yield %>
+    <div id="content_wrap">
+      <div id="user_nav">  
+        <% if current_user and current_user.admin %>  
+          <%= link_to "Sign Out", signout_path %>  
+          <%= link_to "Home", root_url %>
+          <%= link_to "Faqs", faqs_path %>  
+          <%= link_to "Networks", networks_path %>  
+        <% end %>  
+      </div>
+      <div id="content">
+
+        <%= yield %>
+      </div>
+    </div>
   </div>
 </body></html>
 

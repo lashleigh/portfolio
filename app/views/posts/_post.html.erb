@@ -1,0 +1,17 @@
+<h2><%=link_to post.title, post %></h2>
+
+<div class="metadata">
+  <span class="timestamp"><%= distance_of_time_in_words_to_now post.created_at %> ago</span>
+  <% if current_user and current_user.admin? %>
+    <span class="edit_links">
+      <%= link_to image_tag("edit.png"), edit_post_path(post) %>
+      <%= link_to image_tag("remove.png"),  post, :confirm => 'Are you sure?', :method => :delete %>
+    </span>
+  <% end %>
+</div>
+
+<div class="post_content">
+  <%=red post.content%>
+</div>
+
+

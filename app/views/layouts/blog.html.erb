@@ -1,4 +1,3 @@
-
 <!DOCTYPE html><head>
     <title>Ashleigh</title>
     <%= javascript_include_tag "jquery-1.4.4.min", "jquery.rails.js" %>
@@ -6,19 +5,21 @@
     <%= javascript_include_tag 'home' %>
 
     <%= stylesheet_link_tag 'prettify' %>
-    <%= stylesheet_link_tag 'home' %>
+    <%= stylesheet_link_tag 'blog' %>
 
 </head>
 <body>
-  <% flash.each do |name, msg| %>  
-    <%= content_tag :div, msg, :id => "flash#{name}" %>  
-  <% end %> 
-  <div id="page_wrapper">
-    <%= render 'home/header' %>
-    <div id="content">
-      <%= yield %>
+  <div id="page_wrap">
+    <% flash.each do |name, msg| %>  
+      <%= content_tag :div, msg, :id => "flash#{name}" %>  
+    <% end %> 
+    <div id="content_wrap">
+      <%= render 'home/header' %>
+      <div id="content">
+        <%= yield %>
+      </div>
+      <%= render 'home/footer' %>
     </div>
   </div>
-  <%= render 'home/footer' %>
 </body></html>
 

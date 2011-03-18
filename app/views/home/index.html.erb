@@ -1,16 +1,13 @@
-<div class="same_bg">
-  <ul id="networks">
-    <%= render :partial => 'network', :collection => @primary %>
-  </ul>
-  <div id="about">
-    <%= red(@about.answer) %>
-  </div>
-  <div id="qanda">
-    <span>
-      <h3>Responses to a few common interview questions </h3>
-      <%= image_tag 'up_arrow.png', :id => "arrow", :class=> 'arrow_up fast_transition' %>
-    </span>
-    <%= render :partial => 'faq', :collection => @faqs %>
-  </div>
+<ul id="networks">
+  <%= render :partial => 'network', :collection => @primary %>
+</ul>
+<div id="about">
+  <%= red(@about.answer) %>
 </div>
-
+<div id="qanda">
+  <span>
+    <h3>Responses to a few common interview questions </h3>
+    <%= image_tag 'up_arrow.png', :id => "arrow", :class=> 'arrow_up fast_transition' %>
+  </span>
+  <%= render :partial => 'faq', :collection => @faqs %>
+</div>

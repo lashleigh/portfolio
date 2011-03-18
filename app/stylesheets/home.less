@@ -11,7 +11,8 @@ html {
 }
 body {
   height: 100%;
-  font-family: sans-serif;//"proxima-nova-1","proxima-nova-2",Tahoma,Helvetica,Verdana,sans-serif;
+  font-family: Georgia, sans-serif;//"proxima-nova-1","proxima-nova-2",Tahoma,Helvetica,Verdana,sans-serif;
+  line-height: 1.4em;
   font-size: 100%;
   //background: -moz-radial-gradient(@white, @white - #222);
   //background: -webkit-gradient(radial, center center, 0, center center, 95, from(@white), to(@white - #222));
@@ -90,9 +91,12 @@ p {
 .drop_shadow(@blur: 10px, @offset: 1px, @color: rgba(0,0,0,0.5)) {
   box-shadow: @color 0px 0px @blur @offset; 
 }
+#page_wrap {
+  padding: 40px;
+}
 #content_wrap {
   width: @width;
-  margin: 40px auto;
+  margin: 0 auto;
   overflow: hidden;
   margin-bottom: -150px;
   .rounded-top-corners();
@@ -100,22 +104,22 @@ p {
   .drop_shadow();
   #name_header {
     .rounded-top-corners();
+    overflow: hidden;
     background: @blue;
     background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(@blue+#222), to(@blue));
     padding: 20px 0;
     height: 80px;
     h1 {
-      padding: 20px;
-      text-shadow: rgba(99,116,171,0.5) 3px 3px 3px;
+      padding: 28px;
+      text-shadow: rgba(0, 0, 0, 0.6) 2px 2px 5px;
       color: @white;
     }
   }
 }
 #content {
-}
-.same_bg {
-  background:#fff;
+  background: white;
   .rounded-bottom-corners();
+  padding: 20px;
 }
 #about {
   clear: both;
@@ -157,7 +161,7 @@ ul#networks {
     width: 16px;
     height: auto;
     vertical-align: bottom;
-    margin-bottom:-7px;
+    margin-bottom:-0.3em;
   }
   li {
     float: left;
@@ -168,21 +172,11 @@ ul#networks {
     position: relative;
   }
 }
-footer {
-  position: relative;
-  margin-top: -250px;
-  height: 150px;
-  clear: both;
-  color: #555;
-  font-size: 8pt;
-  img {
-    vertical-align: middle;
-  }
-}
+
 #ribbon_wrapper {
   overflow: hidden;
   position: relative;
-  right: -750px;
+  float: right;
   width: 150px;
   height: 150px;
   top: -150px;
@@ -216,4 +210,10 @@ footer {
   /* shadow */
   text-shadow: 0 0 0.5em #444;
 }
-
+#user_nav {
+  .rounded-top-corners();
+  overflow: hidden;
+  background: @blue;
+  background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(@blue+#222), to(@blue));
+  padding: 30px 40px;
+}

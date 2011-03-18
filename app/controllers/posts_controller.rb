@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_filter :must_be_admin, :except => ['index', 'show']
-  layout 'home'
+  layout 'blog'
   # GET /posts
   # GET /posts.xml
   def index
