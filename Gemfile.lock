@@ -31,8 +31,6 @@ GEM
     activesupport (3.0.5)
     addressable (2.2.4)
     arel (2.0.9)
-    best_in_place (0.1.9)
-      rails (~> 3.0.0)
     builder (2.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -131,7 +129,6 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth (= 4.2.3)
-  best_in_place
   less
   omniauth
   rails (= 3.0.5)
