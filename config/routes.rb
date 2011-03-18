@@ -3,8 +3,8 @@ Portfolio::Application.routes.draw do
   resources :networks
 
   constraints(:subdomain => /^blog$/) do
-    resources :posts
     match "/" => 'posts#index'
+    resources :posts
   end
 
   match "/auth/:provider/callback" => "sessions#create"  

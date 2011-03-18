@@ -20,6 +20,7 @@
         <% if current_user and current_user.admin %>  
           <%= link_to "Sign Out", signout_path %>  
           <%= link_to "Home", root_url %>
+          <%= link_to "Blog", root_url(:host => "blog."+request.domain+request.port_string) %>
           <%= link_to "Faqs", faqs_path %>  
           <%= link_to "Networks", networks_path %>  
         <% end %>  
