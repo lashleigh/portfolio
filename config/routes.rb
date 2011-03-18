@@ -11,8 +11,6 @@ Portfolio::Application.routes.draw do
   match "/signout" => "sessions#destroy", :as => :signout  
 
   root :to => "home#index"
-  match "home" => "home#index"
-  match "home/index" => "home#index"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.

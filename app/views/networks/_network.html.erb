@@ -3,6 +3,7 @@
   <td><%= network.href %></td>
   <td><%= network.title %></td>
   <td><%= network.which %></td>
+  <td><%= link_to image_tag("edit.png"), edit_network_path(network) %></td>
   <td><%= link_to image_tag('remove.png'), network, :confirm => 'Are you sure?', :method => :delete %></td>
 </tr>
 

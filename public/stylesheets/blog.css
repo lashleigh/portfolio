@@ -123,7 +123,7 @@ p { margin: 5px 0 10px 0; }
 }
 ul#networks {
   overflow: hidden;
-  width: 900px;
+  width: 860px;
 }
 ul#networks img {
   width: 16px;
@@ -133,7 +133,7 @@ ul#networks img {
 }
 ul#networks li {
   float: left;
-  margin: 20px;
+  margin: 15px;
 }
 ul#networks a {
   top: 7px;
