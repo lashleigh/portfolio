@@ -75,7 +75,7 @@ p {
   color: #888;
   font-size: 75%;
 }
-.rounded-top-corners (@radius: 35px) {
+.rounded_top_corners (@radius: 35px) {
   //-moz-border-radius: @radius 0;
   //border-radius: @radius 0; /* includes Opera 10.5+ */
   -webkit-border-top-left-radius: @radius;
@@ -99,18 +99,20 @@ p {
   margin: 0 auto;
   overflow: hidden;
   margin-bottom: -150px;
-  .rounded-top-corners();
+  .rounded_top_corners();
   .rounded-bottom-corners();
   .drop_shadow();
   #name_header {
-    .rounded-top-corners();
+    position: relative;
+    .rounded_top_corners();
     overflow: hidden;
     background: @blue;
     background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(@blue+#222), to(@blue));
-    padding: 20px 0;
-    height: 80px;
+    height: 140px;
     h1 {
-      padding: 28px;
+      position: absolute;
+      top: 60px;
+      left: 40px;
       text-shadow: rgba(0, 0, 0, 0.6) 2px 2px 5px;
       color: @white;
     }
@@ -127,10 +129,11 @@ p {
   width: @width - 200px;
 }
 .gravatar {
-  position: relative;
-  top: -78px;
+  -webkit-border-radius: 3px;  
+  -webkit-box-reflect: below 10px -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.49)));
+  position: absolute;
   right: 20px;
-  float: right;
+  top: 20px;
 }
 #qanda {
   padding: 20px;
@@ -155,21 +158,14 @@ p {
 }
 
 ul#networks {
-  overflow: hidden;
-  width: @width - 40px;
-  img {
-    width: 16px;
-    height: auto;
-    vertical-align: bottom;
-    margin-bottom:-0.3em;
-  }
+  position: absolute;
+  left: 7em;
+  bottom: 15px;
   li {
     float: left;
-    margin: 15px;
+    padding: 0 0.5em;
   }
-  a {
-    top: 7px;
-    position: relative;
+  img {
   }
 }
 
@@ -211,7 +207,7 @@ ul#networks {
   text-shadow: 0 0 0.5em #444;
 }
 #user_nav {
-  .rounded-top-corners();
+  .rounded_top_corners();
   overflow: hidden;
   background: @blue;
   background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(@blue+#222), to(@blue));

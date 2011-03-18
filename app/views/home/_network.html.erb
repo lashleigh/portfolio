@@ -1,5 +1,4 @@
 <li>
-  <%= image_tag network.src %> 
-  <%= link_to network.title, network.href %>
+<%= link_to image_tag(network.src), network.href, :alt => network.src.split(".")[0], :title => network.src.split(".")[0] %> 
 </li>
 
