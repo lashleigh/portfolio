@@ -1,6 +1,8 @@
-<div id="about">
-  <%= red(@about.answer) %>
-</div>
+<% if @about %>
+  <div id="about">
+    <%= red(@about.answer) %>
+  </div>
+<% end %>
 <div id="qanda">
   <h3>Responses to a few common interview questions </h3>
   <%= image_tag 'up_arrow.png', :id => "arrow", :class=> 'arrow_up fast_transition' %>
