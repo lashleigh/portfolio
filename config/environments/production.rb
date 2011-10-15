@@ -1,4 +1,11 @@
 Portfolio::Application.configure do
+  MongoMapper.config = {
+    Rails.env => {
+    'uri' => (ENV['MONGOHQ_URL'] ? ENV['MONGOHQ_URL'] : 'mongodb://localhost/27017')
+  }
+  }
+  MongoMapper.connect(Rails.env)
+
   # Settings specified here will take precedence over those in config/application.rb
 
   # The production environment is meant for finished, "live" apps.
@@ -46,4 +53,16 @@ Portfolio::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+  
+  # Compress JavaScript and CSS  
+  config.assets.compress = true  
+  
+  # Don't fallback to assets pipeline  
+  config.assets.compile = false
+  
+  # Generate digests for assets URLs  
+  config.assets.digest = true  
+
+  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+  config.assets.precompile += %w( *.js )
 end

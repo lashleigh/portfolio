@@ -3,7 +3,7 @@ class FaqsController < ApplicationController
   # GET /faqs
   # GET /faqs.xml
   def index
-    @faqs = Faq.order('position ASC')
+    @faqs = Faq.sort(:position).all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -26,7 +26,8 @@ class FaqsController < ApplicationController
   # GET /faqs/new.xml
   def new
     @faq = Faq.new
-    @faq.position = Faq.maximum('position') + 1
+    last = Faq.last(:order => :position)
+    @faq.position = last.position + 1
 
     respond_to do |format|
       format.html # new.html.erb
