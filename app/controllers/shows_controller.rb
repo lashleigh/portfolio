@@ -1,5 +1,5 @@
 class ShowsController < ApplicationController
-  before_filter :must_be_admin, :except => [:index, :show]
+  #before_filter :must_be_admin, :except => [:index, :show]
   # GET /shows
   # GET /shows.xml
   def index
