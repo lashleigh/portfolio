@@ -1,0 +1,17 @@
+<script type="text/javascript">
+  var slideshow;
+  var code_editor;
+  $(function() {
+    var code_id = document.getElementById('code_mirror_textarea');
+    code_editor = CodeMirror.fromTextArea(code_id, {
+      value: "function myScript(){return 100;}\n",
+      mode:  "javascript"
+    })
+
+    slideshow = create_slideshow(<%= @show.to_json(:include => :slides).html_safe %>);
+  })
+</script>
+
+<% @show.slides.each do |s| %>
+  <div id=<%=s.id%> class='slide zoomed_in_slide slide_transition'></div>
+<% end %>

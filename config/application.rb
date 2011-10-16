@@ -43,7 +43,7 @@ module Portfolio
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
     config.generators do |g|
       g.orm             :mongo_mapper
-      #g.test_framework  :test_unit #, :fixture => true
+      g.test_framework  :test_unit #, :fixture => true
       #g.test_framework  :rspec
       #g.template_engine :erb
     end
@@ -56,6 +56,8 @@ module Portfolio
     
     # Enable the asset pipeline  
     config.assets.enabled = true  
+    config.generators.stylesheets = false
+    config.generators.javascripts = false
 
     # Version of your assets, change this if you want to expire all your assets  
     config.assets.version = '1.0' 

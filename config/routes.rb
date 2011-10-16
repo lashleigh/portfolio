@@ -1,6 +1,7 @@
 Portfolio::Application.routes.draw do
   resources :faqs
   resources :networks
+  resources :shows
 
   constraints(:subdomain => /^blog$/) do
     match "/" => 'posts#index'
