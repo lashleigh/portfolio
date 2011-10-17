@@ -5,7 +5,7 @@ function Show(info) {
   this.current;
   this.slides = [];
   this.num_slides;
-  this.mode = 'normal'; //coding, expose, edit, presentation
+  this.mode = {'reduced':false, 'coding':false}; //coding, expose, edit, presentation
   this.current_scale;
   
   return this;
@@ -21,6 +21,8 @@ Show.prototype.set_class_margins = function() {
   var width = this.width;
   var scale = this.max_scale();
   var styleSheet = document.styleSheets[0];
+  this.current_scale = scale;
+  $("#scale_slides").val(scale*100);
 
   styleSheet.insertRule('.far-past {margin-right: '+(width*(1.5) + margin*2 - width*2*(1-scale))+'px;}', 0)
   styleSheet.insertRule('.past {margin-right: '+(width*(0.5) + margin - width*(1-scale))+'px;}', 1)
@@ -29,8 +31,9 @@ Show.prototype.set_class_margins = function() {
   styleSheet.insertRule('.far-future {margin-right: '+(width*(-2.5) - margin*1 + width*2*(1-scale))+'px;}', 4)
   styleSheet.insertRule('.slide {width:'+width+'px;height:'+height+'px;margin-top:'+height*(-0.5)+'px;-webkit-transform:scale('+scale+');}', 5)
 
-  styleSheet.insertRule('.CodeMirror {width: '+(document.width - scale*width-5)+'px;height:'+height+'px;margin-top:'+height*(-0.5)+'px;}', 6)
-  styleSheet.insertRule('.CodeMirror-scroll {height:'+height+'px !important;}', 7)
+  var editor_height = window.innerHeight-80;
+  styleSheet.insertRule('.CodeMirror {width: '+(document.width - scale*width-5)+'px;height:'+editor_height+'px;margin-top:'+editor_height*(-0.5)+'px;}', 6)
+  styleSheet.insertRule('.CodeMirror-scroll {height:'+editor_height+'px !important;}', 7)
 }
 Show.prototype.scale_all_slides = function(scale) {
   var that = this;
@@ -39,73 +42,81 @@ Show.prototype.scale_all_slides = function(scale) {
   var height = this.height;
   var width = this.width;
   var scale = scale || this.max_scale();
+  var factor = 1.0; 
+  if(that.mode['reduced']) {
+    factor = 0.75;
+  }
   this.current_scale = scale;
   s.deleteRule(0); 
   s.insertRule('.far-past {margin-right: '+(width*(1.5) + margin*2 - width*2*(1-scale))+'px;}', 0)
   s.deleteRule(1); 
   s.insertRule('.past {margin-right: '+(width*(0.5) + margin - width*(1-scale))+'px;}', 1)
   s.deleteRule(2); 
-  s.insertRule('.current {margin-right: '+width*(-0.5)+'px;}', 2)
+  s.insertRule('.current {margin-right: '+width*(-0.5)+'px;-webkit-transform:scale('+scale+') !important;}}', 2)
   s.deleteRule(3); 
   s.insertRule('.future {margin-right: '+(width*(-1.5) - margin + width*(1-scale))+'px;}', 3)
   s.deleteRule(4); 
   s.insertRule('.far-future {margin-right: '+(width*(-2.5) - margin*2 + width*2*(1-scale))+'px;}', 4)
   s.deleteRule(5);
-  s.insertRule('.slide {width:'+that.width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;-webkit-transform: scale('+scale+');}', 5)
-}
-Show.prototype.scale_non_current = function(scale) {
-
-  s.insertRule('.slide {width:'+that.width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;-webkit-transform: scale('+scale+');}', 5)
-}
-Show.prototype.toggle_reduced = function(scale) {
-  var s = document.styleSheets[0];
-  var margin = 40;
-  var height = this.height;
-  var width = this.width;
-  scale = scale || 0.75;
-    
-  if(s.cssRules[0].style.length === 1) {
-    replace_rules_with('-webkit-transform: scale('+scale+');');
-  } else {
-    replace_rules_with('');
-  }
-  
-  function replace_rules_with(thing) {
-    s.deleteRule(0); 
-    s.insertRule('.far-past {margin-right: '+(width*(1.5) + margin*2)+'px; '+thing+'}', 0)
-    s.deleteRule(1); 
-    s.insertRule('.past {margin-right: '+(width*(0.5) + margin)+'px;'+thing+'}', 1)
-    s.deleteRule(3); 
-    s.insertRule('.future {margin-right: '+(width*(-1.5) - margin)+'px;'+thing+'}', 3)
-    s.deleteRule(4); 
-    s.insertRule('.far-future {margin-right: '+(width*(-2.5) - 3*margin)+'px;'+thing+'}', 4)
+  s.insertRule('.slide {width:'+that.width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;-webkit-transform: scale('+scale*factor+');}', 5)
+  if(that.mode['coding']) {
+    that.float_current_right();
   }
 }
-Show.prototype.scale_current = function(scale) {
+Show.prototype.toggle_reduced = function(factor) {
   var that = this;
   var s = document.styleSheets[0];
-  scale = scale || that.max_scale();
-  that.current_scale = scale;
-  var editor_width = document.width -5 - scale*that.width;
-  var margin_right = (-1)*(that.width*(1-scale)/2);
+  var scale = that.current_scale;
+  factor = factor || 0.75;
+
+  if(that.mode['reduced']) {
+    that.mode['reduced'] = false;
+    replace_rules_with(scale, scale);
+  } else {
+    that.mode['reduced'] = true;
+    replace_rules_with(scale, scale*factor); //'-webkit-transform: scale('+scale+');');
+  }
+  
+  function replace_rules_with(current_scale, others_scale) {
+    if(that.mode['coding']) {
+      that.float_current_right();
+    } else {
+      s.deleteRule(2); 
+      s.insertRule('.current {margin-right: '+that.width*(-0.5)+'px;-webkit-transform:scale('+current_scale+') !important;}', 2)
+    }
+    s.deleteRule(5);
+    s.insertRule('.slide {width:'+that.width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;-webkit-transform: scale('+others_scale+');}', 5)
+  }
+}
+Show.prototype.float_current_right = function() {
+  var that = this;
+  var s = document.styleSheets[0];
+  var editor_width = document.width -5 - that.current_scale*that.width;
+  var margin_right = (-1)*(that.width*(1-that.current_scale)/2);
   
   s.deleteRule(2); 
-  s.insertRule('.current {right: 0px !important; margin-right:'+margin_right+'px;opacity: 1.0; z-index: 9999;-webkit-transform: scale('+scale+');}}', 2)
+  s.insertRule('.current {right: 0px !important; margin-right:'+margin_right+'px;opacity: 1.0; z-index: 9999;-webkit-transform: scale('+that.current_scale+') !important;}}', 2)
   
   s.deleteRule(6);
-  s.insertRule('.CodeMirror {width: '+editor_width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;}', 6)
+  var editor_height = window.innerHeight-80;
+  s.insertRule('.CodeMirror {width: '+editor_width+'px;height:'+editor_height+'px;margin-top:'+editor_height*(-0.5)+'px;}', 6)
 }
 Show.prototype.toggle_coding_mode = function() {
   var that = this;
-  if(that.mode === 'coding') {
-    that.mode = 'normal';
+  if(that.mode['coding']) {
+    that.mode['coding'] = false;
     var s = document.styleSheets[0]
-    s.deleteRule(2);
-    s.insertRule('.current {margin-right: '+that.width*(-0.5)+'px;}', 2)
+    if(that.mode['reduced']) {
+      s.deleteRule(2); 
+      s.insertRule('.current {margin-right: '+that.width*(-0.5)+'px;-webkit-transform:scale('+that.current_scale+') !important;}', 2)
+    } else {
+      s.deleteRule(2);
+      s.insertRule('.current {margin-right: '+that.width*(-0.5)+'px;}', 2)
+    }
     $('.CodeMirror').hide();
   } else {
-    that.mode = 'coding';
-    that.scale_current(that.current_scale);
+    that.mode['coding'] = true;
+    that.float_current_right();
     $('.CodeMirror').show();
     code_editor.setValue(that.current.scripts);
   }
@@ -263,6 +274,12 @@ function handleKeys(e, show) {
      show.toggle_coding_mode(); break;
    case 83: //s
      //toggle_expose(0); break;
+  }
+}
+function zoom_slides() {
+  var scale = $("#scale_slides").val()/100;
+  if(slideshow) {
+    slideshow.scale_all_slides(scale); 
   }
 }
 /*$(document).keydown( function(e) {
