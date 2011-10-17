@@ -1,0 +1,7 @@
+<div id=<%=slide.id%> class='slide zoomed_in_slide slide_transition'>
+  <%= form_for(slide, :remote => true) do |f|%>
+    <%= f.hidden_field :scripts %>
+    <%= f.submit %>
+  <% end %>
+</div>
+

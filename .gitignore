@@ -4,3 +4,4 @@ log/*.log
 tmp/**/*
 .sass-cache/  
 node_modules/
+mongo_db/

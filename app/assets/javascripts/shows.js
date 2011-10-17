@@ -4,18 +4,76 @@ function Show(info) {
   this.height = info.height;
   this.current;
   this.slides = [];
+  this.num_slides;
+  this.mode = 'normal'; //coding, expose, edit, presentation
   
   return this;
+}
+Show.prototype.set_class_margins = function() {
+  var margin = 40;
+  var height = this.height;
+  var width = this.width;
+  var styleSheet = document.styleSheets[0]
+
+  styleSheet.insertRule('.far-past {margin-right: '+(width*(1.5) + margin*2)+'px;}', 0)
+  styleSheet.insertRule('.past {margin-right: '+(width*(0.5) + margin)+'px;}', 1)
+  styleSheet.insertRule('.current {margin-right: '+width*(-0.5)+'px;}', 2)
+  styleSheet.insertRule('.future {margin-right: '+(width*(-1.5) - margin)+'px;}', 3)
+  styleSheet.insertRule('.far-future {margin-right: '+(width*(-2.5) - 3*margin)+'px;}', 4)
+  styleSheet.insertRule('.slide {width:'+width+'px;height:'+height+'px;margin-top:'+height*(-0.5)+'px;}', 5)
+
+  styleSheet.insertRule('.CodeMirror {width: '+width+'px;height:'+height+'px;margin-top:'+height*(-0.5)+'px;}', 6)
+}
+Show.prototype.toggle_coding_mode = function() {
+  var that = this;
+  if(that.mode === 'coding') {
+    that.mode = 'normal';
+    var s = document.styleSheets[0]
+    s.deleteRule(2);
+    s.insertRule('.current {margin-right: '+that.width*(-0.5)+'px;}', 2)
+    $('.CodeMirror').hide();
+  } else {
+    that.mode = 'coding';
+    var s = document.styleSheets[0];
+    s.deleteRule(2) //Index of the current rule
+    s.insertRule('.current {right: 0px !important; opacity: 1.0; z-index: 9999;}', 2)
+    $('.CodeMirror').show();
+  }
+}
+Show.prototype.set_current_to_index = function(index) {
+  var that = this;
+  if(that.valid_index(index)) {
+    var classes = 'far-past past current future far-future';
+    that.slides[index].change_classes(classes, 'current');
+    that.current = that.slides[index];
+    if(that.valid_index(index-1)) {
+      that.slides[index-1].change_classes(classes, 'past');
+      if(that.valid_index(index-2)) {
+        for(var i=0; i <= index-2; i++) {
+          that.slides[i].change_classes(classes, 'far-past')
+        }
+      }
+    }
+    if(that.valid_index(index+1)) {
+      that.slides[index+1].change_classes(classes, 'future');
+      if(that.valid_index(index+2)) {
+        for(var i = index+2; i < that.num_slides; i++) {
+          that.slides[i].change_classes(classes, 'far-future');
+        }
+      }
+    }
+  }
 }
 Show.prototype.initialize_slides = function() {
   var that = this;
   that.slides[0].dom.addClass('current');
   that.current = that.slides[0];
   that.current.execute();
+  that.num_slides = that.slides.length;
   if(that.slides[1]) {
     that.slides[1].dom.addClass('future');
     if(that.slides[2]) {
-      for(var i=2; i < that.slides.length; i++) {
+      for(var i=2; i < that.num_slides; i++) {
         that.slides[i].dom.addClass('far-future');
       }
     }
@@ -25,8 +83,8 @@ Show.prototype.next = function() {
   var that = this;
   var id = that.current.index;
   if(that.valid_index(id+1)) {
-    that.slides[id  ].change_classes('current', 'past');
     that.slides[id+1].change_classes('future',  'current');
+    that.slides[id  ].change_classes('current', 'past');
     if(that.valid_index(id-1)) { that.slides[id-1].change_classes('past',   'far-past') }
     if(that.valid_index(id+2)) { that.slides[id+2].change_classes('far-future', 'future') }
     if(that.current.dom.hasClass('small_float_right')) {
@@ -56,9 +114,10 @@ Show.prototype.prev = function() {
 Show.prototype.save_current = function() {
   this.current.scripts = code_editor.getValue();
   this.current.save();
+  this.current.execute();
 }
 Show.prototype.valid_index = function(index) {
-  return (index >= 0) && (index <= this.slides.length-1)
+  return (index >= 0) && (index <= this.num_slides-1)
 }
 Show.prototype.append_slide = function() {
 
@@ -107,12 +166,14 @@ function create_slideshow(info) {
   $(document).keydown( function(e) {
     if( $(e.srcElement).parents().hasClass('CodeMirror')) {
       if(e.keyCode == 27) {
-        $(".CodeMirror").hide();
+      //$(".CodeMirror").hide();
+        show.toggle_coding_mode();
       } 
     } else {
       handleKeys(e, show);
     }
   })
+  show.set_class_margins();
   return show;
 }
 function handleKeys(e, show) {
@@ -126,7 +187,7 @@ function handleKeys(e, show) {
    case 69: // E
      //editingMode(); break;
    case 65: //a
-     $(".CodeMirror").show(); break;
+     show.toggle_coding_mode(); break;
    case 83: //s
      //toggle_expose(0); break;
   }
