@@ -38,6 +38,7 @@ Show.prototype.toggle_coding_mode = function() {
     s.deleteRule(2) //Index of the current rule
     s.insertRule('.current {right: 0px !important; opacity: 1.0; z-index: 9999;}', 2)
     $('.CodeMirror').show();
+    code_editor.setValue(that.current.scripts);
   }
 }
 Show.prototype.set_current_to_index = function(index) {
@@ -82,6 +83,7 @@ Show.prototype.initialize_slides = function() {
 Show.prototype.next = function() {
   var that = this;
   var id = that.current.index;
+  console.log(id, id+1, that.valid_index(id+1));
   if(that.valid_index(id+1)) {
     that.slides[id+1].change_classes('future',  'current');
     that.slides[id  ].change_classes('current', 'past');
@@ -98,6 +100,7 @@ Show.prototype.next = function() {
 Show.prototype.prev = function() {
   var that = this;
   var id = that.current.index;
+  console.log(id, id-1, that.valid_index(id-1));
   if(that.valid_index(id-1)) {
     that.slides[id  ].change_classes('current', 'future');
     that.slides[id-1].change_classes('past',  'current');
@@ -145,7 +148,7 @@ Slide.prototype.execute = function() {
   code_editor.setValue(that.scripts)
   that.paper.clear();
   try {
-    (new Function("paper", "slide", "window", "document", "$", that.scripts ) ).call(that.paper, that.paper, that.dom);
+    (new Function("paper", "slide", "show", "window", "document", "$", that.scripts ) ).call(that.paper, that.paper, that.dom, that.show);
   } catch (e) {
     alert(e.message || e);
   }
@@ -160,8 +163,7 @@ function create_slideshow(info) {
     slides.push(new Slide(show, info.slides[i]));
     slides[i].execute();
   }
-  show.slides = slides.sort(function(s) {return s.index });
-  show.slides.sort(function(s) {return s.index})
+  show.slides = slides.sort(function(a, b) {return (a.index - b.index) });
   show.initialize_slides();
   $(document).keydown( function(e) {
     if( $(e.srcElement).parents().hasClass('CodeMirror')) {
