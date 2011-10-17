@@ -251,7 +251,9 @@ function create_slideshow(info) {
       if(e.keyCode == 27) {
       //$(".CodeMirror").hide();
         show.toggle_coding_mode();
-      } 
+      } else if(e.keyCode === 'S'.charCodeAt(0) && e.ctrlKey) {
+        show.save_current();
+      }
     } else {
       handleKeys(e, show);
     }
@@ -282,16 +284,3 @@ function zoom_slides() {
     slideshow.scale_all_slides(scale); 
   }
 }
-/*$(document).keydown( function(e) {
-  if( $(e.srcElement).hasClass("edit_area") && $(".edit_area").is(":visible")) {
-    if(e.keyCode == 27) {
-      var id = $($(e.srcElement).parent()).attr("id");
-      $("#"+id+" .edit_area").focusout();
-    }
-  } else if( $(".presentation").hasClass("grid_layout")) {
-      if(e.keyCode == 83) { toggle_expose(0); }
-    } else {
-    handleKeys(e);
-  }
-}, false);*/
-
