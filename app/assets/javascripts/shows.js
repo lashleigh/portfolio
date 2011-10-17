@@ -22,11 +22,11 @@ Show.prototype.set_class_margins = function() {
   var scale = this.max_scale();
   var styleSheet = document.styleSheets[0];
 
-  styleSheet.insertRule('.far-past {margin-right: '+(scale*width*(1.5) + margin*2)+'px;}', 0)
-  styleSheet.insertRule('.past {margin-right: '+(scale*width*(0.5) + margin)+'px;}', 1)
-  styleSheet.insertRule('.current {margin-right: '+scale*width*(-0.5)+'px;}', 2)
-  styleSheet.insertRule('.future {margin-right: '+(scale*width*(-1.5) - margin)+'px;}', 3)
-  styleSheet.insertRule('.far-future {margin-right: '+(scale*width*(-2.5) - 3*margin)+'px;}', 4)
+  styleSheet.insertRule('.far-past {margin-right: '+(width*(1.5) + margin*2 - width*2*(1-scale))+'px;}', 0)
+  styleSheet.insertRule('.past {margin-right: '+(width*(0.5) + margin - width*(1-scale))+'px;}', 1)
+  styleSheet.insertRule('.current {margin-right: '+width*(-0.5)+'px;}', 2)
+  styleSheet.insertRule('.future {margin-right: '+(width*(-1.5) - margin + width*(1-scale))+'px;}', 3)
+  styleSheet.insertRule('.far-future {margin-right: '+(width*(-2.5) - margin*1 + width*2*(1-scale))+'px;}', 4)
   styleSheet.insertRule('.slide {width:'+width+'px;height:'+height+'px;margin-top:'+height*(-0.5)+'px;-webkit-transform:scale('+scale+');}', 5)
 
   styleSheet.insertRule('.CodeMirror {width: '+(document.width - scale*width-5)+'px;height:'+height+'px;margin-top:'+height*(-0.5)+'px;}', 6)
@@ -41,15 +41,15 @@ Show.prototype.scale_all_slides = function(scale) {
   var scale = scale || this.max_scale();
   this.current_scale = scale;
   s.deleteRule(0); 
-  s.insertRule('.far-past {margin-right: '+(scale*width*(1.5) + margin*2)+'px;}', 0)
+  s.insertRule('.far-past {margin-right: '+(width*(1.5) + margin*2 - width*2*(1-scale))+'px;}', 0)
   s.deleteRule(1); 
-  s.insertRule('.past {margin-right: '+(scale*width*(0.5) + margin)+'px;}', 1)
+  s.insertRule('.past {margin-right: '+(width*(0.5) + margin - width*(1-scale))+'px;}', 1)
   s.deleteRule(2); 
-  s.insertRule('.current {margin-right: '+scale*width*(-0.5)+'px;}', 2)
+  s.insertRule('.current {margin-right: '+width*(-0.5)+'px;}', 2)
   s.deleteRule(3); 
-  s.insertRule('.future {margin-right: '+(scale*width*(-1.5) - margin)+'px;}', 3)
+  s.insertRule('.future {margin-right: '+(width*(-1.5) - margin + width*(1-scale))+'px;}', 3)
   s.deleteRule(4); 
-  s.insertRule('.far-future {margin-right: '+(scale*width*(-2.5) - 3*margin)+'px;}', 4)
+  s.insertRule('.far-future {margin-right: '+(width*(-2.5) - margin*2 + width*2*(1-scale))+'px;}', 4)
   s.deleteRule(5);
   s.insertRule('.slide {width:'+that.width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;-webkit-transform: scale('+scale+');}', 5)
 }
@@ -101,7 +101,7 @@ Show.prototype.toggle_coding_mode = function() {
     that.mode = 'normal';
     var s = document.styleSheets[0]
     s.deleteRule(2);
-    s.insertRule('.current {margin-right: '+that.current_scale*that.width*(-0.5)+'px;}', 2)
+    s.insertRule('.current {margin-right: '+that.width*(-0.5)+'px;}', 2)
     $('.CodeMirror').hide();
   } else {
     that.mode = 'coding';
