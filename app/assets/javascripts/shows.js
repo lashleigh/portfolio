@@ -7,6 +7,7 @@ function Show(info) {
   this.num_slides;
   this.mode = {'reduced':false, 'coding':false}; //coding, expose, edit, presentation
   this.current_scale;
+  this.interval;
   
   return this;
 }
@@ -208,11 +209,13 @@ Show.prototype.append_slide = function() {
 function Slide(show, props) {
   this.show = show;
   this.id = props.id;
+  this.dom_id = '#slide_'+props.id;
   this.index = props.index;
   this.scripts = props.scripts || '';
   this.styles = props.styles || '';
-  this.dom = $('#'+props.id);
-  this.paper = Raphael(this.id, show.width, show.height);
+  this.dom = $(this.dom_id);
+  //this.paper = Raphael("slide_"+this.id, show.width, show.height); 
+  this.page = d3.select(this.dom_id).select("svg").attr("width", show.width).attr("height", show.height);
 
   return this;
 }
@@ -226,10 +229,10 @@ Slide.prototype.save = function() {
 Slide.prototype.execute = function() {
   var that = this;
   code_editor.setValue(that.scripts)
-  that.paper.clear();
-  var scale = 1.0;
+  $(that.dom_id+' svg').empty();
+  var scale = that.show.current_scale;
   try {
-    (new Function("paper", "slide", "show", "scale", "window", "document", "$", that.scripts ) ).call(that.paper, that.paper, that.dom, that.show, scale);
+    (new Function("page", "slide", "show", "scale", "window", "document", "$", that.scripts ) ).call(that.page, that.page, that.dom, that.show, scale);
   } catch (e) {
     alert(e.message || e);
   }
@@ -250,7 +253,7 @@ function create_slideshow(info) {
     if( $(e.srcElement).parents().hasClass('CodeMirror')) {
       if(e.keyCode == 27) {
       //$(".CodeMirror").hide();
-        show.toggle_coding_mode();
+        //show.toggle_coding_mode();
       } else if(e.keyCode === 'S'.charCodeAt(0) && e.ctrlKey) {
         show.save_current();
       }
