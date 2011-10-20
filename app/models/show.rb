@@ -16,6 +16,7 @@ class Show
     slides.sort(:index).all
   end
   def new_slide(scripts = nil, styles = nil)
+    self.reload
     Slide.create!(:index => slides.length, :show => self)
   end
   def change_slide_order(slide_id, index)

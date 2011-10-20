@@ -2,6 +2,7 @@ function Show(info) {
   this.id     = info.id;
   this.width  = info.width;
   this.height = info.height;
+  this.scripts = info.scripts;
   this.current;
   this.slides = [];
   this.num_slides;
@@ -101,6 +102,7 @@ Show.prototype.float_current_right = function() {
   s.deleteRule(6);
   var editor_height = window.innerHeight-80;
   s.insertRule('.CodeMirror {width: '+editor_width+'px;height:'+editor_height+'px;margin-top:'+editor_height*(-0.5)+'px;}', 6)
+  s.insertRule('.CodeMirror-scroll {height:'+editor_height+'px !important;}', 7)
 }
 Show.prototype.toggle_coding_mode = function() {
   var that = this;
@@ -164,16 +166,11 @@ Show.prototype.initialize_slides = function() {
 Show.prototype.next = function() {
   var that = this;
   var id = that.current.index;
-  console.log(id, id+1, that.valid_index(id+1));
   if(that.valid_index(id+1)) {
     that.slides[id+1].change_classes('future',  'current');
     that.slides[id  ].change_classes('current', 'past');
     if(that.valid_index(id-1)) { that.slides[id-1].change_classes('past',   'far-past') }
     if(that.valid_index(id+2)) { that.slides[id+2].change_classes('far-future', 'future') }
-    if(that.current.dom.hasClass('small_float_right')) {
-      that.current.change_classes('small_float_right','zoomed_in_slide');
-      that.slides[id+1].change_classes('zoomed_in_slide','small_float_right');
-    }
     that.current = that.slides[id+1];
     that.current.execute();
   }
@@ -181,16 +178,11 @@ Show.prototype.next = function() {
 Show.prototype.prev = function() {
   var that = this;
   var id = that.current.index;
-  console.log(id, id-1, that.valid_index(id-1));
   if(that.valid_index(id-1)) {
     that.slides[id  ].change_classes('current', 'future');
     that.slides[id-1].change_classes('past',  'current');
     if(that.valid_index(id+1)) { that.slides[id+1].change_classes('future',   'far-future') }
     if(that.valid_index(id-2)) { that.slides[id-2].change_classes('far-past', 'past') }
-    if(that.current.dom.hasClass('small_float_right')) {
-      that.current.change_classes('small_float_right','zoomed_in_slide');
-      that.slides[id-1].change_classes('zoomed_in_slide','small_float_right');
-    }
     that.current = that.slides[id-1];
     that.current.execute();
   }
@@ -231,8 +223,9 @@ Slide.prototype.execute = function() {
   code_editor.setValue(that.scripts)
   $(that.dom_id+' svg').empty();
   var scale = that.show.current_scale;
+  clearInterval(that.show.interval);
   try {
-    (new Function("page", "slide", "show", "scale", "window", "document", "$", that.scripts ) ).call(that.page, that.page, that.dom, that.show, scale);
+    (new Function("page", "slide", "show", "scale", that.show.scripts+that.scripts ) ).call(that.page, that.page, that.dom, that.show, scale);
   } catch (e) {
     alert(e.message || e);
   }
