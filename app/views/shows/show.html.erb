@@ -5,11 +5,10 @@
   $(function() {
     code_editor = CodeMirror(document.body, {
       mode:  "javascript",
-      matchBrackets: true,
-      theme: 'night'
+      matchBrackets: true
     })
-    autocomplete(code_editor);
     slideshow = create_slideshow(<%= @show.to_json(:include => :slides).html_safe %>);
+    autocomplete(code_editor, slideshow);
     rescale();
     $(window).resize( function() {
       rescale();
