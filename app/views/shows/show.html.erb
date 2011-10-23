@@ -1,18 +1,21 @@
 <script type="text/javascript">
   var slideshow;
   var code_editor;
+  var show_editor;
   $(function() {
     code_editor = CodeMirror(document.body, {
-      mode:  "javascript"
+      mode:  "javascript",
+      matchBrackets: true
     })
 
     slideshow = create_slideshow(<%= @show.to_json(:include => :slides).html_safe %>);
+    rescale();
     $(window).resize( function() {
       rescale();
     })
     function rescale() {
       var scale = Math.max(slideshow.width/window.innerWidth, slideshow.height/window.innerHeight);
-      $("#scale_slides").attr("max", 100*(1/scale));
+      $("#scale_slides").attr("max", 100*Math.min(scale, (1/scale)));
       $("#scale_slides").attr("min", 100*Math.min(scale*0.2, scale));
     }
   })

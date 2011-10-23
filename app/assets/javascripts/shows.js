@@ -15,8 +15,6 @@ function Show(info) {
 }
 Show.prototype.add_custom_styles = function(info) {
   var s = document.styleSheets[0];
-  //var info = JSON.parse(info.styles);
-  console.log(info)
   for(var i=0; i < info.styles.length; i++) {
     s.insertRule(info.styles[i]);
   }
@@ -55,6 +53,7 @@ Show.prototype.scale_all_slides = function(scale) {
   var width = this.width;
   var scale = scale || this.max_scale(140);
   var factor = 1.0; 
+  $("#scale_slides").val(scale*100);
   if(that.mode['reduced']) {
     factor = 0.75;
   }
@@ -220,9 +219,28 @@ function Slide(show, props) {
   this.styles = props.styles || '';
   this.dom = $(this.dom_id);
   //this.paper = Raphael("slide_"+this.id, show.width, show.height); 
+  var that = this;
+  that.dom.click(function() {
+    that.handle_click(); 
+  })
   this.page = d3.select(this.dom_id).select("svg").attr("width", show.width).attr("height", show.height);
 
   return this;
+}
+Slide.prototype.handle_click = function() {
+  var that = this;
+  if(that.dom.hasClass('current')) {
+    return false;
+  } else if(that.dom.hasClass('future')) {
+    that.show.next();
+    return 'next';
+  } else if(that.dom.hasClass('past')) {
+    that.show.prev();
+    return 'prev';
+  } else {
+    that.show.set_current_to_index(that.index);
+    return 'distant';
+  }
 }
 Slide.prototype.change_classes = function(to_remove, to_add) {
   this.dom.removeClass(to_remove).addClass(to_add);
@@ -253,6 +271,7 @@ function create_slideshow(info) {
   show.initialize_slides();
   show.set_class_margins();
   $(document).keydown( function(e) {
+    console.log(e);
     if( $(e.srcElement).parents().hasClass('CodeMirror')) {
       if(e.keyCode == 27) {
       //$(".CodeMirror").hide();
@@ -271,6 +290,14 @@ function handleKeys(e, show) {
    case 37: // left arrow
      show.prev(); break;
    case 39: // right arrow
+     show.next(); break;
+   case 72: // H 
+     show.prev(); break;
+   case 74: // J 
+     show.scale_all_slides(show.current_scale*0.9); break;
+   case 75: // K 
+     show.scale_all_slides(show.current_scale*1.1); break;
+   case 76: // L 
      show.next(); break;
    case 80: // P 
      //presentationMode(); break;
