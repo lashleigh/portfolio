@@ -45,7 +45,7 @@ class ShowsController < ApplicationController
 
     respond_to do |format|
       if @show.save
-        format.html { redirect_to(shows_url, :notice => 'Show was successfully created.') }
+        format.html { redirect_to(@show, :notice => 'Show was successfully created.') }
         format.xml  { render :xml => @show, :status => :created, :location => @show }
       else
         format.html { render :action => "new" }
@@ -61,7 +61,7 @@ class ShowsController < ApplicationController
 
     respond_to do |format|
       if @show.update_attributes(params[:show])
-        format.html { redirect_to(shows_url, :notice => 'Show was successfully updated.') }
+        format.html { redirect_to(@show, :notice => 'Show was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

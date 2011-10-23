@@ -12,6 +12,14 @@ class Show
   many :slides
   belongs_to :user
 
+  def styles=(x)
+    if String === x and !x.blank?
+      super(ActiveSupport::JSON.decode(x))
+    else
+      super(x)
+    end
+  end
+
   def ordered_slides
     slides.sort(:index).all
   end

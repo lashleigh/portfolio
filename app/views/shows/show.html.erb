@@ -7,7 +7,21 @@
     })
 
     slideshow = create_slideshow(<%= @show.to_json(:include => :slides).html_safe %>);
+    $(window).resize( function() {
+      rescale();
+    })
+    function rescale() {
+      var scale = Math.max(slideshow.width/window.innerWidth, slideshow.height/window.innerHeight);
+      $("#scale_slides").attr("max", 100*(1/scale));
+      $("#scale_slides").attr("min", 100*Math.min(scale*0.2, scale));
+    }
   })
 </script>
 
 <%= render :partial => 'slides/slide', :collection => @show.slides %>
+
+<%= form_for(@show, :remote => true) do |f|%>
+  <%= f.hidden_field :scripts %>
+  <%= f.hidden_field :styles %>
+  <%= f.submit %>
+<% end %>

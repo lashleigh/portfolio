@@ -15,20 +15,23 @@ function Show(info) {
 }
 Show.prototype.add_custom_styles = function(info) {
   var s = document.styleSheets[0];
+  //var info = JSON.parse(info.styles);
+  console.log(info)
   for(var i=0; i < info.styles.length; i++) {
     s.insertRule(info.styles[i]);
   }
 }
-Show.prototype.max_scale = function() {
-  var width_scale = ((window.innerWidth-40) / this.width);
-  var heigh_scale = ((window.innerHeight-40) / this.height);
+Show.prototype.max_scale = function(buffer) {
+  buffer = buffer || 0;
+  var width_scale = ((window.innerWidth-buffer) / this.width);
+  var heigh_scale = ((window.innerHeight-buffer) / this.height);
   return Math.min(width_scale, heigh_scale)
 }
 Show.prototype.set_class_margins = function() {
   var margin = 40;
   var height = this.height;
   var width = this.width;
-  var scale = this.max_scale();
+  var scale = this.max_scale(140);
   var styleSheet = document.styleSheets[0];
   this.current_scale = scale;
   $("#scale_slides").val(scale*100);
@@ -50,7 +53,7 @@ Show.prototype.scale_all_slides = function(scale) {
   var margin = 40;
   var height = this.height;
   var width = this.width;
-  var scale = scale || this.max_scale();
+  var scale = scale || this.max_scale(140);
   var factor = 1.0; 
   if(that.mode['reduced']) {
     factor = 0.75;
@@ -158,15 +161,17 @@ Show.prototype.set_current_to_index = function(index) {
 }
 Show.prototype.initialize_slides = function() {
   var that = this;
+  that.num_slides = that.slides.length;
   that.slides[0].dom.addClass('current');
   that.current = that.slides[0];
   that.current.execute();
-  that.num_slides = that.slides.length;
   if(that.slides[1]) {
     that.slides[1].dom.addClass('future');
+    that.slides[1].execute();
     if(that.slides[2]) {
       for(var i=2; i < that.num_slides; i++) {
         that.slides[i].dom.addClass('far-future');
+        that.slides[i].execute();
       }
     }
   }
@@ -238,18 +243,15 @@ Slide.prototype.execute = function() {
     alert(e.message || e);
   }
 }
-Slide.prototype.scale = function(scale) {
-
-}
 function create_slideshow(info) {
   var show = new Show(info);
   var slides = []
   for(var i=0; i < info.slides.length; i++) {
     slides.push(new Slide(show, info.slides[i]));
-    slides[i].execute();
   }
   show.slides = slides.sort(function(a, b) {return (a.index - b.index) });
   show.initialize_slides();
+  show.set_class_margins();
   $(document).keydown( function(e) {
     if( $(e.srcElement).parents().hasClass('CodeMirror')) {
       if(e.keyCode == 27) {
@@ -262,7 +264,6 @@ function create_slideshow(info) {
       handleKeys(e, show);
     }
   })
-  show.set_class_margins();
   return show;
 }
 function handleKeys(e, show) {
