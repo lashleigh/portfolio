@@ -271,7 +271,6 @@ function create_slideshow(info) {
   show.initialize_slides();
   show.set_class_margins();
   $(document).keydown( function(e) {
-    console.log(e);
     if( $(e.srcElement).parents().hasClass('CodeMirror')) {
       if(e.keyCode == 27) {
       //$(".CodeMirror").hide();
@@ -304,9 +303,9 @@ function handleKeys(e, show) {
      show.toggle_reduced(); break;
    case 69: // E
      //editingMode(); break;
-   case 65: //a
+   case 65: // A
      show.toggle_coding_mode(); break;
-   case 83: //s
+   case 83: // S
      //toggle_expose(0); break;
   }
 }
