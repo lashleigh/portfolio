@@ -5,8 +5,8 @@ class Show
   key :width, Integer, :default => 1024
   key :height, Integer, :default => 768
   key :version, Integer, :default => 0
-  key :scripts, String
-  key :styles, String
+  key :scripts, String, :default => ''
+  key :styles, Array
   timestamps!
   
   many :slides

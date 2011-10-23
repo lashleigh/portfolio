@@ -9,12 +9,19 @@ function Show(info) {
   this.mode = {'reduced':false, 'coding':false}; //coding, expose, edit, presentation
   this.current_scale;
   this.interval;
+  this.add_custom_styles(info);
   
   return this;
 }
+Show.prototype.add_custom_styles = function(info) {
+  var s = document.styleSheets[0];
+  for(var i=0; i < info.styles.length; i++) {
+    s.insertRule(info.styles[i]);
+  }
+}
 Show.prototype.max_scale = function() {
-  var width_scale = ((window.innerWidth-80) / this.width);
-  var heigh_scale = ((window.innerHeight-80) / this.height);
+  var width_scale = ((window.innerWidth-40) / this.width);
+  var heigh_scale = ((window.innerHeight-40) / this.height);
   return Math.min(width_scale, heigh_scale)
 }
 Show.prototype.set_class_margins = function() {
@@ -33,7 +40,7 @@ Show.prototype.set_class_margins = function() {
   styleSheet.insertRule('.far-future {margin-right: '+(width*(-2.5) - margin*1 + width*2*(1-scale))+'px;}', 4)
   styleSheet.insertRule('.slide {width:'+width+'px;height:'+height+'px;margin-top:'+height*(-0.5)+'px;-webkit-transform:scale('+scale+');}', 5)
 
-  var editor_height = window.innerHeight-80;
+  var editor_height = window.innerHeight-40;
   styleSheet.insertRule('.CodeMirror {width: '+(document.width - scale*width-5)+'px;height:'+editor_height+'px;margin-top:'+editor_height*(-0.5)+'px;}', 6)
   styleSheet.insertRule('.CodeMirror-scroll {height:'+editor_height+'px !important;}', 7)
 }
@@ -100,8 +107,9 @@ Show.prototype.float_current_right = function() {
   s.insertRule('.current {right: 0px !important; margin-right:'+margin_right+'px;opacity: 1.0; z-index: 9999;-webkit-transform: scale('+that.current_scale+') !important;}}', 2)
   
   s.deleteRule(6);
-  var editor_height = window.innerHeight-80;
+  var editor_height = window.innerHeight-40;
   s.insertRule('.CodeMirror {width: '+editor_width+'px;height:'+editor_height+'px;margin-top:'+editor_height*(-0.5)+'px;}', 6)
+  s.deleteRule(7);
   s.insertRule('.CodeMirror-scroll {height:'+editor_height+'px !important;}', 7)
 }
 Show.prototype.toggle_coding_mode = function() {
@@ -225,7 +233,7 @@ Slide.prototype.execute = function() {
   var scale = that.show.current_scale;
   clearInterval(that.show.interval);
   try {
-    (new Function("page", "slide", "show", "scale", that.show.scripts+that.scripts ) ).call(that.page, that.page, that.dom, that.show, scale);
+    (new Function("page", "slide", "show", "scale", that.show.scripts+that.scripts ) ).call(that.page, that.page, that, that.show, scale);
   } catch (e) {
     alert(e.message || e);
   }
