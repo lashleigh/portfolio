@@ -39,11 +39,17 @@ Show.prototype.set_class_margins = function() {
   styleSheet.insertRule('.current {margin-right: '+width*(-0.5)+'px;}', 2)
   styleSheet.insertRule('.future {margin-right: '+(width*(-1.5) - margin + width*(1-scale))+'px;}', 3)
   styleSheet.insertRule('.far-future {margin-right: '+(width*(-2.5) - margin*1 + width*2*(1-scale))+'px;}', 4)
-  styleSheet.insertRule('.slide {width:'+width+'px;height:'+height+'px;margin-top:'+height*(-0.5)+'px;-webkit-transform:scale('+scale+');}', 5)
+  styleSheet.insertRule('.slide {width:'+width+'px;height:'+height+'px;margin-top:'+height*(-0.5)+'px;'+
+                         '-webkit-transform:scale('+scale+');'+
+                         '-moz-transform:scale('+scale+');'+
+                         '-o-transform:scale('+scale+');'+
+                         'transform:scale('+scale+');'+
+                         '}', 5)
 
   var editor_height = window.innerHeight-40;
-  styleSheet.insertRule('.CodeMirror {width: '+(document.width - scale*width-5)+'px;height:'+editor_height+'px;margin-top:'+editor_height*(-0.5)+'px;}', 6)
-  styleSheet.insertRule('.CodeMirror-scroll {height:'+editor_height+'px !important;}', 7)
+  styleSheet.insertRule('.CodeMirror {width: '+(window.innerWidth - scale*width-5)+
+                        'px;height:'+editor_height+'px;margin-top:'+editor_height*(-0.5)+'px;}', 6);
+  styleSheet.insertRule('.CodeMirror-scroll {height:'+editor_height+'px !important;}', 7);
 }
 Show.prototype.scale_all_slides = function(scale) {
   var that = this;
@@ -63,16 +69,35 @@ Show.prototype.scale_all_slides = function(scale) {
   s.deleteRule(1); 
   s.insertRule('.past {margin-right: '+(width*(0.5) + margin - width*(1-scale))+'px;}', 1)
   s.deleteRule(2); 
-  s.insertRule('.current {margin-right: '+width*(-0.5)+'px;-webkit-transform:scale('+scale+') !important;}}', 2)
+  s.insertRule('.current {margin-right: '+width*(-0.5)+'px;'+
+                '-webkit-transform:scale('+scale+') !important;'+
+                '-moz-transform:scale('+scale+') !important;'+
+                '-o-transform:scale('+scale+') !important;'+
+                'transform:scale('+scale+') !important;'+
+                '}', 2)
   s.deleteRule(3); 
   s.insertRule('.future {margin-right: '+(width*(-1.5) - margin + width*(1-scale))+'px;}', 3)
   s.deleteRule(4); 
-  s.insertRule('.far-future {margin-right: '+(width*(-2.5) - margin*2 + width*2*(1-scale))+'px;}', 4)
+  s.insertRule('.far-future {margin-right: '+(width*(-2.5) - margin*2 + width*2*(1-scale))+'px;}', 4);
   s.deleteRule(5);
-  s.insertRule('.slide {width:'+that.width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;-webkit-transform: scale('+scale*factor+');}', 5)
+  s.insertRule('.slide {width:'+that.width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;'+
+                '-webkit-transform: scale('+scale*factor+');'+
+                '-moz-transform:scale('+scale*factor+');'+
+                '-o-transform:scale('+scale*factor+');'+
+                'transform:scale('+scale*factor+');'+
+                '}', 5)
   if(that.mode['coding']) {
     that.float_current_right();
   }
+}
+function rescale(add_to, scale, id) {
+  s.deleteRule(id)
+  d.insertRule(add_to+
+                '-webkit-transform: scale('+scale+');'+
+                '-moz-transform:scale('+scale+');'+
+                '-o-transform:scale('+scale+');'+
+                'transform:scale('+scale+');'+
+                '}', id)
 }
 Show.prototype.toggle_reduced = function(factor) {
   var that = this;
@@ -85,7 +110,7 @@ Show.prototype.toggle_reduced = function(factor) {
     replace_rules_with(scale, scale);
   } else {
     that.mode['reduced'] = true;
-    replace_rules_with(scale, scale*factor); //'-webkit-transform: scale('+scale+');');
+    replace_rules_with(scale, scale*factor); 
   }
   
   function replace_rules_with(current_scale, others_scale) {
@@ -93,20 +118,35 @@ Show.prototype.toggle_reduced = function(factor) {
       that.float_current_right();
     } else {
       s.deleteRule(2); 
-      s.insertRule('.current {margin-right: '+that.width*(-0.5)+'px;-webkit-transform:scale('+current_scale+') !important;}', 2)
+      s.insertRule('.current {margin-right: '+that.width*(-0.5)+'px;'+
+                    '-webkit-transform:scale('+current_scale+') !important;'+
+                    '-moz-transform:scale('+current_scale+') !important;'+
+                    '-o-transform:scale('+current_scale+') !important;'+
+                    'transform:scale('+current_scale+') !important;'+
+                    '}', 2)
     }
     s.deleteRule(5);
-    s.insertRule('.slide {width:'+that.width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;-webkit-transform: scale('+others_scale+');}', 5)
+    s.insertRule('.slide {width:'+that.width+'px;height:'+that.height+'px;margin-top:'+that.height*(-0.5)+'px;'+
+                  '-webkit-transform: scale('+others_scale+');'+
+                  '-moz-transform:scale('+others_scale+');'+
+                  '-o-transform:scale('+others_scale+');'+
+                  'transform:scale('+others_scale+');'+
+                  '}', 5)
   }
 }
 Show.prototype.float_current_right = function() {
   var that = this;
   var s = document.styleSheets[0];
-  var editor_width = document.width -5 - that.current_scale*that.width;
+  var editor_width = window.innerWidth -5 - that.current_scale*that.width;
   var margin_right = (-1)*(that.width*(1-that.current_scale)/2);
   
   s.deleteRule(2); 
-  s.insertRule('.current {right: 0px !important; margin-right:'+margin_right+'px;opacity: 1.0; z-index: 9999;-webkit-transform: scale('+that.current_scale+') !important;}}', 2)
+  s.insertRule('.current {right: 0px !important; margin-right:'+margin_right+'px;opacity: 1.0; z-index: 9999;'+
+               '-webkit-transform: scale('+that.current_scale+') !important;'+
+               '-moz-transform:scale('+that.current_scale+') !important;'+
+               '-o-transform:scale('+that.current_scale+') !important;'+
+               'transform:scale('+that.current_scale+') !important;'+
+               '}', 2);
   
   s.deleteRule(6);
   var editor_height = window.innerHeight-40;
@@ -264,10 +304,10 @@ Slide.prototype.execute = function() {
 function create_slideshow(info) {
   var show = new Show(info);
   var slides = []
-  for(var i=0; i < info.slides.length; i++) {
-    slides.push(new Slide(show, info.slides[i]));
+  for(var i=0; i < info.ordered_slides.length; i++) {
+    slides.push(new Slide(show, info.ordered_slides[i]));
   }
-  show.slides = slides.sort(function(a, b) {return (a.index - b.index) });
+  show.slides = slides; //.sort(function(a, b) {return (a.index - b.index) });
   show.initialize_slides();
   show.set_class_margins();
   $(document).keydown( function(e) {

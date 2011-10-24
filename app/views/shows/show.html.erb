@@ -7,7 +7,7 @@
       mode:  "javascript",
       matchBrackets: true
     })
-    slideshow = create_slideshow(<%= @show.to_json(:include => :slides).html_safe %>);
+    slideshow = create_slideshow(<%= @show.to_json(:methods => :ordered_slides).html_safe %>);
     autocomplete(code_editor, slideshow);
     rescale();
     $(window).resize( function() {
@@ -15,13 +15,13 @@
     })
     function rescale() {
       var scale = Math.max(slideshow.width/window.innerWidth, slideshow.height/window.innerHeight);
-      $("#scale_slides").attr("max", 100*Math.min(scale, (1/scale)));
-      $("#scale_slides").attr("min", 100*Math.min(scale*0.2, scale));
+      $("#scale_slides").attr("max", 100*Math.max(scale, (1/scale)));
+      $("#scale_slides").attr("min", 100*Math.min(scale*0.5, scale));
     }
   })
 </script>
 
-<%= render :partial => 'slides/slide', :collection => @show.slides %>
+<%= render :partial => 'slides/slide', :collection => @show.ordered_slides %>
 
 <%= form_for(@show, :remote => true) do |f|%>
   <%= f.hidden_field :scripts %>
