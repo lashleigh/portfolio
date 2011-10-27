@@ -16,8 +16,8 @@
     })
     function rescale() {
       var scale = Math.max(slideshow.width/window.innerWidth, slideshow.height/window.innerHeight);
-      $("#scale_slides").attr("max", 100*Math.max(scale, (1/scale)));
-      $("#scale_slides").attr("min", 100*Math.min(scale*0.5, scale));
+      $("#scale_slides").attr("max", 100*(1/scale));
+      $("#scale_slides").attr("min", 100*scale*0.25);
     }
   })
 </script>
