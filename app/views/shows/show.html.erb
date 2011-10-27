@@ -29,3 +29,9 @@
   <%= f.hidden_field :styles %>
   <%= f.submit %>
 <% end %>
+
+<%= form_for(Slide.new, :remote => true) do |f|%>
+  <%= hidden_field_tag :show_id, @show.id %>
+  <%= hidden_field_tag :insert_id  %>
+  <%= hidden_field_tag :copy  %>
+<% end %>

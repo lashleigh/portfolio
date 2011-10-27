@@ -27,18 +27,17 @@ class Show
     self.reload
     Slide.create!(:index => slides.length, :show => self)
   end
-  def change_slide_order(slide_id, index)
-    slide = Slide.find(slide_id)
+  
+  def change_slide_order(slide, index)
     if slide and slide.index != index
       if index > slide.index
         affected = slides.in_range(slide.index+1, index).all
         affected.each {|s| s.decrement(:index => 1) }
-        slide.increment(:index => 1) 
       else 
         affected = slides.in_range(index, slide.index-1).all
         affected.each {|s| s.increment(:index => 1) }
-        slide.decrement(:index => 1) 
       end
+      slide.set(:index => index) 
     end
   end
 end

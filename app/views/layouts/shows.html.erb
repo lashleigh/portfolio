@@ -9,20 +9,15 @@
 <body>
 
   <div id="presentation" class="presentation">
-    <div id="slides_container" class="slides"> 
-      <input id="scale_slides" type="range" min="10" max="200" value="100" onchange='zoom_slides()'/>
-      <div id="options" style="display:none;">
-        <div id="slideshow_options">
-          <button id="save_slideshow">Save</button>
-        </div>
-        <div id="slide_options">
-          <button id="deactivate_current">Deactivate</button>
-          <button id="delete_current" >Delete</button>
-          <button id="duplicate_current" >Duplicate</button>
-        </div>
+    <input id="scale_slides" type="range" min="10" max="200" value="100" onchange='zoom_slides()'/>
+    <div id="options">
+      <div id="slide_options" class="button-group">
+        <button class="button big left" id="insert_after_currect">Insert Blank</button>
+        <button class="button big" id="delete_current" >Delete</button>
+        <button class="button big right" id="duplicate_current" >Duplicate</button>
       </div>
-      <%= yield %>
     </div>
+    <%= yield %>
   </div>
 
 

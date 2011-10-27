@@ -37,20 +37,26 @@ class SlidesController < ApplicationController
   def edit
     @slide = Slide.find(params[:id])
   end
-
+  
   # POST /slides
   # POST /slides.xml
   def create
-    @slide = Slide.new(params[:slide])
-
-    respond_to do |format|
-      if @slide.save
-        format.html { redirect_to(slides_url, :notice => 'Slide was successfully created.') }
-        format.xml  { render :xml => @slide, :status => :created, :location => @slide }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @slide.errors, :status => :unprocessable_entity }
+    show = Show.find(params[:show_id])
+    before = Slide.find(params[:insert_id])
+    if show and before 
+      @slide = show.new_slide
+      show.change_slide_order(@slide, before.index+1)
+      if params[:copy] == 'true'
+        @slide.scripts = before.scripts
       end
+      @slide.reload
+      slidehtml = render_to_string :partial => 'slide', :object => @slide
+    end
+
+    if @slide and @slide.save
+      render :json => {'slide' => @slide, 'slidehtml' => slidehtml}
+    else
+      render :json => {'status' => 'faliure'}
     end
   end
 

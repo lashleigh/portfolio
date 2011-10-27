@@ -51,7 +51,6 @@ Show.prototype.toggle_reduced = function(factor) {
 
   if(that.mode['reduced']) {
     that.mode['reduced'] = false;
-    that.set_slide_margins();
   } else {
     that.mode['reduced'] = true;
   }
@@ -77,7 +76,7 @@ Show.prototype.scale_code_editor = function() {
   var s = document.styleSheets[0];
   var editor_height = window.innerHeight-40;
   var editor_width = window.innerWidth -5 - that.current_scale*that.width;
-  if(!!s.cssRules[7]) {
+  if(!!s.cssRules[6] && s.cssRules[6].selectorText === '.CodeMirror') {
     s.deleteRule(6);
     s.deleteRule(6);
   }
@@ -92,7 +91,7 @@ Show.prototype.set_slide_margins = function() {
   var width = that.width;
   var margin = 20;
   var scale = that.current_scale;
-  if(!!s.cssRules[3]) {
+  if(!!s.cssRules[0] && s.cssRules[0].selectorText === '.far-past') {
     s.deleteRule(0); 
     s.deleteRule(0); 
     s.deleteRule(0); 
@@ -110,7 +109,7 @@ Show.prototype.scale_slide_class = function() {
   if(that.mode['reduced']) {
     scale = scale*0.85;
   }
-  if(!!s.cssRules[5]) {
+  if(!!s.cssRules[5] && s.cssRules[5].selectorText === '.slide') {
     s.deleteRule(5);
   }
   
@@ -124,7 +123,7 @@ Show.prototype.scale_slide_class = function() {
 Show.prototype.center_current_class = function() {
   var that = this;
   var s = document.styleSheets[0];
-  if(!!s.cssRules[4]) {
+  if(!!s.cssRules[4] && s.cssRules[4].selectorText === '.current') {
     s.deleteRule(4); 
   }
   s.insertRule('.current {margin-right: '+that.width*(-0.5)+'px;'+
@@ -230,6 +229,40 @@ Show.prototype.save_current = function() {
 Show.prototype.valid_index = function(index) {
   return (index >= 0) && (index <= this.num_slides-1)
 }
+Show.prototype.insert_slide = function() {
+  var that = this;
+  $("#new_slide #insert_id").val(that.current.id);
+  $.post("/slides", $("#new_slide").serialize(), function(res, text_status) {
+  console.log(res, text_status);
+    $($(".slide")[$(".slide").index(that.current.dom)]).after(res.slidehtml)
+    var s = new Slide(that, res.slide)
+    that.slides.splice(s.index, 0, s);
+    that.num_slides = that.slides.length; 
+    for(var i=s.index+1; i < that.num_slides; i++) {
+      that.slides[i].index += 1;
+    }
+    s.execute();
+    that.set_current_to_index(s.index);
+    $("#new_slide #copy").val('');
+    $("#new_slide #insert_id").val('');
+  })
+}
+Show.prototype.duplicate_slide = function() {
+  $("#new_slide #copy").val('true');
+  this.insert_slide();
+}
+Show.prototype.append_slide = function() {
+  var that = this;
+  $.post("/slides", $("#new_slide").serialize(), function(res, text_status) {
+    console.log(res, text_status);
+    $(".slide").last().after(res.slidehtml);
+    var s = new Slide(that, res.slide)
+    that.slides.push(s);
+    that.num_slides = that.slides.length; 
+    s.execute();
+    that.set_current_to_index(s.index);
+  })
+}
 Show.prototype.append_slide = function() {
 
 }
@@ -293,6 +326,12 @@ function create_slideshow(info) {
   show.slides = slides; //.sort(function(a, b) {return (a.index - b.index) });
   show.initialize_slides();
   //show.set_class_margins();
+  $("#insert_after_currect").click(function() {
+    show.insert_slide();
+  });
+  $("#duplicate_current").click(function() {
+    show.duplicate_slide();
+  });
   $(document).keydown( function(e) {
     if( $(e.srcElement).parents().hasClass('CodeMirror')) {
       if(e.keyCode == 27) {
