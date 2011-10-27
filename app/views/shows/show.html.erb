@@ -12,6 +12,7 @@
     rescale();
     $(window).resize( function() {
       rescale();
+      slideshow.scale_all_slides();
     })
     function rescale() {
       var scale = Math.max(slideshow.width/window.innerWidth, slideshow.height/window.innerHeight);

@@ -20,16 +20,16 @@ Show.prototype.add_custom_styles = function(info) {
   }
 }
 Show.prototype.max_scale = function(buffer) {
-  buffer = buffer || 0;
-  var width_scale = ((window.innerWidth-buffer) / this.width);
-  var heigh_scale = ((window.innerHeight-buffer) / this.height);
+  buffer = buffer || 0.95;
+  var width_scale = ((window.innerWidth*buffer) / this.width);
+  var heigh_scale = ((window.innerHeight*buffer) / this.height);
   return Math.min(width_scale, heigh_scale)
 }
 Show.prototype.set_class_margins = function() {
   var margin = 40;
   var height = this.height;
   var width = this.width;
-  var scale = this.max_scale(140);
+  var scale = this.max_scale();
   var styleSheet = document.styleSheets[0];
   this.current_scale = scale;
   $("#scale_slides").val(scale*100);
@@ -57,7 +57,7 @@ Show.prototype.scale_all_slides = function(scale) {
   var margin = 40;
   var height = this.height;
   var width = this.width;
-  var scale = scale || this.max_scale(140);
+  var scale = scale || this.max_scale();
   var factor = 1.0; 
   $("#scale_slides").val(scale*100);
   if(that.mode['reduced']) {
@@ -103,7 +103,7 @@ Show.prototype.toggle_reduced = function(factor) {
   var that = this;
   var s = document.styleSheets[0];
   var scale = that.current_scale;
-  factor = factor || 0.75;
+  factor = factor || 0.85;
 
   if(that.mode['reduced']) {
     that.mode['reduced'] = false;
