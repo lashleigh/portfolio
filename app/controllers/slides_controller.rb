@@ -80,13 +80,15 @@ class SlidesController < ApplicationController
   # DELETE /slides/1.xml
   def destroy
     @slide = Slide.find(params[:id])
-    @slide.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(slides_url) }
-      format.xml  { head :ok }
+    if @slide.show
+      @slide.show.delete_index(@slide.index)
+      @slide.destroy
+      render :json => {'status' => 'success'}
+    else
+      render :json => {'status' => 'faliure', 'show' => show, 'slide' => @slide}
     end
   end
 
+  #TODO add cancan permissions for slide deletion
 
 end

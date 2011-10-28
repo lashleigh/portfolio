@@ -35,3 +35,5 @@
   <%= hidden_field_tag :insert_id  %>
   <%= hidden_field_tag :copy  %>
 <% end %>
+<%= form_tag(@show.slides.first, :remote => true, :confirm => 'Are you sure', 
+                                 :method => "delete", :class=> 'destroy_slide') %>

@@ -233,7 +233,6 @@ Show.prototype.insert_slide = function() {
   var that = this;
   $("#new_slide #insert_id").val(that.current.id);
   $.post("/slides", $("#new_slide").serialize(), function(res, text_status) {
-  console.log(res, text_status);
     $($(".slide")[$(".slide").index(that.current.dom)]).after(res.slidehtml)
     var s = new Slide(that, res.slide)
     that.slides.splice(s.index, 0, s);
@@ -254,7 +253,6 @@ Show.prototype.duplicate_slide = function() {
 Show.prototype.append_slide = function() {
   var that = this;
   $.post("/slides", $("#new_slide").serialize(), function(res, text_status) {
-    console.log(res, text_status);
     $(".slide").last().after(res.slidehtml);
     var s = new Slide(that, res.slide)
     that.slides.push(s);
@@ -305,6 +303,27 @@ Slide.prototype.save = function() {
   $("#edit_slide_"+this.id+" #slide_scripts").val(this.scripts); 
   $("#edit_slide_"+this.id).submit(); 
 }
+Slide.prototype.destroy = function() {
+  var that = this;
+  var show = that.show;
+  if(show.num_slides > 1) {
+    $('.destroy_slide').attr('action', '/slides/'+that.id);
+
+    $.post("/slides/"+that.id, $(".destroy_slide").serialize(), function(res, text_status) {
+      show.slides.splice(that.index, 1);
+      show.num_slides += -1;
+      $(that.dom_id).remove();
+      for(var i=that.index; i < show.num_slides; i++) {
+        show.slides[i].index += -1;
+      }
+      if(that.index > 0) {
+        show.set_current_to_index(that.index-1)
+      } else {
+        show.set_current_to_index(0)
+      }
+    });
+  }
+}
 Slide.prototype.execute = function() {
   var that = this;
   code_editor.setValue(that.scripts)
@@ -331,6 +350,9 @@ function create_slideshow(info) {
   });
   $("#duplicate_current").click(function() {
     show.duplicate_slide();
+  });
+  $("#delete_current").click(function() {
+    show.current.destroy();
   });
   $(document).keydown( function(e) {
     if( $(e.srcElement).parents().hasClass('CodeMirror')) {

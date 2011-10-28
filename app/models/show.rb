@@ -27,7 +27,14 @@ class Show
     self.reload
     Slide.create!(:index => slides.length, :show => self)
   end
-  
+ 
+  def delete_index(index) 
+    max_index = slides.length-1
+    if index >= 0 and index <= max_index 
+      affected = slides.in_range(index+1, max_index)
+      affected.each {|s| s.decrement(:index => 1) }
+    end
+  end
   def change_slide_order(slide, index)
     if slide and slide.index != index
       if index > slide.index
