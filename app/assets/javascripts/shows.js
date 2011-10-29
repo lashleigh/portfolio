@@ -28,9 +28,10 @@ Show.prototype.add_custom_styles = function(info) {
                         '}', end);
   end++;
   s.insertRule('.expose {width:'+show.width*gs+'px;height:'+show.height*gs+'px;'+
-                     'overflow:hidden;margin:20px;float:left;position:relative;}', end);
+                     'overflow:hidden;margin:10px;float:left;position:relative;}', end);
 
   end++;
+  $('#slide_options').css('margin-left', -$('#slide_options').width()/2+'px');
   for(var i=0; i < info.styles.length; i++, end++) {
     s.insertRule(info.styles[i], end);
   }
@@ -79,9 +80,7 @@ Show.prototype.change_index_by_id = function(id) {
   if(slide) {
     var new_index = $('.slide').index(slide.dom)
     var sign = new_index > slide.index ? -1 : 1
-    console.log(slide, new_index, slide.index, sign);
     for(var i= new_index; i != slide.index; i+= sign) {
-      console.log(show.slides[i])
       show.slides[i].index += sign;
     }
     show.slides.splice(slide.index, 1);
@@ -89,7 +88,6 @@ Show.prototype.change_index_by_id = function(id) {
     slide.index = new_index;
     show.execute_all();
   } else {
-    console.log('could not parse', html)
   }
 }
 Show.prototype.toggle_expose = function(index) {
@@ -104,7 +102,8 @@ Show.prototype.toggle_expose = function(index) {
     $('.slide').removeClass('gridify');
     $('.slide').unwrap('<div class="expose" />');
     $('.slide').css({opacity:'', right:'', top:''})
-    $( ".slides" ).sortable({ disabled: true });
+    $('.slides').sortable({ disabled: true });
+    $('#options').show();
     show.set_current_to_index(index || 0);
   } else {
     show.mode['expose'] = true;
@@ -113,10 +112,10 @@ Show.prototype.toggle_expose = function(index) {
     $('.slide').removeClass('far-past past current future far-future');
     $('.slide').wrap('<div class="expose" />');
     $('.slide').css({opacity:1, right:'auto', top:'auto'})
+    $('#options').hide();
     $('.slides').sortable({ 
       disabled: false,
       update: function(event, ui) {
-        console.log(event, ui);
         show.change_index_by_id(ui.item[0].firstChild.id);
       }
     });

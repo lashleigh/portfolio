@@ -23,12 +23,16 @@
 </script>
 
 <div class="presentation">
-  <input id="scale_slides" type="range" min="10" max="200" value="100" onchange='zoom_slides()'/>
   <div id="options">
+    <input id="scale_slides" type="range" min="10" max="200" value="100" onchange='zoom_slides()'/>
     <div id="slide_options" class="button-group">
       <button class="button big left" id="insert_after_currect">Insert Blank</button>
       <button class="button big" id="delete_current" >Delete</button>
       <button class="button big right" id="duplicate_current" >Duplicate</button>
+    </div>
+    <div id="slideshow_options" class="button-group">
+      <button class="button big left" id="slideshow_style" >Style</button>
+      <button class="button big right" id="slideshow_js" >Javascript</button>
     </div>
   </div>
   <div class="slides">
