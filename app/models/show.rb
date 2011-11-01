@@ -44,7 +44,7 @@ class Show
   private
   def add_default_style
     base = Show.find_by_title('Base Style')
-    style = base ? base.style : "// Don't overwrite @width or @height"
+    style = base ? base.styles : "// Don't overwrite @width or @height"
     self.assign(:styles => style)
   end
 end
