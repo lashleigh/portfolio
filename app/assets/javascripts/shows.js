@@ -478,7 +478,7 @@ function create_slideshow(info) {
     show.toggle_editor('#show_js_editor');
   })
   $(document).keydown( function(e) {
-    if( $(e.srcElement).parents().hasClass('CodeMirror')) {
+    if( $(e.target).parents().hasClass('CodeMirror')) {
       if(e.keyCode == 27) {
       } else if(e.keyCode === 'S'.charCodeAt(0) && e.ctrlKey) {
         if(show.mode['coding']) {
