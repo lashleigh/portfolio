@@ -1,7 +1,6 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    RedCloth (4.2.8)
     XMLCanonicalizer (1.0.1)
       log4r (>= 1.0.4)
     actionmailer (3.1.0)
@@ -39,13 +38,6 @@ GEM
     bson (1.4.0)
     bson_ext (1.4.0)
     builder (3.0.0)
-    coffee-rails (3.1.1)
-      coffee-script (>= 2.2.0)
-      railties (~> 3.1.0)
-    coffee-script (2.2.0)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.1.2)
     erubis (2.7.0)
     execjs (1.2.9)
       multi_json (~> 1.0)
@@ -160,13 +152,6 @@ GEM
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
     rubyntlm (0.1.1)
-    sass (3.1.10)
-    sass-rails (3.1.4)
-      actionpack (~> 3.1.0)
-      railties (~> 3.1.0)
-      sass (>= 3.1.4)
-      sprockets (~> 2.0.0)
-      tilt (~> 1.3.2)
     sprockets (2.0.2)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -190,13 +175,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  RedCloth
   bson_ext
-  coffee-rails (~> 3.1.0)
   jquery-rails
   less
   mongo_mapper
   omniauth
   rails (= 3.1.0)
-  sass-rails (~> 3.1.0)
   uglifier
