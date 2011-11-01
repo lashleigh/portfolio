@@ -56,7 +56,7 @@ class SlidesController < ApplicationController
     if @slide and @slide.save
       render :json => {'slide' => @slide, 'slidehtml' => slidehtml}
     else
-      render :json => {'status' => 'faliure'}
+      render :json => {'status' => 'failure'}
     end
   end
 
@@ -70,9 +70,9 @@ class SlidesController < ApplicationController
     end
 
     if @slide and @slide.update_attributes(params[:slide])
-      render :json => {'status' => 'succuss', 'slide' => @slide}
+      render :json => {'status' => 'success', 'slide' => @slide}
     else
-      render :json => {'status' => 'faliure'}
+      render :json => {'status' => 'failure'}
     end
   end
 
@@ -85,7 +85,7 @@ class SlidesController < ApplicationController
       @slide.destroy
       render :json => {'status' => 'success'}
     else
-      render :json => {'status' => 'faliure', 'show' => show, 'slide' => @slide}
+      render :json => {'status' => 'failure', 'show' => show, 'slide' => @slide}
     end
   end
 

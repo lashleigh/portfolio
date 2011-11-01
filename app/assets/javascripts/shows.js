@@ -3,6 +3,7 @@ function Show(info) {
   this.width  = info.width;
   this.height = info.height;
   this.scripts = info.scripts;
+  this.styles = info.styles;
   this.current;
   this.slides = [];
   this.num_slides;
@@ -14,11 +15,25 @@ function Show(info) {
   
   return this;
 }
-Show.prototype.add_custom_styles = function(info) {
+Show.prototype.add_custom_styles = function() {
   var show = this;
-  var s = document.styleSheets[0];
+  
+  var head = document.getElementsByTagName("head")[0];
+  var style = document.createElement( "style" );
+  var css = show.parse_style(show.styles);
+  if(css) {
+    style.type = "text/css";
+    style.media = "screen";
+    style.id = "show_styles";
+    $(style).text(css);
+    head.appendChild(style);
+  } else {
+    console.log('the saved styles are not valid');
+  }
+  
+  /*var s = document.styleSheets[0];
   var end = s.cssRules.length;
-  var gs = 0.4;
+  var gs = show.width/(window.innerWidth*4); //0.4;
   s.insertRule('.gridify {margin-top:'+(-1)*(show.height*(1-gs)/2)+'px;'+
                         'margin-left:'+(-1)*(show.width*(1-gs)/2)+'px;float:left;'+
                         '-webkit-transform: scale('+gs+');'+
@@ -32,15 +47,19 @@ Show.prototype.add_custom_styles = function(info) {
 
   end++;
   $('#slide_options').css('margin-left', -$('#slide_options').width()/2+'px');
-  for(var i=0; i < info.styles.length; i++, end++) {
-    s.insertRule(info.styles[i], end);
-  }
+  //for(var i=0; i < info.styles.length; i++, end++) {
+  //  s.insertRule(info.styles[i], end);
+  /}*/
 }
 Show.prototype.max_scale = function(buffer) {
   buffer = buffer || 0.85;
   var width_scale = ((window.innerWidth*buffer) / this.width);
   var heigh_scale = ((window.innerHeight*buffer) / this.height);
   return Math.min(width_scale, heigh_scale)
+}
+Show.prototype.fire_message = function(msg) {
+  //$('.presentation #message').show().stop();
+  $('.presentation #message').text(msg); //.fadeOut(2500);
 }
 Show.prototype.set_class_margins = function() {
   var that = this;
@@ -84,10 +103,6 @@ Show.prototype.change_index_by_id = function(id) {
       show.slides[i].index += sign;
     }
     slide.change_index(new_index);
-    show.slides.splice(slide.index, 1);
-    show.slides.splice(new_index, 0, slide);
-    slide.index = new_index;
-    show.execute_all();
   } else {
   }
 }
@@ -97,23 +112,21 @@ Show.prototype.toggle_expose = function(index) {
     show.toggle_coding_mode();
   }
   if(show.mode['expose']) {
-    show.mode['expose'] = false
+    show.mode['expose'] = false;
+    show.close_editor();
     $('.presentation').css('overflow', 'hidden');
-    $('.gridify').addClass('slide');
-    $('.slide').removeClass('gridify');
+    $('.slides').removeClass('gridify');
     $('.slide').unwrap('<div class="expose" />');
-    $('.slide').css({opacity:'', right:'', top:''})
     $('.slides').sortable({ disabled: true });
-    $('#options').show();
+    $('#slide_options').show();
     show.set_current_to_index(index || 0);
   } else {
     show.mode['expose'] = true;
     $('.presentation').css('overflow', 'auto');
-    $('.slide').addClass('gridify');
+    $('.slides').addClass('gridify');
     $('.slide').removeClass('far-past past current future far-future');
     $('.slide').wrap('<div class="expose" />');
-    $('.slide').css({opacity:1, right:'auto', top:'auto'})
-    $('#options').hide();
+    $('#slide_options').hide();
     $('.slides').sortable({ 
       disabled: false,
       update: function(event, ui) {
@@ -127,11 +140,11 @@ Show.prototype.toggle_reduced = function(factor) {
 
   if(that.mode['reduced']) {
     that.mode['reduced'] = false;
+    $('.slides').removeClass('reduced');
   } else {
     that.mode['reduced'] = true;
+    $('.slides').addClass('reduced');
   }
-
-  that.scale_slide_class(); 
 }
 Show.prototype.float_current_right = function() {
   var that = this;
@@ -152,14 +165,14 @@ Show.prototype.scale_code_editor = function() {
   var s = document.styleSheets[0];
   var editor_height = window.innerHeight-40;
   var editor_width = window.innerWidth -5 - that.current_scale*that.width;
-  if(!!s.cssRules[6] && s.cssRules[6].selectorText === '.CodeMirror') {
+  if(!!s.cssRules[6] && s.cssRules[6].selectorText === '#slide_js_editor') {
     s.deleteRule(6);
     s.deleteRule(6);
   }
-  s.insertRule('.CodeMirror {width: '+editor_width+'px;'+
+  s.insertRule('#slide_js_editor {width: '+editor_width+'px;'+
                             'height:'+editor_height+'px;'+
                             'margin-top:'+editor_height*(-0.5)+'px;}', 6)
-  s.insertRule('.CodeMirror-scroll {height:'+editor_height+'px !important;}', 7)
+  s.insertRule('#slide_js_editor .CodeMirror-scroll {height:'+editor_height+'px !important;}', 7)
 }
 Show.prototype.set_slide_margins = function() {
   var that = this;
@@ -213,13 +226,99 @@ Show.prototype.toggle_coding_mode = function() {
   var that = this;
   if(that.mode['coding']) {
     that.mode['coding'] = false;
-    $('.CodeMirror').hide();
+    $('#slide_js_editor').hide();
     that.center_current_class();
-  } else {
+  } else if(!that.mode['expose']) {
     that.mode['coding'] = true;
     that.float_current_right();
-    $('.CodeMirror').show();
+    $('#slide_js_editor').show();
     code_editor.setValue(that.current.scripts);
+  }
+}
+Show.prototype.save_scripts = function() {
+  var show = this;
+  // TODO Make sure the js runs without errors before saving
+  $('#show_scripts').val(show_js_editor.getValue());
+
+  $.post('/shows/'+show.id, $('.edit_show').serialize() , function(res, text_status) {
+    if(text_status === 'success') {
+      show.scripts = show_js_editor.getValue();
+      show.execute_all();
+    } else {
+      console.log(res, text_status);
+    }
+  });
+}
+Show.prototype.parse_style = function(raw_less) {
+  var parser = new(less.Parser);
+  var css;
+  parser.parse('@current_scale:'+this.current_scale+';'+raw_less, function (err, tree) {
+    if (err) { 
+      console.log(tree);
+      console.error(err);
+      css = false;
+    } else {
+      css = tree.toCSS();
+      console.log(tree, css);
+    }
+  });
+  return css;
+}
+Show.prototype.save_styles = function() {
+  var show = this;
+  var raw_less = show_style_editor.getValue();
+  var css = show.parse_style(raw_less);
+  if(css) {
+    $('.edit_show #show_styles').val(raw_less);
+    $.post('/shows/'+show.id, $('.edit_show').serialize() , function(res, text_status) {
+      if(text_status === 'success') {
+        $('head style#show_styles').text(css);
+      } else {
+        console.log(res, text_status);
+      }
+    });
+  }
+}
+Show.prototype.save_from_editor = function() {
+  var show = this;
+  var css;
+  if(show.mode['show_editor']) {
+    if(show.mode['show_editor'] === '#show_style_editor') {
+      show.save_styles();
+    } else {
+      show.save_scripts();
+    }
+  } else {
+    console.log('show editor was not open so could not save')
+  }
+  return css;
+}
+Show.prototype.open_editor = function(which) {
+  var that = this;
+  if(!that.mode['expose']) {
+    that.toggle_expose();
+  }
+  $('.show_editor_wrap').show();
+  $(which).show();
+}
+Show.prototype.close_editor = function() {
+  $('.show_editor_wrap').hide();
+  $('.show_editor').hide();
+}
+Show.prototype.toggle_editor = function(which) {
+  var that = this;
+  if(that.mode['show_editor']) {
+    if(that.mode['show_editor'] === which) {
+      that.close_editor();
+      that.mode['show_editor'] = false;
+    } else {
+      that.close_editor();
+      that.mode['show_editor'] = which;
+      that.open_editor(which);
+    }
+  } else {
+    that.mode['show_editor'] = which;
+    that.open_editor(which);
   }
 }
 Show.prototype.set_current_to_index = function(index) {
@@ -351,12 +450,12 @@ function Slide(show, props) {
   //this.paper = Raphael("slide_"+this.id, show.width, show.height); 
   var that = this;
   that.dom.bind('dblclick', function() {
-    if(that.dom.hasClass('gridify')) {
+    if(that.show.mode['expose']) {
       that.show.toggle_expose(that.index);
     }
   });
   that.dom.click(function() {
-    if(!that.dom.hasClass('gridify')) {
+    if(!that.show.mode['expose']) {
       that.handle_click(); 
     }
   });
@@ -384,9 +483,20 @@ Slide.prototype.change_classes = function(to_remove, to_add) {
 }
 Slide.prototype.change_index = function(new_index) {
   var slide = this;
-  $("#edit_slide_"+slide.id+" #slide_index").val(new_index); 
-  $("#edit_slide_"+slide.id).submit(); 
-  //$.post("/slides/"+that.id, $(".destroy_slide").serialize(), function(res, text_status) {
+  var edit_id = "#edit_slide_"+slide.id;
+  $(edit_id+" #slide_index").val(new_index); 
+  slide.show.fire_message('saving...');
+  $.post("/slides/"+slide.id, $(edit_id).serialize(), function(res, text_status) {
+    slide.show.fire_message(text_status);
+    if(text_status === 'success') {
+      slide.show.slides.splice(slide.index, 1);
+      slide.show.slides.splice(new_index, 0, slide);
+      slide.index = new_index;
+      slide.show.execute_all();
+    } else {
+      console.log('falied to change index', res, text_status);
+    }
+  });
 }
 Slide.prototype.save = function() {
   $("#edit_slide_"+this.id+" #slide_scripts").val(this.scripts); 
@@ -395,20 +505,26 @@ Slide.prototype.save = function() {
 Slide.prototype.destroy = function() {
   var that = this;
   var show = that.show;
+  show.fire_message('deleting...');
   if(show.num_slides > 1) {
     $('.destroy_slide').attr('action', '/slides/'+that.id);
 
     $.post("/slides/"+that.id, $(".destroy_slide").serialize(), function(res, text_status) {
-      show.slides.splice(that.index, 1);
-      show.num_slides += -1;
-      $(that.dom_id).remove();
-      for(var i=that.index; i < show.num_slides; i++) {
-        show.slides[i].index += -1;
-      }
-      if(that.index > 0) {
-        show.set_current_to_index(that.index-1)
+      show.fire_message(text_status);
+      if(text_status === 'success') {
+        show.slides.splice(that.index, 1);
+        show.num_slides += -1;
+        $(that.dom_id).remove();
+        for(var i=that.index; i < show.num_slides; i++) {
+          show.slides[i].index += -1;
+        }
+        if(that.index > 0) {
+          show.set_current_to_index(that.index-1)
+        } else {
+          show.set_current_to_index(0)
+        }
       } else {
-        show.set_current_to_index(0)
+        console.log('failed to destroy', res, text_status)
       }
     });
   }
@@ -443,13 +559,21 @@ function create_slideshow(info) {
   $("#delete_current").click(function() {
     show.current.destroy();
   });
+  $('#show_style').click(function() {
+    show.toggle_editor('#show_style_editor');
+  })
+  $('#show_js').click(function() {
+    show.toggle_editor('#show_js_editor');
+  })
   $(document).keydown( function(e) {
     if( $(e.srcElement).parents().hasClass('CodeMirror')) {
       if(e.keyCode == 27) {
-      //$(".CodeMirror").hide();
-        //show.toggle_coding_mode();
       } else if(e.keyCode === 'S'.charCodeAt(0) && e.ctrlKey) {
-        show.save_current();
+        if(show.mode['coding']) {
+          show.save_current();
+        } else {
+          show.save_from_editor();
+        }
       }
     } else {
       handleKeys(e, show);

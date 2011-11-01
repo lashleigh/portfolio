@@ -61,14 +61,10 @@ class ShowsController < ApplicationController
   def update
     @show = Show.find(params[:id])
 
-    respond_to do |format|
-      if @show.update_attributes(params[:show])
-        format.html { redirect_to(@show, :notice => 'Show was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @show.errors, :status => :unprocessable_entity }
-      end
+    if can_edit(@show) and @show.update_attributes(params[:show])
+      render :json => {'status' => 'success'}
+    else
+      render :json => {'status' => 'failure'}
     end
   end
 
@@ -84,4 +80,8 @@ class ShowsController < ApplicationController
     end
   end
 
+  private
+  def can_edit(slide)
+    return true
+  end
 end

@@ -15,12 +15,30 @@
   display: block;
   overflow: hidden;
 }
-.CodeMirror {
+.CodeMirror-scroll {
+  height: 100%;
+}
+#slide_js_editor {
   position: absolute;
   top: 50%;
   z-index: 999;
   background: white;
   display: none;
+}
+.show_editor {
+  display: none;
+  width: 400px;
+  height: 600px;
+  position: relative;
+  background: white;
+  top: 0px;
+  float: left;
+}
+.show_editor_wrap {
+  display: none;
+  height: 100%;
+  width: 400px;
+  float: left;
 }
 .slide_transition {
   -webkit-transition: all 0.55s linear; //ease-in-out;

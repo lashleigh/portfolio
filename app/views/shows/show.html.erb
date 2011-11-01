@@ -1,12 +1,26 @@
 <script type="text/javascript">
   var slideshow;
   var code_editor;
-  var show_editor;
+  var show_js_editor;
+  var show_style_editor;
   $(function() {
     code_editor = CodeMirror(document.body, {
       mode:  "javascript",
       matchBrackets: true
-    })
+    });
+    $('.CodeMirror').attr('id', 'slide_js_editor');
+    show_style_editor = CodeMirror($('.presentation .show_editor_wrap')[0], {
+      mode:  "css",
+      matchBrackets: true,
+      value: <%=@show.styles.to_json.html_safe%>
+    });
+    $('.presentation .CodeMirror').last().attr('id', 'show_style_editor').addClass('show_editor');
+    show_js_editor = CodeMirror($('.presentation .show_editor_wrap')[0], {
+      mode:  "javascript",
+      matchBrackets: true,
+      value: <%=@show.scripts.to_json.html_safe%>
+    });
+    $('.presentation .CodeMirror').last().attr('id', 'show_js_editor').addClass('show_editor');
     slideshow = create_slideshow(<%= @show.to_json(:methods => :ordered_slides).html_safe %>);
     autocomplete(code_editor, slideshow);
     rescale();
@@ -25,21 +39,22 @@
 <div class="presentation">
   <div id="options">
     <input id="scale_slides" type="range" min="10" max="200" value="100" onchange='zoom_slides()'/>
+    <div id="message"></div>
     <div id="slide_options" class="button-group">
       <button class="button big left" id="insert_after_currect">Insert Blank</button>
       <button class="button big" id="delete_current" >Delete</button>
       <button class="button big right" id="duplicate_current" >Duplicate</button>
     </div>
     <div id="slideshow_options" class="button-group">
-      <button class="button big left" id="slideshow_style" >Style</button>
-      <button class="button big right" id="slideshow_js" >Javascript</button>
+      <button class="button big left" id="show_style" >Style</button>
+      <button class="button big right" id="show_js" >Javascript</button>
     </div>
   </div>
+  <div class="show_editor_wrap"></div>
   <div class="slides">
     <%= render :partial => 'slides/slide', :collection => @show.ordered_slides %>
   </div>
 </div>
-
 <%= form_for(@show, :remote => true) do |f|%>
   <%= f.hidden_field :scripts %>
   <%= f.hidden_field :styles %>
