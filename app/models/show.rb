@@ -1,5 +1,6 @@
 class Show
   include MongoMapper::Document
+  before_create :add_default_style
 
   key :title, String
   key :width, Integer, :default => 1024
@@ -15,7 +16,7 @@ class Show
   def ordered_slides
     slides.sort(:index).all
   end
-  def new_slide(scripts = nil, styles = nil)
+  def new_slide
     self.reload
     Slide.create!(:index => slides.length, :show => self)
   end
@@ -38,5 +39,12 @@ class Show
       end
       slide.set(:index => index) 
     end
+  end
+
+  private
+  def add_default_style
+    base = Show.find_by_title('Base Style')
+    style = base ? base.style : "// Don't overwrite @width or @height"
+    self.assign(:styles => style)
   end
 end

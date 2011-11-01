@@ -3,7 +3,6 @@ class Slide
 
   key :index, Integer
   key :scripts, String
-  key :styles, String
   timestamps!
   belongs_to :show
 

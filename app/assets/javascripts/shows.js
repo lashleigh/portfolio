@@ -176,6 +176,7 @@ Show.prototype.parse_style = function(raw_less) {
       css = tree.toCSS();
     }
   });
+  if(css === '') { css = ' '; }
   return css;
 }
 Show.prototype.save_styles = function() {
