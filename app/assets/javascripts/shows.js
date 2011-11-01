@@ -10,25 +10,9 @@ function Show(info) {
   this.mode = {'reduced':false, 'coding':false}; //coding, expose, edit, presentation
   this.current_scale = this.max_scale();
   this.interval;
-  this.add_custom_styles(info);
+  this.scale_all_slides();
   
   return this;
-}
-Show.prototype.add_custom_styles = function() {
-  var show = this;
-  
-  var head = document.getElementsByTagName("head")[0];
-  var style = document.createElement( "style" );
-  var css = show.parse_style(show.styles);
-  if(css) {
-    style.type = "text/css";
-    style.media = "screen";
-    style.id = "show_styles";
-    $(style).text(css);
-    head.appendChild(style);
-  } else {
-    console.log('the saved styles are not valid');
-  }
 }
 Show.prototype.max_scale = function(buffer) {
   buffer = buffer || 0.85;
@@ -37,7 +21,6 @@ Show.prototype.max_scale = function(buffer) {
   return Math.min(width_scale, heigh_scale)
 }
 Show.prototype.fire_message = function(msg) {
-  //$('.presentation #message').show().stop();
   $('.presentation #message').text(msg); //.fadeOut(2500);
 }
 Show.prototype.scale_all_slides = function(scale) {
@@ -47,6 +30,13 @@ Show.prototype.scale_all_slides = function(scale) {
   that.current_scale = scale;
 
   that.update_custom_style();
+  var editor_height = window.innerHeight-60;
+  var editor_width = window.innerWidth -5 - that.current_scale*that.width;
+  $('#slide_js_editor').css('width', editor_width+'px')
+                       .css('height', editor_height+'px')
+                       .css('margin-top', editor_height*(-0.5)+'px');
+
+  $('#slide_js_editor .CodeMirror-scroll').css('height', editor_height+'px !important');
 }
 Show.prototype.execute_all = function() {
   var show = this;
@@ -134,11 +124,13 @@ Show.prototype.toggle_coding_mode = function() {
     that.mode['coding'] = false;
     $('#slide_js_editor').hide();
     $('.slides').removeClass('editing');
+    $('.presentation').after($('#slide_js_editor'))
   } else if(!that.mode['expose']) {
     that.mode['coding'] = true;
     $('#slide_js_editor').show();
     $('.slides').addClass('editing');
     code_editor.setValue(that.current.scripts);
+    $('.presentation').before($('#slide_js_editor'))
   }
 }
 Show.prototype.save_scripts = function() {
@@ -156,8 +148,19 @@ Show.prototype.save_scripts = function() {
   });
 }
 Show.prototype.update_custom_style = function() {
-  var css = this.parse_style(this.styles);
+  var show = this;
+  var css = show.parse_style(this.styles);
   if(css) {
+    if(!$('head style#show_styles')[0]) {
+      var head = document.getElementsByTagName("head")[0];
+      var style = document.createElement( "style" );
+      var css = show.parse_style(show.styles);
+      style.type = "text/css";
+      style.media = "screen";
+      style.id = "show_styles";
+      $(style).text(css);
+      head.appendChild(style);
+    }
     $('head style#show_styles').text(css);
   }
 }

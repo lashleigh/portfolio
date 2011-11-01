@@ -43,8 +43,7 @@ class Show
 
   private
   def add_default_style
-    base = Show.find_by_title('Base Style')
-    style = base ? base.styles : "// Don't overwrite @width or @height"
-    self.assign(:styles => style)
+    base = Show.find_by_title('base hack, think of something better soon')
+    self.assign(:styles => base.styles, :scripts => base.scripts)
   end
 end
