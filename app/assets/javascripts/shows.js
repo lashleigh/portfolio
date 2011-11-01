@@ -213,6 +213,11 @@ Show.prototype.open_editor = function(which) {
   if(!that.mode['expose']) {
     that.toggle_expose();
   }
+  if(which === '#show_js_editor') {
+    $(".show_editor_wrap").append($("#show_style_editor"))
+  } else {
+    $(".show_editor_wrap").append($("#show_js_editor"))
+  }
   $('.show_editor_wrap').show();
   $(which).show();
 }
