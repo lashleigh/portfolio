@@ -64,15 +64,15 @@ class SlidesController < ApplicationController
   # PUT /slides/1.xml
   def update
     @slide = Slide.find(params[:id])
+    new_index = params[:slide][:index]
+    if new_index != @slide.index
+      @slide.show.change_slide_order(@slide, new_index.to_i)
+    end
 
-    respond_to do |format|
-      if @slide.update_attributes(params[:slide])
-        format.html { redirect_to(@slide, :notice => 'Slide was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @slide.errors, :status => :unprocessable_entity }
-      end
+    if @slide and @slide.update_attributes(params[:slide])
+      render :json => {'status' => 'succuss', 'slide' => @slide}
+    else
+      render :json => {'status' => 'faliure'}
     end
   end
 

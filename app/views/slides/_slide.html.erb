@@ -1,6 +1,7 @@
 <div id="slide_<%=slide.id%>" class='slide slide_transition'>
   <svg></svg>
   <%= form_for(slide, :remote => true) do |f|%>
+    <%= f.hidden_field :index %>
     <%= f.hidden_field :scripts %>
     <%= f.submit %>
   <% end %>

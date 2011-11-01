@@ -83,6 +83,7 @@ Show.prototype.change_index_by_id = function(id) {
     for(var i= new_index; i != slide.index; i+= sign) {
       show.slides[i].index += sign;
     }
+    slide.change_index(new_index);
     show.slides.splice(slide.index, 1);
     show.slides.splice(new_index, 0, slide);
     slide.index = new_index;
@@ -380,6 +381,12 @@ Slide.prototype.handle_click = function() {
 }
 Slide.prototype.change_classes = function(to_remove, to_add) {
   this.dom.removeClass(to_remove).addClass(to_add);
+}
+Slide.prototype.change_index = function(new_index) {
+  var slide = this;
+  $("#edit_slide_"+slide.id+" #slide_index").val(new_index); 
+  $("#edit_slide_"+slide.id).submit(); 
+  //$.post("/slides/"+that.id, $(".destroy_slide").serialize(), function(res, text_status) {
 }
 Slide.prototype.save = function() {
   $("#edit_slide_"+this.id+" #slide_scripts").val(this.scripts); 
