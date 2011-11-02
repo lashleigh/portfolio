@@ -1,10 +1,10 @@
 class Show
   include MongoMapper::Document
-  before_create :add_default_style
+  #before_create :add_default_style
 
   key :title, String
-  key :width, Integer, :default => 1024
-  key :height, Integer, :default => 768
+  key :width, Integer, :default => 1024, :required => true
+  key :height, Integer, :default => 768, :required => true
   key :version, Integer, :default => 0
   key :scripts, String, :default => ''
   key :styles, String, :default => ''
@@ -13,14 +13,28 @@ class Show
   many :slides
   belongs_to :user
 
+  def self.by_uid_and_title(uid, title) 
+    Show.all.select {|s| s.user.uid === uid and s.title === title}
+  end
   def ordered_slides
     slides.sort(:index).all
   end
-  def new_slide
+  def new_slide(scripts = nil)
     self.reload
-    Slide.create!(:index => slides.length, :show => self)
+    Slide.create!(:index => slides.length, :show => self, :scripts => scripts)
   end
  
+  def self.duplicate_show(show_id)
+    to_copy = Show.find(show_id)
+    if to_copy
+      new = Show.create!(:styles => to_copy.styles, :scripts => to_copy.scripts, 
+                         :height => to_copy.height, :width => to_copy.width)
+      to_copy.ordered_slides.each { |s| new.new_slide(s.scripts) }
+      return new
+    else
+      return false
+    end
+  end
   def delete_index(index) 
     max_index = slides.length-1
     if index >= 0 and index <= max_index 

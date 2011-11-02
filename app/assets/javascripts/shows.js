@@ -2,6 +2,7 @@ function Show(info) {
   this.id     = info.id;
   this.width  = info.width;
   this.height = info.height;
+  this.title  = info.title;
   this.scripts = info.scripts;
   this.styles = info.styles;
   this.current;
@@ -469,8 +470,10 @@ function create_slideshow(info) {
   for(var i=0; i < info.ordered_slides.length; i++) {
     slides.push(new Slide(show, info.ordered_slides[i]));
   }
-  show.slides = slides; //.sort(function(a, b) {return (a.index - b.index) });
+  show.slides = slides; 
   show.initialize_slides();
+  // TODO Keeping the slides invisible at first makes it less jarring
+  $('.slides').css('display', 'block');
   $("#insert_after_currect").click(function() {
     show.insert_slide();
   });
