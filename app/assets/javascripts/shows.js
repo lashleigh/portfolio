@@ -32,10 +32,10 @@ Show.prototype.scale_all_slides = function(scale) {
 
   that.update_custom_style();
   var editor_height = window.innerHeight-60;
-  var editor_width = window.innerWidth -5 - that.current_scale*that.width;
-  $('#slide_js_editor').css('width', editor_width+'px')
-                       .css('height', editor_height+'px')
-                       .css('margin-top', editor_height*(-0.5)+'px');
+  var editor_width = window.innerWidth -15 - that.current_scale*that.width;
+  $('#slide_js_editor').css('height', editor_height+'px')
+                       .css('margin-top', editor_height*(-0.5)+'px')
+                       .css('width', editor_width+'px');
 
   $('#slide_js_editor .CodeMirror-scroll').css('height', editor_height+'px !important');
 }
@@ -104,20 +104,6 @@ Show.prototype.toggle_reduced = function(factor) {
     that.mode['reduced'] = true;
     $('.slides').addClass('reduced');
   }
-}
-Show.prototype.scale_code_editor = function() {
-  var that = this;
-  var s = document.styleSheets[0];
-  var editor_height = window.innerHeight-40;
-  var editor_width = window.innerWidth -5 - that.current_scale*that.width;
-  if(!!s.cssRules[6] && s.cssRules[6].selectorText === '#slide_js_editor') {
-    s.deleteRule(6);
-    s.deleteRule(6);
-  }
-  s.insertRule('#slide_js_editor {width: '+editor_width+'px;'+
-                            'height:'+editor_height+'px;'+
-                            'margin-top:'+editor_height*(-0.5)+'px;}', 6)
-  s.insertRule('#slide_js_editor .CodeMirror-scroll {height:'+editor_height+'px !important;}', 7)
 }
 Show.prototype.toggle_coding_mode = function() {
   var that = this;
@@ -191,6 +177,7 @@ Show.prototype.save_styles = function() {
     $('.edit_show #show_styles').val(raw_less);
     $.post('/shows/'+show.id, $('.edit_show').serialize() , function(res, text_status) {
       if(text_status === 'success') {
+      show.styles = raw_less;
         $('head style#show_styles').text(css);
       } else {
         console.log(res, text_status);
@@ -222,19 +209,19 @@ Show.prototype.open_editor = function(which) {
   } else {
     $(".show_editor_wrap").append($("#show_js_editor"))
   }
-  $('.show_editor_wrap').show();
   $(which).show();
+  $('.show_editor_wrap').show();
 }
 Show.prototype.close_editor = function() {
   $('.show_editor_wrap').hide();
   $('.show_editor').hide();
+  this.mode['show_editor'] = false;
 }
 Show.prototype.toggle_editor = function(which) {
   var that = this;
   if(that.mode['show_editor']) {
     if(that.mode['show_editor'] === which) {
       that.close_editor();
-      that.mode['show_editor'] = false;
     } else {
       that.close_editor();
       that.mode['show_editor'] = which;
@@ -372,8 +359,9 @@ function Slide(show, props) {
   this.dom = $(this.dom_id);
   //this.paper = Raphael("slide_"+this.id, show.width, show.height); 
   var that = this;
-  that.dom.bind('dblclick', function() {
+  that.dom.bind('dblclick', function(e) {
     if(that.show.mode['expose']) {
+      e.stopPropagation();
       that.show.toggle_expose(that.index);
     }
   });
@@ -490,6 +478,7 @@ function create_slideshow(info) {
     show.toggle_editor('#show_js_editor');
   })
   $(document).keydown( function(e) {
+    if(e.target.nodeName === 'TEXTAREA' || e.target.contentEditable === "true") {
     if( $(e.target).parents().hasClass('CodeMirror')) {
       if(e.keyCode == 27) {
       } else if(e.keyCode === 'S'.charCodeAt(0) && e.ctrlKey) {
@@ -499,6 +488,7 @@ function create_slideshow(info) {
           show.save_from_editor();
         }
       }
+    } 
     } else {
       handleKeys(e, show);
     }

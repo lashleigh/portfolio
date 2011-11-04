@@ -35,7 +35,6 @@ function autocomplete(editor, show) {  // Minimal event-handling wrapper.
     var cur = editor.getCursor(false);
     var token = editor.getTokenAt(cur); 
     var tprop = token;
-    console.log(cur, token, tprop);
 
     // If it's not a 'word-style' token, ignore the token.
     if (!/^[\w$_]*$/.test(token.string)) {
@@ -137,7 +136,6 @@ function autocomplete(editor, show) {  // Minimal event-handling wrapper.
     }
     // Remove current string
     for (var i = 0; i < words.length; i++) maybeAdd(words[i]);
-    console.log(found);
     return found;
   }
 }
