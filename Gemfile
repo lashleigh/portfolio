@@ -6,8 +6,8 @@ gem "mongo_mapper"
 gem 'mongo', '= 1.3.1'
 gem 'bson', '= 1.3.1'
 gem 'bson_ext', '= 1.3.1'
-
-gem "omniauth"
+gem 'RedCloth'
+gem 'omniauth-twitter'
 group :assets do 
   gem 'less'
   gem 'uglifier'  

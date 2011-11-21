@@ -24,10 +24,11 @@
     slideshow = create_slideshow(<%= @show.to_json(:methods => :ordered_slides).html_safe %>);
     autocomplete(code_editor, slideshow);
     rescale();
-    $(window).resize( function() {
+    // jquery ui resizable interferes
+    /*$(window).resize( function() {
       rescale();
       slideshow.scale_all_slides();
-    })
+    })*/
     function rescale() {
       var scale = Math.max(slideshow.width/window.innerWidth, slideshow.height/window.innerHeight);
       $("#scale_slides").attr("max", 100*(1/scale));

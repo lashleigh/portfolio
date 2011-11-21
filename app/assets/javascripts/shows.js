@@ -261,14 +261,11 @@ Show.prototype.initialize_slides = function() {
   that.num_slides = that.slides.length;
   that.slides[0].dom.addClass('current');
   that.current = that.slides[0];
-  that.current.execute();
   if(that.slides[1]) {
     that.slides[1].dom.addClass('future');
-    that.slides[1].execute();
     if(that.slides[2]) {
       for(var i=2; i < that.num_slides; i++) {
         that.slides[i].dom.addClass('far-future');
-        that.slides[i].execute();
       }
     }
   }
@@ -447,7 +444,7 @@ Slide.prototype.execute = function() {
   var scale = that.show.current_scale;
   clearInterval(that.show.interval);
   try {
-    (new Function("page", "slide", "show", "scale", that.show.scripts+that.scripts ) ).call(that.page, that.page, that, that.show, scale);
+    (new Function("page", "slide", "show", "scale", that.show.scripts+'\n'+that.scripts ) ).call(that.page, that.page, that, that.show, scale);
   } catch (e) {
     alert(e.message || e);
   }
@@ -460,6 +457,7 @@ function create_slideshow(info) {
   }
   show.slides = slides; 
   show.initialize_slides();
+  show.execute_all();
   // TODO Keeping the slides invisible at first makes it less jarring
   $('.slides').css('display', 'block');
   $("#insert_after_currect").click(function() {
