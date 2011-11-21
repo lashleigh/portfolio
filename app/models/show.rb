@@ -1,6 +1,6 @@
 class Show
   include MongoMapper::Document
-  #before_create :add_default_style
+  before_create :add_default_style
 
   key :title, String
   key :width, Integer, :default => 1024, :required => true
