@@ -3,6 +3,7 @@
   <%= form_for(slide, :remote => true) do |f|%>
     <%= f.hidden_field :index %>
     <%= f.hidden_field :scripts %>
+    <%= f.hidden_field :data %>
     <%= f.submit %>
   <% end %>
 </div>

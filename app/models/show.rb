@@ -42,6 +42,14 @@ class Show
       affected.each {|s| s.decrement(:index => 1) }
     end
   end
+  def clean_slide_order
+    self.ordered_slides.each_with_index do |s, i|
+      if s.index != i
+        s.index = i
+        s.save
+      end
+    end
+  end
   def change_slide_order(slide, index)
     if slide and slide.index != index
       if index > slide.index

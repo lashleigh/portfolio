@@ -353,6 +353,7 @@ function Slide(show, props) {
   this.dom_id = '#slide_'+props.id;
   this.index = props.index;
   this.scripts = props.scripts || '';
+  this.data = props.data ? JSON.parse(props.data) : {};
   this.dom = $(this.dom_id);
   //this.paper = Raphael("slide_"+this.id, show.width, show.height); 
   var that = this;
@@ -408,6 +409,7 @@ Slide.prototype.change_index = function(new_index) {
 }
 Slide.prototype.save = function() {
   $("#edit_slide_"+this.id+" #slide_scripts").val(this.scripts); 
+  $("#edit_slide_"+this.id+" #slide_data").val(JSON.stringify(this.data)); 
   $("#edit_slide_"+this.id).submit(); 
 }
 Slide.prototype.destroy = function() {
