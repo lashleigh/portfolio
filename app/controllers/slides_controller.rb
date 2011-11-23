@@ -43,7 +43,6 @@ class SlidesController < ApplicationController
   def create
     show = Show.find(params[:show_id])
     before = Slide.find(params[:insert_id])
-    logger.info(before.scripts)
     if show and before 
       @slide = params[:copy] == 'true' ? show.new_slide(before.scripts) : show.new_slide
       show.change_slide_order(@slide, before.index+1)

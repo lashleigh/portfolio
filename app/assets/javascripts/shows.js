@@ -408,9 +408,10 @@ Slide.prototype.change_index = function(new_index) {
   });
 }
 Slide.prototype.save = function() {
-  $("#edit_slide_"+this.id+" #slide_scripts").val(this.scripts); 
-  $("#edit_slide_"+this.id+" #slide_data").val(JSON.stringify(this.data)); 
-  $("#edit_slide_"+this.id).submit(); 
+  var that = this;
+  $("#edit_slide_"+that.id+" #slide_scripts").val(that.scripts); 
+  $("#edit_slide_"+that.id+" #slide_data").val(JSON.stringify(that.data)); 
+  $("#edit_slide_"+that.id).submit(); 
 }
 Slide.prototype.destroy = function() {
   var that = this;
