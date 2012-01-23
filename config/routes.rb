@@ -4,6 +4,10 @@ Portfolio::Application.routes.draw do
   resources :shows
   resources :slides
 
+  constraints(:subdomain => /^baked$/) do
+    match "/" => 'recipe#index'
+    resources :recipes
+  end
   constraints(:subdomain => /^blog$/) do
     match "/" => 'posts#index'
     resources :posts
