@@ -3,6 +3,7 @@ Portfolio::Application.routes.draw do
   resources :networks
   resources :shows
   resources :slides
+  resources :recipes
 
   constraints(:subdomain => /^baked$/) do
     match "/" => 'recipe#index'

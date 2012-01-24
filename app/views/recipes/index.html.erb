@@ -1,4 +1,12 @@
 <h2>Show me the recipes</h2>
+<div id="notice"></div>
+<div id="app"></div>
+
+<script type="text/javascript">
+ $(function() {
+   App.init();
+ })
+</script>
 
 <% @recipes.each do |r| %>
   <%= link_to r.title, r %>

@@ -1,1 +1,14 @@
+<script type="text/javascript">
+ $(function() {
+   App.init();
+   App.Models.Recipe.reset(<%= @recipe %>)
+ })
+</script>
+
 <%= @recipe.title %>
+<ul>
+  <% @recipe.ingredients.each do |i| %>
+    <li><%= i.amount %> grams <%= i.name %></li>
+  <% end %>
+  <li>Add new ingredient</li>
+</ul>

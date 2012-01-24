@@ -8,6 +8,7 @@ gem 'bson', '= 1.3.1'
 gem 'bson_ext', '= 1.3.1'
 gem 'RedCloth'
 gem 'omniauth-twitter'
+gem 'mustache'
 group :assets do 
   gem 'less'
   gem 'uglifier'  
