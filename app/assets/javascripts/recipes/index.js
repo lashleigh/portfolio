@@ -1,86 +1,68 @@
 var App = {
   Collections: {},
-  Controllers: {},
   Views: {},
-  Models: {},
-  init: function() {
-    console.log('starting')
-    new App.Controllers.Recipes();
-    Backbone.history.start();
-  }
+  Models: {}
 }
 
-App.Controllers.Recipes = Backbone.Router.extend({
-  routes: {
-    "recipes/:id":  "edit",
-    "": "index",
-    "new": "newRecipe"
-  },
-
-  edit: function(id) {
-    var recipe = new App.Models.Recipe({id: id});
-    console.log(recipe)
-    recipe.fetch({
-      success: function(model, resp) {
-        new App.Views.Edit({model: recipe});
-      },
-      error: function() {
-        new Error({message: 'could not find the recipe'});
-      }
-    })
-  },
-  index: function() {
-    $.getJSON('/recipes', function(data) {
-    console.log(data)
-      if(data) {
-        var recipes = _(data).map(function(r) {return new Recipe(r); });
-        console.log(recipes)
-        new App.Views.Index({recipes: recipes})
-      } else {
-        new Error({message: 'Error loading recipes'});
-      }
-    })
-  },
-  newRecipe: function() {
-    new App.Views.Edit({ model: new Recipe()});
-  }
-
-})
 App.Models.Recipe = Backbone.Model.extend({
-  url: function() {
-    return '/recipes'+this.id;
-  },
   defaults: {
     yabab: 'does this work?'
   },
   initialize: function() {
-    console.log(this.get('ingredients'));
     this.ingredients = new App.Collections.IngredientList(this.get('ingredients'));
     this.ingredients.url = '/recipe/'+this.id+'/ingredient';
+    this.ingredients.parent = this;
+    this.view = new App.Views.Recipe({model: this, id: 'recipe_'+this.id});
+    $("#recipe_container").append(this.view.render().el);
+    
+    var ingredientViews = [];
+    this.ingredients.each(function(i) {
+      ingredientViews.push(new App.Views.Ingredient({model: i, id: 'ingredient_'+i.id, parentView: this.view})) 
+    });
+    this.ingredientViews = ingredientViews;
   }
 })
-App.Views.Index = Backbone.View.extend({
+App.Collections.Recipes = Backbone.Collection.extend({
+  model: App.Models.Recipe,
+  url: '/recipes',
   initialize: function() {
-    this.recipes = this.options.recipes;
+  }
+})
+
+App.Views.Recipe = Backbone.View.extend({
+  tagName: 'li',
+  render: function() {
+    var template = _.template($('#recipe-li').html());
+    $(this.el).html(template(this.model.toJSON()))
+    console.log(this)
+    return this;
+  }
+});
+App.Views.Ingredient = Backbone.View.extend({
+  tagName: 'li',
+  events: {
+  },
+  initialize: function() {
+    //console.log($('#'+this.options.parentView.id), this.options.parentView)
+    console.log(this.options)
+    $(this.options.parentView.el).find('.ingredients').append(this.render().el)
     this.render();
   },
   render: function() {
-    if(this.recipes) {
-    } else {
-    }
+    var template = _.template($('#ingredient-li').html());
+    $(this.el).html(template(this.model.toJSON()));
+    return this;
   }
-})
-App.Views.Edit = Backbone.View.extend({
-
-})
+});
 
 App.Models.Ingredient = Backbone.Model.extend({
-  
+  initialize: function() {
+    
+  }
 })
 App.Collections.IngredientList = Backbone.Collection.extend({
   model: App.Models.Ingredient,
   initialize: function() {
   }
 })
-
 
