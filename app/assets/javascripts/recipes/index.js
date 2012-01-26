@@ -10,7 +10,7 @@ App.Models.Recipe = Backbone.Model.extend({
   },
   initialize: function() {
     this.ingredients = new App.Collections.IngredientList(this.get('ingredients'));
-    this.ingredients.url = '/recipe/'+this.id+'/ingredient';
+    this.ingredients.url = '/recipes/'+this.id+'/ingredients';
     this.ingredients.parent = this;
     this.view = new App.Views.Recipe({model: this, id: 'recipe_'+this.id});
     $("#recipe_container").append(this.view.render().el);
@@ -33,6 +33,24 @@ App.Collections.Recipes = Backbone.Collection.extend({
 App.Views.Recipe = Backbone.View.extend({
   tagName: 'li',
   className: 'recipe',
+  events: {
+    'click .newIngredient': 'newIngredient',
+    'click .save-noob'    : 'saveIngredient',
+  },
+  newIngredient: function() {
+    $(this.el).append($('#new-ingredient').html())
+    console.log('new ingredient', this.id);
+  },
+  saveIngredient: function() {
+    var amount = $(this.el).find('.new-amount').val();
+    var name = $(this.el).find('.new-name').val();
+    if(!amount || !name) return;
+    this.model.ingredients.create({
+      amount: amount,
+      name: name
+    })
+    console.log('save ingredient', amount, name) 
+  },
   render: function() {
     console.log(this)
     var template = _.template($('#recipe-li').html());

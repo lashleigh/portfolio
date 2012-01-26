@@ -2,6 +2,21 @@ class RecipesController < ApplicationController
   #before_filter :must_be_admin, :except => ['index', 'show']
   # GET /recipes
   # GET /recipes.xml
+  def ingredients
+    @recipe = Recipe.find(params[:recipe_id])
+    @ingredient = Ingredient.new(:amount => params[:amount], :name => params[:name])
+    @recipe.ingredients.push(@ingredient)  
+
+    respond_to do |format|
+      if @recipe.save
+        format.json { @ingredient }
+      else
+        format.json { 'error' }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @recipe.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
   def index
     @recipes = Recipe.all
 
