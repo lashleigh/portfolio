@@ -1,14 +1,29 @@
+<ul id="recipe_container"> </ul>
 <script type="text/javascript">
- $(function() {
-   App.init();
-   App.Models.Recipe.reset(<%= @recipe %>)
- })
+  var Recipe;
+  $(function() {
+    // By default, Underscore uses ERB-style template delimiters, this change
+    // makes it use mustache style.
+    _.templateSettings = {
+      interpolate : /\{\{([\s\S]+?)\}\}/g
+    };
+    Recipe = new App.Models.Recipe(<%= @recipe.to_json.html_safe %>);
+  });
 </script>
 
-<%= @recipe.title %>
-<ul>
-  <% @recipe.ingredients.each do |i| %>
-    <li><%= i.amount %> grams <%= i.name %></li>
-  <% end %>
-  <li>Add new ingredient</li>
-</ul>
+<script type="text/template" id="recipe-li">
+  <span class="title">
+    {{title}}
+  </span>
+  <ul class="ingredients">
+  </ul>
+</script>
+<script type="text/template" id="ingredient-li">
+  <span class="amount">
+    {{amount}}
+  </span>
+  <span class="name">
+    {{name}}
+  </span>
+</script>
+

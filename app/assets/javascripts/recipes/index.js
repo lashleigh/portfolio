@@ -16,8 +16,9 @@ App.Models.Recipe = Backbone.Model.extend({
     $("#recipe_container").append(this.view.render().el);
     
     var ingredientViews = [];
+    var recipeModel = this;
     this.ingredients.each(function(i) {
-      ingredientViews.push(new App.Views.Ingredient({model: i, id: 'ingredient_'+i.id, parentView: this.view})) 
+      ingredientViews.push(new App.Views.Ingredient({model: i, id: 'ingredient_'+i.id, parentModel: recipeModel})) 
     });
     this.ingredientViews = ingredientViews;
   }
@@ -31,22 +32,24 @@ App.Collections.Recipes = Backbone.Collection.extend({
 
 App.Views.Recipe = Backbone.View.extend({
   tagName: 'li',
+  className: 'recipe',
   render: function() {
+    console.log(this)
     var template = _.template($('#recipe-li').html());
     $(this.el).html(template(this.model.toJSON()))
-    console.log(this)
     return this;
   }
 });
 App.Views.Ingredient = Backbone.View.extend({
   tagName: 'li',
   events: {
+    'click .amount' : 'clicked'
+  },
+  clicked: function() {
+    console.log('amount', this)
   },
   initialize: function() {
-    //console.log($('#'+this.options.parentView.id), this.options.parentView)
-    console.log(this.options)
-    $(this.options.parentView.el).find('.ingredients').append(this.render().el)
-    this.render();
+    $(this.options.parentModel.view.el).find('.ingredients').append(this.render().el)
   },
   render: function() {
     var template = _.template($('#ingredient-li').html());
