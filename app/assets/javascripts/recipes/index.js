@@ -14,7 +14,7 @@ App.Models.Recipe = Backbone.Model.extend({
     $("#recipe_container").append(this.view.render().el);
     
     this.ingredients.url = '/recipes/'+this.id+'/ingredients';
-    this.ingredients.parentModel = this;
+    this.ingredients.recipeView = this.view;
     this.ingredients.reset(this.get('ingredients'));
   }
 })
@@ -34,7 +34,6 @@ App.Views.Recipe = Backbone.View.extend({
   },
   newIngredient: function() {
     $(this.el).append($('#new-ingredient').html())
-    console.log('new ingredient', this.id);
   },
   saveIngredient: function() {
     var amount = $(this.el).find('.new-amount').val();
@@ -42,10 +41,8 @@ App.Views.Recipe = Backbone.View.extend({
     if(!amount || !name) return;
     var newIng = this.model.ingredients.create({
       amount: amount,
-      name: name,
-      parentModel: this.model
+      name: name
     })
-    console.log('save ingredient', amount, name, newIng) 
   },
   render: function() {
     var template = _.template($('#recipe-li').html());
@@ -59,11 +56,9 @@ App.Views.Ingredient = Backbone.View.extend({
     'click .amount' : 'clicked'
   },
   clicked: function() {
-    console.log('amount', this)
   },
   initialize: function() {
-    console.log('ingredient view', this)
-    $(this.model.collection.parentModel.view.el).find('.ingredients').append(this.render().el)
+    $(this.model.collection.recipeView.el).find('.ingredients').append(this.render().el)
   },
   render: function() {
     var template = _.template($('#ingredient-li').html());
@@ -73,9 +68,22 @@ App.Views.Ingredient = Backbone.View.extend({
 });
 
 App.Models.Ingredient = Backbone.Model.extend({
+  validate: function(attrs) {
+    if(!attrs.amount) {
+      return 'You must supply an amount';
+    } else if(!attrs.name) {
+      return 'You must supply a name';
+    } else if(attrs.amount / attrs.amount !== 1) {
+      return 'The amount is not a number';
+    } else {
+      return false
+    }
+  },
   initialize: function() {
-    console.log('ingredient model init', this) 
-    this.view = new App.Views.Ingredient({model: this, id: 'ingredient_'+this.id})
+    console.log(this.validate(this.attributes))
+    if(!this.validate(this.attributes)) {
+      this.view = new App.Views.Ingredient({model: this, id: 'ingredient_'+this.id})
+    }
   }
 })
 App.Collections.IngredientList = Backbone.Collection.extend({
