@@ -125,12 +125,24 @@ App.Views.Ingredient = Backbone.View.extend({
 
 App.Models.Ingredient = Backbone.Model.extend({
   validate: function(attrs) {
-    var errors = []
-    if(!_.isUndefined(attrs.amount) && attrs.amount / attrs.amount !== 1.0) {
-      errors.push('amount is empty or not a number');
-    } else if(!_.isUndefined(attrs.name) && attrs.name.length < 3) {
-      errors.push('name is empty or not a string');
-    } 
+    var errors = [];
+    if(!_.isUndefined(attrs.amount)) {
+      if(attrs.amount.length === 0) {
+        errors.push('amount is empty ');
+      } else if(attrs.amount / attrs.amount !== 1.0) {
+        errors.push('amount is not a number');
+      }
+    }
+    if(!_.isUndefined(attrs.name)) {
+      if(attrs.name.length < 3) {
+        errors.push('name is too short, there is a 3 character minimum');
+      } else if(attrs.name / attrs.name === 1.0) {
+        errors.push('name appears to be a number');
+      }
+    }
+    if(!_.isUndefined(attrs.unit)) {
+      // check that the val agrees with rails val
+    }
     return _.any(errors) ? errors : false
   },
   initialize: function() {
