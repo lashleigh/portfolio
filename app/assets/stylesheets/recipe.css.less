@@ -9,27 +9,32 @@
   .editing-name .name {
     display: none;
   }
-  .ingredients {
-    .amount {
+  .amount-col {
+    width: 30px;
+    .amount, input.edit-amount {
+      float: right;
+      width: 100%;
+      text-align: right;
     }
   }
-  input.edit-amount, input.new-amount {
-    width: 30px;
+  .unit-col {
+    width: 20px;
+    text-align: center;
+    .unit, input.edit-unit {
+      width: 100%;
+    }
   }
-  input.edit-name, input.new-name {
-    width: 70px;
+  .name-col {
+    width: 100px;
+    .name, input.edit-name {
+      float: left;
+      width: 92%;
+      text-align: left;
+    }
   }
   #ingredient-list {
-    li {
-      width: 250px;
-      padding: 5px 10px;
-      height: 40px;
-      .button {
-        float: right;
-      }
-    }
-    li:nth-child(even) {
-      background: #ccc;
+    tr:nth-child(odd) {
+      background: #ddd;
     }
   }
 }
