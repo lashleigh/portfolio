@@ -40,7 +40,7 @@ class IngredientsController < ApplicationController
   def update
     @recipe = Recipe.find(params[:recipe_id])
     @ingredient = @recipe.ingredients.find(params[:id])
-    @ingredient.update_attributes(params[:ingredient])
+    @ingredient.update_attributes(:amount => params[:amount], :name => params[:name])
 
     respond_to do |format|
       if @recipe.save

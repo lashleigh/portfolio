@@ -53,34 +53,51 @@ App.Views.Recipe = Backbone.View.extend({
 App.Views.Ingredient = Backbone.View.extend({
   tagName: 'li',
   events: {
-    'click .amount' : 'clicked'
+    'click .amount' : 'editAmount',
+    'click .name'   : 'editName',
+    "keypress .edit-amount"      : "updateOnEnter"
   },
-  clicked: function() {
+  editAmount: function() {
+    $(this.el).addClass('editing') //.find('.edit-amount').removeClass('hidden').focus()
+    this.input_amount.removeClass('hidden').focus()
+  },
+  editName: function() {
+  },
+  updateOnEnter: function(e) {
+    if(e.keyCode == 13) {
+      this.model.save({amount: this.input_amount.val()}, {error: function() {
+        console.log(this, 'errors')
+      }});
+      this.input_amount.addClass('hidden');
+      $(this.el).removeClass("editing");
+    }
   },
   initialize: function() {
     $(this.model.collection.recipeView.el).find('.ingredients').append(this.render().el)
+    this.model.bind('change', this.render, this);
   },
   render: function() {
     var template = _.template($('#ingredient-li').html());
     $(this.el).html(template(this.model.toJSON()));
+    this.input_amount = $(this.el).find('.edit-amount'); 
+    this.input_name = $(this.el).find('.edit-name');
     return this;
   }
 });
 
 App.Models.Ingredient = Backbone.Model.extend({
   validate: function(attrs) {
-    if(!attrs.amount) {
+    /*if(!attrs.amount) {
       return 'You must supply an amount';
     } else if(!attrs.name) {
       return 'You must supply a name';
-    } else if(attrs.amount / attrs.amount !== 1) {
+    } else*/ if(attrs.amount / attrs.amount !== 1) {
       return 'The amount is not a number';
     } else {
       return false
     }
   },
   initialize: function() {
-    console.log(this.validate(this.attributes))
     if(!this.validate(this.attributes)) {
       this.view = new App.Views.Ingredient({model: this, id: 'ingredient_'+this.id})
     }

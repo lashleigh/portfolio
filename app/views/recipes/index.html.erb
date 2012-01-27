@@ -25,12 +25,11 @@
   <span class="newIngredient">New Ingredient</span>
 </script>
 <script type="text/template" id="ingredient-li">
-  <span class="amount">
-    {{amount}}
-  </span>
-  <span class="name">
-    {{name}}
-  </span>
+  <span class="amount"> {{amount}} </span>
+  <input class="edit-amount hidden" value={{amount}} />
+
+  <span class="name"> {{name}} </span>
+  <input class="edit-name hidden" value={{name}} />
 </script>
 <script type="text/template" id="new-ingredient">
   <input class="new-amount" value="12"/>
