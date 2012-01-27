@@ -52,9 +52,15 @@ App.Views.Recipe = Backbone.View.extend({
 });
 App.Views.Ingredient = Backbone.View.extend({
   tagName: 'li',
+  initialize: function() {
+    $(this.model.collection.recipeView.el).find('.ingredients').append(this.render().el)
+    this.model.bind('change', this.render, this);
+    this.model.bind('destroy', this.remove, this);
+  },
   events: {
     'click .amount' : 'editAmount',
     'click .name'   : 'editName',
+    'click .destroy': 'clear',
     "keypress .edit-amount"      : "updateOnEnter"
   },
   editAmount: function() {
@@ -74,9 +80,11 @@ App.Views.Ingredient = Backbone.View.extend({
     this.input_amount.addClass('hidden');
     $(this.el).removeClass("editing");
   },
-  initialize: function() {
-    $(this.model.collection.recipeView.el).find('.ingredients').append(this.render().el)
-    this.model.bind('change', this.render, this);
+  remove: function() {
+    $(this.el).remove();
+  },
+  clear: function() {
+    this.model.destroy();
   },
   render: function() {
     var template = _.template($('#ingredient-li').html());

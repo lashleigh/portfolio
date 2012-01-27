@@ -5,16 +5,7 @@ class IngredientsController < ApplicationController
     @recipe = Recipe.find(params[:recipe_id])
     @ingredient = Ingredient.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @recipe }
-    end
-  end
-
-  # GET /recipes/1/edit
-  def edit
-    @recipe = Recipe.find(params[:recipe_id])
-    @ingredient = @recipe.ingredients.find(params[:id])
+    render :json => @ingredient
   end
 
   # POST /recipes
@@ -24,14 +15,10 @@ class IngredientsController < ApplicationController
     @ingredient = Ingredient.new(:amount => params[:amount], :name => params[:name])
     @recipe.ingredients.push(@ingredient)  
     
-    respond_to do |format|
-      if @recipe.save
-        format.html { redirect_to(@recipe, :notice => 'Recipe was successfully created.') }
-        format.xml  { render :xml => @recipe, :status => :created, :location => @recipe }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @recipe.errors, :status => :unprocessable_entity }
-      end
+    if @recipe.save
+      render :json => @ingredient
+    else
+      render :json => {'message' => 'failed to save'}
     end
   end
 
@@ -42,14 +29,10 @@ class IngredientsController < ApplicationController
     @ingredient = @recipe.ingredients.find(params[:id])
     @ingredient.update_attributes(:amount => params[:amount], :name => params[:name])
 
-    respond_to do |format|
-      if @recipe.save
-        format.html { redirect_to(@recipe, :notice => 'Recipe was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @recipe.errors, :status => :unprocessable_entity }
-      end
+    if @recipe.save
+      render :json => @ingredient
+    else
+      render :json => {'message' => 'failed to save'}
     end
   end
 
@@ -57,12 +40,12 @@ class IngredientsController < ApplicationController
   # DELETE /recipes/1.xml
   def destroy
     @recipe = Recipe.find(params[:recipe_id])
-    @ingredient = @recipe.ingredients.find(params[:id])
-    @recipe.ingredients.delete_if {|i| i.id === params[:id] }
+    @recipe.ingredients.delete_if {|i| i.id.as_json === params[:id] }
 
-    respond_to do |format|
-      format.html { redirect_to(recipes_url) }
-      format.xml  { head :ok }
+    if @recipe.save
+      render :json => {'message' => 'saved'} 
+    else
+      render :json => {'message' => 'failed to save'}
     end
   end
 
