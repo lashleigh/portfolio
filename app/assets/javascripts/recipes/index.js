@@ -70,27 +70,29 @@ App.Views.Ingredient = Backbone.View.extend({
   },
   editAmount: function() {
     $(this.el).addClass('editing-amount');
+    this.input_name.val(this.model.get('name'));
     this.input_amount.removeClass('hidden').focus();
   },
   editName: function() {
     $(this.el).addClass('editing-name'); 
+    this.input_amount.val(this.model.get('amount'));
     this.input_name.removeClass('hidden').focus();
   },
   editUnit: function() {
     $(this.el).addClass('editing-unit'); ///.find('.edit-unit').removeClass('hidden').select(this.model.get('unit'))
+    this.input_name.val(this.model.get('name'));
+    this.input_amount.val(this.model.get('amount'));
     this.select_unit.removeClass('hidden').val(this.model.get('unit')).focus();
   },
   updateOnEnter: function(e) {
     if(e.keyCode == 13) {
       this.model.save({amount: this.input_amount.val(), name: this.input_name.val()});
       this.exitEditing();
-      this.render(); //This extra call to render really belongs in the error function
     }
   },
   updateUnit: function() {
-    this.model.save({amount: this.input_amount.val(), name: this.input_name.val(), unit: this.select_unit.val()});
+    this.model.save({unit: this.select_unit.val()});
     this.exitEditing();
-    this.render(); //This extra call to render really belongs in the error function
   },
   exitEditing: function() {
     this.input_amount.addClass('hidden');
@@ -112,13 +114,10 @@ App.Views.Ingredient = Backbone.View.extend({
     this.input_name = $(this.el).find('.edit-name');
     this.select_unit = $(this.el).find('.edit-unit');
     
-    var amount = this.model.get('amount');
-    var name = this.model.get('name');
-    var unit = this.model.get('unit');
-    console.log(amount, name, unit)
-    this.input_amount.bind('blur', _.bind(this.exitEditing, this)).val(amount);
-    this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(name);
-    this.select_unit.bind('blur', _.bind(this.exitEditing, this)).val(unit);
+    var attrs = this.model.attributes;
+    this.input_amount.bind('blur', _.bind(this.exitEditing, this)).val(attrs.amount);
+    this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(attrs.name);
+    this.select_unit.bind('blur', _.bind(this.exitEditing, this)).val(attrs.unit);
     this.select_unit.bind('change', _.bind(this.updateUnit, this));
     return this;
   }
@@ -126,11 +125,13 @@ App.Views.Ingredient = Backbone.View.extend({
 
 App.Models.Ingredient = Backbone.Model.extend({
   validate: function(attrs) {
-    if(attrs.amount / attrs.amount !== 1) {
-      return 'The amount is not a number';
-    } else {
-      return false
-    }
+    var errors = []
+    if(!_.isUndefined(attrs.amount) && attrs.amount / attrs.amount !== 1.0) {
+      errors.push('amount is empty or not a number');
+    } else if(!_.isUndefined(attrs.name) && attrs.name.length < 3) {
+      errors.push('name is empty or not a string');
+    } 
+    return _.any(errors) ? errors : false
   },
   initialize: function() {
     if(!this.validate(this.attributes)) {
