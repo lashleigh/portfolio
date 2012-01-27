@@ -24,10 +24,6 @@ class IngredientsController < ApplicationController
     @ingredient = Ingredient.new(:amount => params[:amount], :name => params[:name])
     @recipe.ingredients.push(@ingredient)  
     
-    @recipe = Recipe.find(params[:recipe_id])
-    @ingredient = Ingredient.new(params[:ingredient])
-    @recipe.ingredients.push(@ingredient)
-
     respond_to do |format|
       if @recipe.save
         format.html { redirect_to(@recipe, :notice => 'Recipe was successfully created.') }
