@@ -27,7 +27,7 @@ App.Views.Recipe = Backbone.View.extend({
   tagName: 'li',
   className: 'recipe',
   events: {
-    'click .save-noob'    : 'saveIngredient',
+    'click .add'    : 'saveIngredient',
   },
   saveIngredient: function() {
     var amount = this.new_amount.val();
@@ -63,7 +63,7 @@ App.Views.Ingredient = Backbone.View.extend({
   events: {
     'click .amount' : 'editAmount',
     'click .name'   : 'editName',
-    'click .destroy': 'clear',
+    'click .remove': 'clear',
     "keypress .edit-amount"      : "updateOnEnter",
     "keypress .edit-name"      : "updateOnEnter",
   },

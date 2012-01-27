@@ -20,7 +20,7 @@
   <a href='/recipes/{{id}}' class="title">
     {{title}}
   </a>
-  <ul class="ingredients">
+  <ul id="ingredient-list">
   </ul>
   
   <input class="new-amount" placeholder="12" />
@@ -32,7 +32,7 @@
     <option value='Tbsp'>Tbsp</option>
   </select>
   <input class="new-name" placeholder="salt" />
-  <button class='save-noob button'>Add</button>
+  <button class='icon icononly add button'></button>
 </script>
 
 <script type="text/template" id="ingredient-li">
@@ -43,5 +43,5 @@
   
   <span class="name"> {{name}} </span>
   <input class="edit-name hidden" value={{name}} />
-  <button class='destroy button'>Remove</button>
+  <button class='icon icononly destroy button'>Remove</button>
 </script>
