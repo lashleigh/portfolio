@@ -19,8 +19,7 @@
   <table>
     <tbody id="ingredient-list">
     </tbody>
-  </table>
-  <table>
+  <tfoot>
     <tr>
       <td class="amount-col"> <input class="new-amount" placeholder="12" /> </td>
       <td class="unit-col">
@@ -35,6 +34,7 @@
       <td class="name-col"> <input class="new-name" placeholder="salt" /> </td>
       <td class="button-col"> <button class='icon icononly add button'></button> </td>
     </tr>
+  </tfoot>
   </table>
   
 </script>
@@ -47,6 +47,13 @@
 
   <td class='unit-col'>
     <span class="unit">{{unit}}</span>
+    <select class="edit-unit hidden">
+      <option value='g'>grams</option>
+      <option value='oz'>ounces</option>
+      <option value='cup'>cups</option>
+      <option value='tsp'>tsp</option>
+      <option value='Tbsp'>Tbsp</option>
+    </select>
   </td>
   
   <td class='name-col'>
@@ -58,3 +65,5 @@
   </td>
 </script>
 
+<script type="text/template" id="recipe-stats">
+</script>
