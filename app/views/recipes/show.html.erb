@@ -1,4 +1,5 @@
 <ul id="recipe_container"> </ul>
+
 <script type="text/javascript">
   var Recipe;
   $(function() {
@@ -12,18 +13,32 @@
 </script>
 
 <script type="text/template" id="recipe-li">
-  <span class="title">
+  <a href='/recipes/{{id}}' class="title">
     {{title}}
-  </span>
-  <ul class="ingredients">
+  </a>
+  <ul id="ingredient-list">
   </ul>
+  
+  <input class="new-amount" placeholder="12" />
+  <select class="new-unit">
+    <option value='g'>grams</option>
+    <option value='oz'>ounces</option>
+    <option value='cup'>cups</option>
+    <option value='tsp'>tsp</option>
+    <option value='Tbsp'>Tbsp</option>
+  </select>
+  <input class="new-name" placeholder="salt" />
+  <button class='save-noob button'>Add</button>
 </script>
+
 <script type="text/template" id="ingredient-li">
-  <span class="amount">
-    {{amount}}
-  </span>
-  <span class="name">
-    {{name}}
-  </span>
+  <span class="amount"> {{amount}} </span>
+  <input class="edit-amount hidden" value={{amount}} />
+
+  <span class="unit">{{unit}}</span>
+  
+  <span class="name"> {{name}} </span>
+  <input class="edit-name hidden" value={{name}} />
+  <button class='destroy button'>Remove</button>
 </script>
 

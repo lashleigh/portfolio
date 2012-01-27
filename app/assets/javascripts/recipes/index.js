@@ -54,8 +54,9 @@ App.Views.Recipe = Backbone.View.extend({
 });
 App.Views.Ingredient = Backbone.View.extend({
   tagName: 'li',
+  className: 'ingredient',
   initialize: function() {
-    $(this.model.collection.recipeView.el).find('.ingredients').append(this.render().el)
+    $(this.model.collection.recipeView.el).find('#ingredient-list').append(this.render().el)
     this.model.bind('change', this.render, this);
     this.model.bind('destroy', this.remove, this);
   },
