@@ -65,12 +65,14 @@ App.Views.Ingredient = Backbone.View.extend({
   },
   updateOnEnter: function(e) {
     if(e.keyCode == 13) {
-      this.model.save({amount: this.input_amount.val()}, {error: function() {
-        console.log(this, 'errors')
-      }});
-      this.input_amount.addClass('hidden');
-      $(this.el).removeClass("editing");
+      this.model.save({amount: this.input_amount.val()});
+      this.exitEditing();
+      this.render(); //This extra call to render really belongs in the error function
     }
+  },
+  exitEditing: function() {
+    this.input_amount.addClass('hidden');
+    $(this.el).removeClass("editing");
   },
   initialize: function() {
     $(this.model.collection.recipeView.el).find('.ingredients').append(this.render().el)
@@ -79,19 +81,20 @@ App.Views.Ingredient = Backbone.View.extend({
   render: function() {
     var template = _.template($('#ingredient-li').html());
     $(this.el).html(template(this.model.toJSON()));
+    
     this.input_amount = $(this.el).find('.edit-amount'); 
     this.input_name = $(this.el).find('.edit-name');
+    
+    var amount = this.model.get('amount');
+    this.input_amount.bind('blur', _.bind(this.exitEditing, this)).val(amount);
+
     return this;
   }
 });
 
 App.Models.Ingredient = Backbone.Model.extend({
   validate: function(attrs) {
-    /*if(!attrs.amount) {
-      return 'You must supply an amount';
-    } else if(!attrs.name) {
-      return 'You must supply a name';
-    } else*/ if(attrs.amount / attrs.amount !== 1) {
+    if(attrs.amount / attrs.amount !== 1) {
       return 'The amount is not a number';
     } else {
       return false
