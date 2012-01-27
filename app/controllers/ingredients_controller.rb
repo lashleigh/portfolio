@@ -12,7 +12,7 @@ class IngredientsController < ApplicationController
   # POST /recipes.xml
   def create
     @recipe = Recipe.find(params[:recipe_id])
-    @ingredient = Ingredient.new(:amount => params[:amount], :name => params[:name])
+    @ingredient = Ingredient.new(:amount => params[:amount], :name => params[:name], :unit => params[:unit])
     @recipe.ingredients.push(@ingredient)  
     
     if @recipe.save
@@ -27,7 +27,7 @@ class IngredientsController < ApplicationController
   def update
     @recipe = Recipe.find(params[:recipe_id])
     @ingredient = @recipe.ingredients.find(params[:id])
-    @ingredient.update_attributes(:amount => params[:amount], :name => params[:name])
+    @ingredient.update_attributes(:amount => params[:amount], :name => params[:name], :unit => params[:unit])
 
     if @recipe.save
       render :json => @ingredient

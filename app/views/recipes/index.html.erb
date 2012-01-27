@@ -22,19 +22,26 @@
   </a>
   <ul class="ingredients">
   </ul>
-  <span class="newIngredient">New Ingredient</span>
+  
+  <input class="new-amount" placeholder="12" />
+  <select class="new-unit">
+    <option value='g'>grams</option>
+    <option value='oz'>ounces</option>
+    <option value='cup'>cups</option>
+    <option value='tsp'>tsp</option>
+    <option value='Tbsp'>Tbsp</option>
+  </select>
+  <input class="new-name" placeholder="salt" />
+  <button class='save-noob button'>Add</button>
 </script>
+
 <script type="text/template" id="ingredient-li">
   <span class="amount"> {{amount}} </span>
   <input class="edit-amount hidden" value={{amount}} />
 
+  <span class="unit">{{unit}}</span>
+  
   <span class="name"> {{name}} </span>
   <input class="edit-name hidden" value={{name}} />
-  <button class='destroy button'>Destroy</button>
+  <button class='destroy button'>Remove</button>
 </script>
-<script type="text/template" id="new-ingredient">
-  <input class="new-amount" value="12"/>
-  <input class="new-name" value="salt"/>
-  <button class='save-noob'>Save</button>
-</script>
-
