@@ -32,23 +32,30 @@ App.Views.Recipe = Backbone.View.extend({
   savePart: function() {
     var amount = this.new_amount.val();
     var name = this.new_name.val();
+    var id = this.new_name_id.val();
     var unit = $(this.el).find('.new-unit').val();
+    console.log(amount, name, unit, id)
     if(!amount || !name) return;
     var newIng = this.model.parts.create({
       amount: amount,
-      name: name,
-      unit: unit
+      unit: unit,
+      ingredient_id: id,
+      ingredient: {
+        name: name
+      }
     })
     if(!!newIng) {
       this.new_amount.val('');
       this.new_name.val('');
+      this.new_name_id.val('');
     }
   },
   render: function() {
     var template = _.template($('#recipe-li').html());
     $(this.el).html(template(this.model.toJSON()))
     this.new_amount = $(this.el).find('.new-amount');
-    this.new_name   = $(this.el).find('.new-name');
+    this.new_name   = $(this.el).find('#new-name');
+    this.new_name_id= $(this.el).find('#new-name-id');
     return this;
   }
 });
@@ -133,16 +140,13 @@ App.Models.Part = Backbone.Model.extend({
         errors.push('amount is not a number');
       }
     }
-    if(!_.isUndefined(attrs.name)) {
-      if(attrs.name.length < 3) {
-        errors.push('name is too short, there is a 3 character minimum');
-      } else if(attrs.name / attrs.name === 1.0) {
-        errors.push('name appears to be a number');
-      }
+    if(!_.isUndefined(attrs.ingredient_id)) {
+      //errors.push('an ingredient was not selected');
     }
     if(!_.isUndefined(attrs.unit)) {
       // check that the val agrees with rails val
     }
+    console.log(errors, attrs)
     return _.any(errors) ? errors : false
   },
   initialize: function() {

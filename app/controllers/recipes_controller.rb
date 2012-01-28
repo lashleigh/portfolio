@@ -14,7 +14,7 @@ class RecipesController < ApplicationController
   # GET /recipes/1.xml
   def show
     @recipe = Recipe.find(params[:id])
-    @ingredients = Ingredient.all
+    @ingredients = Ingredient.autocomplete_list
 
     respond_to do |format|
       format.html # show.html.erb

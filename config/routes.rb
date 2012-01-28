@@ -8,7 +8,7 @@ Portfolio::Application.routes.draw do
   constraints(:subdomain => /^baked$/) do
     match "/" => 'recipe#index'
     resources :recipes do
-      resources :ingredients
+      resources :parts
     end
   end
   constraints(:subdomain => /^blog$/) do

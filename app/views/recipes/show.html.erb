@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
   var Recipe;
-  var ingredients = <%= @ingredients.to_json(:only => [:id, :name]).html_safe %>;
+  var ingredients = <%= @ingredients.to_json.html_safe %>;
   $(function() {
     // By default, Underscore uses ERB-style template delimiters, this change
     // makes it use mustache style.
@@ -10,6 +10,30 @@
       interpolate : /\{\{([\s\S]+?)\}\}/g
     };
     Recipe = new App.Models.Recipe(<%= @recipe.to_json(:include => {:parts => {:include => {:ingredient => {:only => :name}}}} ).html_safe %>);
+
+    $( "#new-name" ).autocomplete({
+      minLength: 0,
+      source: ingredients,
+      focus: function( event, ui ) {
+        console.log(event, ui);
+        $( "#new-name" ).val( ui.item.label );
+        return false;
+      },
+      select: function( event, ui ) {
+        console.log(event, ui);
+        $( "#new-name" ).val( ui.item.label );
+        $( "#new-name-id" ).val( ui.item.value );
+
+        return false;
+      }
+    })
+    $.ui.autocomplete.prototype._renderItem = function( ul, item ) {
+        console.log(ul, item);
+      return $( "<li></li>" )
+        .data( "item.autocomplete", item )
+        .append( "<a>" + item.label + "</a>" )
+        .appendTo( ul );
+    };
   });
 </script>
 
@@ -27,12 +51,16 @@
         <select class="new-unit">
           <option value='g'>grams</option>
           <option value='oz'>ounces</option>
+          <option value='ml'>ml</option>
           <option value='cup'>cups</option>
           <option value='tsp'>tsp</option>
           <option value='Tbsp'>Tbsp</option>
         </select>
       </td>
-      <td class="name-col"> <input class="new-name" placeholder="salt" /> </td>
+      <td class="name-col"> 
+        <input id="new-name" placeholder="salt" /> 
+        <input id="new-name-id" type="hidden" /> 
+      </td>
       <td class="button-col"> <button class='icon icononly add button'></button> </td>
     </tr>
   </tfoot>
@@ -51,6 +79,7 @@
     <select class="edit-unit hidden">
       <option value='g'>grams</option>
       <option value='oz'>ounces</option>
+      <option value='ml'>ml</option>
       <option value='cup'>cups</option>
       <option value='tsp'>tsp</option>
       <option value='Tbsp'>Tbsp</option>
