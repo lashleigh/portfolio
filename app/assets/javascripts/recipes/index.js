@@ -72,8 +72,8 @@ App.Views.Part = Backbone.View.extend({
     'click .name'   : 'editName',
     'click .unit'   : 'editUnit',
     'click .remove': 'clear',
-    "keypress .edit-amount"      : "updateOnEnter",
-    "keypress .edit-name"      : "updateOnEnter",
+    "keypress .edit-amount"      : "updateAmountOnEnter",
+    "keypress .edit-name"      : "updateIngredientOnEnter",
   },
   editAmount: function() {
     $(this.el).addClass('editing-amount');
@@ -91,9 +91,15 @@ App.Views.Part = Backbone.View.extend({
     this.input_amount.val(this.model.get('amount'));
     this.select_unit.removeClass('hidden').val(this.model.get('unit')).focus();
   },
-  updateOnEnter: function(e) {
+  updateAmountOnEnter: function(e) {
     if(e.keyCode == 13) {
-      this.model.save({amount: this.input_amount.val(), name: this.input_name.val()});
+      this.model.save({amount: this.input_amount.val()});
+      this.exitEditing();
+    }
+  },
+  updateIngredientOnEnter: function(e) {
+    if(e.keyCode == 13) {
+      this.model.save({amount: this.input_amount.val()});
       this.exitEditing();
     }
   },
