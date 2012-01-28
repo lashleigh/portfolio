@@ -74,7 +74,7 @@ App.Views.Part = Backbone.View.extend({
   },
   editAmount: function() {
     $(this.el).addClass('editing-amount');
-    this.input_name.val(this.model.get('name'));
+    this.input_name.val(this.model.get('ingredient').name);
     this.input_amount.removeClass('hidden').focus();
   },
   editName: function() {
@@ -84,7 +84,7 @@ App.Views.Part = Backbone.View.extend({
   },
   editUnit: function() {
     $(this.el).addClass('editing-unit'); ///.find('.edit-unit').removeClass('hidden').select(this.model.get('unit'))
-    this.input_name.val(this.model.get('name'));
+    this.input_name.val(this.model.get('ingredient').name);
     this.input_amount.val(this.model.get('amount'));
     this.select_unit.removeClass('hidden').val(this.model.get('unit')).focus();
   },

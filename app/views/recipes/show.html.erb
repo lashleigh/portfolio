@@ -15,12 +15,10 @@
       minLength: 0,
       source: ingredients,
       focus: function( event, ui ) {
-        console.log(event, ui);
         $( "#new-name" ).val( ui.item.label );
         return false;
       },
       select: function( event, ui ) {
-        console.log(event, ui);
         $( "#new-name" ).val( ui.item.label );
         $( "#new-name-id" ).val( ui.item.value );
 
@@ -28,7 +26,6 @@
       }
     })
     $.ui.autocomplete.prototype._renderItem = function( ul, item ) {
-        console.log(ul, item);
       return $( "<li></li>" )
         .data( "item.autocomplete", item )
         .append( "<a>" + item.label + "</a>" )
