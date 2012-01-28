@@ -97,7 +97,6 @@ App.Views.Part = Backbone.View.extend({
   updateIngredientOnEnter: function(e) {
     if(e.keyCode == 13) {
       this.saveIngredient();
-      this.exitEditing();
     }
   },
   saveIngredient: function() {
@@ -107,6 +106,7 @@ App.Views.Part = Backbone.View.extend({
         name: this.input_name.val()
       }
     })
+    this.exitEditing();
   },
   updateUnit: function() {
     this.model.save({unit: this.select_unit.val()});

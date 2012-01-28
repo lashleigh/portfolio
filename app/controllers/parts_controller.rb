@@ -26,12 +26,12 @@ class PartsController < ApplicationController
   def update
     @recipe = Recipe.find(params[:recipe_id])
     @part = @recipe.parts.find(params[:id])
+    @ingredient = Ingredient.find(params[:ingredient_id])
     attrs = params.select {|p| @part.attributes.keys.include? p}
-    if params[:order]
-      @recipe.splice(@part, params[:order])
-    else
-      @part.update_attributes(attrs) 
+    if @ingredient.name != params[:ingredient][:name]
+      attrs[:ingredient_id] = Ingredient.create!(:name => params[:ingredient][:name]).id
     end
+    @part.update_attributes(attrs) 
 
     if @recipe.save
       render :json => @part
