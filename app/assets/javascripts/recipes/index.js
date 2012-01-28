@@ -3,11 +3,9 @@ var App = {
   Views: {},
   Models: {}
 }
+ 
 
 App.Models.Recipe = Backbone.Model.extend({
-  defaults: {
-    yabab: 'does this work?'
-  },
   initialize: function() {
     this.parts = new App.Collections.PartList
     this.view = new App.Views.Recipe({model: this, id: 'recipe_'+this.id});
@@ -27,14 +25,13 @@ App.Views.Recipe = Backbone.View.extend({
   tagName: 'li',
   className: 'recipe',
   events: {
-    'click .add'    : 'savePart',
+    'click .add'    : 'newPart',
   },
-  savePart: function() {
+  newPart: function() {
     var amount = this.new_amount.val();
     var name = this.new_name.val();
     var id = this.new_name_id.val();
     var unit = $(this.el).find('.new-unit').val();
-    console.log(amount, name, unit, id)
     if(!amount || !name) return;
     var newIng = this.model.parts.create({
       amount: amount,
@@ -99,9 +96,17 @@ App.Views.Part = Backbone.View.extend({
   },
   updateIngredientOnEnter: function(e) {
     if(e.keyCode == 13) {
-      this.model.save({amount: this.input_amount.val()});
+      this.saveIngredient();
       this.exitEditing();
     }
+  },
+  saveIngredient: function() {
+    this.model.save({
+      ingredient_id: this.input_name_id.val(), 
+      ingredient: {
+        name: this.input_name.val()
+      }
+    })
   },
   updateUnit: function() {
     this.model.save({unit: this.select_unit.val()});
@@ -119,17 +124,35 @@ App.Views.Part = Backbone.View.extend({
   clear: function() {
     this.model.destroy();
   },
+  autocomplete: function() {
+    var part = this;
+    return {
+      minLength: 0,
+      source: ingredients,
+      focus: function( event, ui ) {
+        part.input_name.val( ui.item.label );
+        return false;
+      },
+      select: function( event, ui ) {
+        part.input_name.val( ui.item.label );
+        part.input_name_id.val( ui.item.value );
+        part.saveIngredient();
+        return false;
+      }
+    }
+  },
   render: function() {
     var template = _.template($('#part-li').html());
     $(this.el).html(template(this.model.toJSON()));
     
     this.input_amount = $(this.el).find('.edit-amount'); 
     this.input_name = $(this.el).find('.edit-name');
+    this.input_name_id=$(this.el).find('.edit-name-id');
     this.select_unit = $(this.el).find('.edit-unit');
     
     var attrs = this.model.attributes;
     this.input_amount.bind('blur', _.bind(this.exitEditing, this)).val(attrs.amount);
-    this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(attrs.name);
+    this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(attrs.ingredient.name).autocomplete(this.autocomplete());
     this.select_unit.bind('blur', _.bind(this.exitEditing, this)).val(attrs.unit);
     this.select_unit.bind('change', _.bind(this.updateUnit, this));
     return this;
@@ -152,12 +175,12 @@ App.Models.Part = Backbone.Model.extend({
     if(!_.isUndefined(attrs.unit)) {
       // check that the val agrees with rails val
     }
-    console.log(errors, attrs)
     return _.any(errors) ? errors : false
   },
   initialize: function() {
     if(!this.validate(this.attributes)) {
-      this.view = new App.Views.Part({model: this, id: 'part_'+this.id})
+      var id= this.id ? this.id : this.cid;
+      this.view = new App.Views.Part({model: this, id: 'part_'+id})
     }
   }
 })

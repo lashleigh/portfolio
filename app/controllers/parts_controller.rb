@@ -7,8 +7,14 @@ class PartsController < ApplicationController
 
   def create
     @recipe = Recipe.find(params[:recipe_id])
-    @part = Part.new(:amount => params[:amount], :ingredient_id => params[:ingredient_id], :unit => params[:unit])
-    @recipe.parts.push(@part)  
+    if params[:ingredient_id].blank?
+      ingredient = Ingredient.create!(:name => params[:ingredient][:name])
+      @part = Part.new(:amount => params[:amount], :ingredient => ingredient, :unit => params[:unit])
+      @recipe.parts.push(@part)  
+    else
+      @part = Part.new(:amount => params[:amount], :ingredient_id => params[:ingredient_id], :unit => params[:unit])
+      @recipe.parts.push(@part)  
+    end
     
     if @recipe.save
       render :json => @part
