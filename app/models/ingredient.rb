@@ -1,11 +1,7 @@
 class Ingredient
-  include MongoMapper::EmbeddedDocument
+  include MongoMapper::Document
 
-  key :amount, Float, :required => true
   key :name, String, :required => true
-  key :order, Integer, :required => true
-  key :unit, String, :in => ['g', 'oz', 'cup', 'tsp', 'Tbsp']
+  many :parts
 
-  def ordered
-  end
 end

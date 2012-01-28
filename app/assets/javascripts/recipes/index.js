@@ -9,13 +9,13 @@ App.Models.Recipe = Backbone.Model.extend({
     yabab: 'does this work?'
   },
   initialize: function() {
-    this.ingredients = new App.Collections.IngredientList
+    this.parts = new App.Collections.PartList
     this.view = new App.Views.Recipe({model: this, id: 'recipe_'+this.id});
     $("#recipe_container").append(this.view.render().el);
     
-    this.ingredients.url = '/recipes/'+this.id+'/ingredients';
-    this.ingredients.recipeView = this.view;
-    this.ingredients.reset(this.get('ingredients'));
+    this.parts.url = '/recipes/'+this.id+'/parts';
+    this.parts.recipeView = this.view;
+    this.parts.reset(this.get('parts'));
   }
 })
 App.Collections.Recipes = Backbone.Collection.extend({
@@ -27,14 +27,14 @@ App.Views.Recipe = Backbone.View.extend({
   tagName: 'li',
   className: 'recipe',
   events: {
-    'click .add'    : 'saveIngredient',
+    'click .add'    : 'savePart',
   },
-  saveIngredient: function() {
+  savePart: function() {
     var amount = this.new_amount.val();
     var name = this.new_name.val();
     var unit = $(this.el).find('.new-unit').val();
     if(!amount || !name) return;
-    var newIng = this.model.ingredients.create({
+    var newIng = this.model.parts.create({
       amount: amount,
       name: name,
       unit: unit
@@ -52,11 +52,11 @@ App.Views.Recipe = Backbone.View.extend({
     return this;
   }
 });
-App.Views.Ingredient = Backbone.View.extend({
+App.Views.Part = Backbone.View.extend({
   tagName: 'tr',
-  className: 'ingredient',
+  className: 'parts',
   initialize: function() {
-    $(this.model.collection.recipeView.el).find('#ingredient-list').append(this.render().el)
+    $(this.model.collection.recipeView.el).find('#part-list').append(this.render().el)
     this.model.bind('change', this.render, this);
     this.model.bind('destroy', this.remove, this);
   },
@@ -107,7 +107,7 @@ App.Views.Ingredient = Backbone.View.extend({
     this.model.destroy();
   },
   render: function() {
-    var template = _.template($('#ingredient-li').html());
+    var template = _.template($('#part-li').html());
     $(this.el).html(template(this.model.toJSON()));
     
     this.input_amount = $(this.el).find('.edit-amount'); 
@@ -123,7 +123,7 @@ App.Views.Ingredient = Backbone.View.extend({
   }
 });
 
-App.Models.Ingredient = Backbone.Model.extend({
+App.Models.Part = Backbone.Model.extend({
   validate: function(attrs) {
     var errors = [];
     if(!_.isUndefined(attrs.amount)) {
@@ -147,12 +147,12 @@ App.Models.Ingredient = Backbone.Model.extend({
   },
   initialize: function() {
     if(!this.validate(this.attributes)) {
-      this.view = new App.Views.Ingredient({model: this, id: 'ingredient_'+this.id})
+      this.view = new App.Views.Part({model: this, id: 'part_'+this.id})
     }
   }
 })
-App.Collections.IngredientList = Backbone.Collection.extend({
-  model: App.Models.Ingredient,
+App.Collections.PartList = Backbone.Collection.extend({
+  model: App.Models.Part,
   initialize: function() {
   }
 })

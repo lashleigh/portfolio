@@ -2,7 +2,7 @@ class Recipe
   include MongoMapper::Document
 
   key :title, String
-  many :ingredients
+  many :parts
   timestamps!
 
   def splice(obj, new_index)
