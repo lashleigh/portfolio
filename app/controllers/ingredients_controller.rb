@@ -1,4 +1,8 @@
 class IngredientsController < ApplicationController
+  def index
+    all = Ingredient.autocomplete_list
+    render :json => all
+  end
   def new
     @recipe = Recipe.find(params[:recipe_id])
     @ingredient = Ingredient.new

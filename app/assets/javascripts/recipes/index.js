@@ -34,6 +34,7 @@ App.Views.Recipe = Backbone.View.extend({
     var unit = $(this.el).find('.new-unit').val();
     if(!amount || !name) return;
     var newIng = this.model.parts.create({
+      percent: amount / this.model.parts.flour_mass(),
       amount: amount,
       unit: unit,
       ingredient_id: id,
@@ -60,6 +61,8 @@ App.Views.Part = Backbone.View.extend({
   tagName: 'tr',
   className: 'parts',
   initialize: function() {
+    console.log(this)
+    this.template = this.model.get('primary') ? $('#primary-part-li').html() : $('#part-li').html();
     $(this.model.collection.recipeView.el).find('#part-list').append(this.render().el)
     this.model.bind('change', this.render, this);
     this.model.bind('destroy', this.remove, this);
@@ -90,7 +93,9 @@ App.Views.Part = Backbone.View.extend({
   },
   updateAmountOnEnter: function(e) {
     if(e.keyCode == 13) {
-      this.model.save({amount: this.input_amount.val()});
+      var amount = this.input_amount.val();
+      var percent = amount / this.model.collection.flour_mass();
+      this.model.save({amount: amount, percent: percent});
       this.exitEditing();
     }
   },
@@ -142,7 +147,7 @@ App.Views.Part = Backbone.View.extend({
     }
   },
   render: function() {
-    var template = _.template($('#part-li').html());
+    var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
     
     this.input_amount = $(this.el).find('.edit-amount'); 
@@ -172,6 +177,11 @@ App.Models.Part = Backbone.Model.extend({
     if(!_.isUndefined(attrs.ingredient_id)) {
       //errors.push('an ingredient was not selected');
     }
+    if(!_.isUndefined(attrs.ingredient)) {
+      if(attrs.ingredient.name.length < 3) {
+        errors.push('ingredient name is too short');
+      }
+    }
     if(!_.isUndefined(attrs.unit)) {
       // check that the val agrees with rails val
     }
@@ -186,6 +196,11 @@ App.Models.Part = Backbone.Model.extend({
 })
 App.Collections.PartList = Backbone.Collection.extend({
   model: App.Models.Part,
+  flour_mass: function() {
+    var flour = _.pluck(_.pluck(this.filter(function(part) {return part.get('ingredient').name == 'flour'}), 'attributes'), 'amount').reduce(function(a, b) {return a+b;}, 0)
+    var starter = _.pluck(_.pluck(this.filter(function(part) {return part.get('ingredient').name == 'starter'}), 'attributes'), 'amount').reduce(function(a, b) {return a+b;}, 0)
+    return flour+starter/2.0;
+  },
   initialize: function() {
   }
 })

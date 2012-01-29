@@ -46,12 +46,12 @@
       <td class="amount-col"> <input class="new-amount" placeholder="12" /> </td>
       <td class="unit-col">
         <select class="new-unit">
-          <option value='g'>grams</option>
-          <option value='oz'>ounces</option>
+          <option value='g'>g</option>
+          <option value='oz'>oz</option>
           <option value='ml'>ml</option>
-          <option value='cup'>cups</option>
-          <option value='tsp'>tsp</option>
-          <option value='Tbsp'>Tbsp</option>
+          <option value='c'>c</option>
+          <option value='t'>t</option>
+          <option value='T'>T</option>
         </select>
       </td>
       <td class="name-col"> 
@@ -65,6 +65,32 @@
   
 </script>
 
+<script type="text/template" id="primary-part-li">
+  <td class='amount-col'>
+    <span class="amount"> {{amount}} </span>
+    <input class="edit-amount hidden" value={{amount}} />
+  </td>
+  <td class='unit-col'>
+    <span class="unit">{{unit}}</span>
+    <select class="edit-unit hidden">
+      <option value='g'>g</option>
+      <option value='oz'>oz</option>
+      <option value='ml'>ml</option>
+      <option value='c'>c</option>
+      <option value='t'>t</option>
+      <option value='T'>T</option>
+    </select>
+  </td>
+  
+  <td class='name-col'>
+    <span class="primary-name"> {{ingredient.name}} </span>
+  </td>
+  <td class='bakers-percent-col'>
+  </td>
+  <td class='button-col'>
+  </td>
+
+</script>
 <script type="text/template" id="part-li">
   <td class='amount-col'>
     <span class="amount"> {{amount}} </span>
@@ -74,12 +100,12 @@
   <td class='unit-col'>
     <span class="unit">{{unit}}</span>
     <select class="edit-unit hidden">
-      <option value='g'>grams</option>
-      <option value='oz'>ounces</option>
+      <option value='g'>g</option>
+      <option value='oz'>oz</option>
       <option value='ml'>ml</option>
-      <option value='cup'>cups</option>
-      <option value='tsp'>tsp</option>
-      <option value='Tbsp'>Tbsp</option>
+      <option value='c'>c</option>
+      <option value='t'>t</option>
+      <option value='T'>T</option>
     </select>
   </td>
   
@@ -88,10 +114,30 @@
     <input class="edit-name hidden" value={{ingredient.name}} />
     <input class="edit-name-id" type="hidden" value={{ingredient_id}} />
   </td>
+  <td class='bakers-percent-col'>
+    <span class="bakers-percent">{{percent}}</span>
+  </td>
   <td class='button-col'>
     <button class='icon icononly remove danger button'></button>
   </td>
 </script>
 
 <script type="text/template" id="recipe-stats">
+  <div>
+    <span class="hydration"> {{hydration}}</span>% hydration
+    <input class="edit-hydration hidden" value={{hydration}} />
+  </div>
+  <div>
+    <span class="innoculation"> {{innoculation}}</span>% innoculation
+    <input class="edit-innoculation hidden" value={{innoculation}} />
+  </div>
+  <div class="timing">
+    Doubled in 
+    <span class="doubling"> {{doubling}} </span> hrs 
+    <input class="edit-doubling hidden" value={{doubling}} />
+    at 
+    <span class="temp"> {{temp}} </span>
+    <input class="edit-temp hidden" value={{temp}} />
+    degrees F
+  </div>
 </script>
