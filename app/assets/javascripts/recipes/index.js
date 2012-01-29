@@ -3,7 +3,12 @@ var App = {
   Views: {},
   Models: {}
 }
- 
+as_percent = function(num) {
+  return Math.floor(1000*num) / 10;
+}
+truncate = function(num) {
+  return Math.floor(10*num) / 10;
+}
 
 App.Models.Recipe = Backbone.Model.extend({
   initialize: function() {
@@ -14,6 +19,9 @@ App.Models.Recipe = Backbone.Model.extend({
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
     this.parts.reset(this.get('parts'));
+
+    this.parts.bind('all', this.view.update_stats, this.view)
+    this.view.update_stats();
   }
 })
 App.Collections.Recipes = Backbone.Collection.extend({
@@ -27,6 +35,11 @@ App.Views.Recipe = Backbone.View.extend({
   events: {
     'click .add'    : 'newPart',
   },
+  update_stats: function() {
+    var template = _.template($('#recipe-stats').html());
+    $(this.el).find('.stats').html(template(this.model.parts.stats()));
+    console.log('update stats');
+  },
   newPart: function() {
     var amount = this.new_amount.val();
     var name = this.new_name.val();
@@ -34,7 +47,7 @@ App.Views.Recipe = Backbone.View.extend({
     var unit = $(this.el).find('.new-unit').val();
     if(!amount || !name) return;
     var newIng = this.model.parts.create({
-      percent: amount / this.model.parts.flour_mass(),
+      percent: Math.floor(1000* amount / this.model.parts.flour_mass())/10,
       amount: amount,
       unit: unit,
       ingredient_id: id,
@@ -66,6 +79,7 @@ App.Views.Part = Backbone.View.extend({
     $(this.model.collection.recipeView.el).find('#part-list').append(this.render().el)
     this.model.bind('change', this.render, this);
     this.model.bind('destroy', this.remove, this);
+    //this.model.bind('render', this.percent, this);
   },
   events: {
     'click .amount' : 'editAmount',
@@ -86,7 +100,7 @@ App.Views.Part = Backbone.View.extend({
     this.input_name.removeClass('hidden').focus();
   },
   editUnit: function() {
-    $(this.el).addClass('editing-unit'); ///.find('.edit-unit').removeClass('hidden').select(this.model.get('unit'))
+    $(this.el).addClass('editing-unit');
     this.input_name.val(this.model.get('ingredient').name);
     this.input_amount.val(this.model.get('amount'));
     this.select_unit.removeClass('hidden').val(this.model.get('unit')).focus();
@@ -94,7 +108,7 @@ App.Views.Part = Backbone.View.extend({
   updateAmountOnEnter: function(e) {
     if(e.keyCode == 13) {
       var amount = this.input_amount.val();
-      var percent = amount / this.model.collection.flour_mass();
+      var percent = Math.floor(1000*amount / this.model.collection.flour_mass())/10;
       this.model.save({amount: amount, percent: percent});
       this.exitEditing();
     }
@@ -147,6 +161,7 @@ App.Views.Part = Backbone.View.extend({
     }
   },
   render: function() {
+    //this.model.set({'percent': Math.floor(1000*this.model.get('amount') / this.model.collection.flour_mass())/10});
     var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
     
@@ -196,10 +211,23 @@ App.Models.Part = Backbone.Model.extend({
 })
 App.Collections.PartList = Backbone.Collection.extend({
   model: App.Models.Part,
+  getTotalMass: function(name) {
+    return _.pluck(_.pluck(this.filter(function(part) {return part.get('ingredient').name == name}), 'attributes'), 'amount').reduce(function(a, b) {return a+b;}, 0)
+  },
+  stats: function() {
+    var half_starter = this.getTotalMass('starter') / 2;
+    var water = this.getTotalMass('water');
+    var flour = this.getTotalMass('flour');
+    var innoculation = half_starter / (flour + half_starter);
+    return {
+      hydration: as_percent((water + half_starter) / (flour + half_starter)),
+      innoculation: as_percent(innoculation),
+      doubling: truncate(-3 * Math.log(innoculation) / Math.log(2)),
+      temp: 72
+    }
+  },
   flour_mass: function() {
-    var flour = _.pluck(_.pluck(this.filter(function(part) {return part.get('ingredient').name == 'flour'}), 'attributes'), 'amount').reduce(function(a, b) {return a+b;}, 0)
-    var starter = _.pluck(_.pluck(this.filter(function(part) {return part.get('ingredient').name == 'starter'}), 'attributes'), 'amount').reduce(function(a, b) {return a+b;}, 0)
-    return flour+starter/2.0;
+    return this.getTotalMass('flour') + this.getTotalMass('starter')/2;
   },
   initialize: function() {
   }

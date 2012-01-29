@@ -31,6 +31,6 @@ class Recipe
     self.parts << Part.new(:amount => 30,  :unit => 'g', :percent => 5.66, :primary => true, :ingredient => Ingredient.find_by_name('starter'))
     self.parts << Part.new(:amount => 250, :unit => 'g', :percent => 94.3, :primary => true, :ingredient => Ingredient.find_by_name('flour'))
     self.parts << Part.new(:amount => 185, :unit => 'g', :percent => 69.8, :primary => true, :ingredient => Ingredient.find_by_name('water'))
-    self.parts << Part.new(:amount => 6,   :unit => 'g', :percent => 2.26, :primary => true, :ingredient => Ingredient.find_by_name('salt'))
+    self.parts << Part.new(:amount => 6,   :unit => 'g', :percent => 2.26, :primary => false, :ingredient => Ingredient.find_by_name('salt'))
   end
 end
