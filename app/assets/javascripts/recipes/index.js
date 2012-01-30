@@ -74,12 +74,10 @@ App.Views.Part = Backbone.View.extend({
   tagName: 'tr',
   className: 'parts',
   initialize: function() {
-    console.log(this)
     this.template = this.model.get('primary') ? $('#primary-part-li').html() : $('#part-li').html();
     $(this.model.collection.recipeView.el).find('#part-list').append(this.render().el)
     this.model.bind('change', this.render, this);
     this.model.bind('destroy', this.remove, this);
-    //this.model.bind('render', this.percent, this);
   },
   events: {
     'click .amount' : 'editAmount',
@@ -202,7 +200,12 @@ App.Models.Part = Backbone.Model.extend({
     }
     return _.any(errors) ? errors : false
   },
+  percent: function() {
+    var percent = as_percent(this.get('amount') / this.collection.getTotalMass('flour'))
+    this.set({'percent' : percent});
+  },
   initialize: function() {
+    this.bind('change', this.percent, this);
     if(!this.validate(this.attributes)) {
       var id= this.id ? this.id : this.cid;
       this.view = new App.Views.Part({model: this, id: 'part_'+id})
