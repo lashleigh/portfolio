@@ -3,7 +3,11 @@ Portfolio::Application.routes.draw do
   resources :networks
   resources :shows
   resources :slides
-  resources :recipes
+    
+  match "/recipes/from_params" => 'recipes#new_by_params'
+  resources :recipes do
+    resources :parts
+  end
 
   constraints(:subdomain => /^baked$/) do
     match "/" => 'recipes#index'
