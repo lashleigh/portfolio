@@ -10,7 +10,7 @@ class PartsController < ApplicationController
     attrs = params.reject {|p| p == 'ingredient'}
     part = Part.new(attrs)
     if params[:ingredient_id].blank?
-      ingredient = Ingredient.create!(:name => params[:ingredient][:name])
+      ingredient = Ingredient.find_or_create_by_name(params[:ingredient][:name])
       part.ingredient = ingredient
     end
     recipe.parts.push(part)  
@@ -27,7 +27,7 @@ class PartsController < ApplicationController
     part = recipe.parts.find(params[:id])
     attrs = params.select {|p| part.attributes.keys.include? p}
     if part.ingredient.name != params[:ingredient][:name]
-      attrs[:ingredient_id] = Ingredient.create!(:name => params[:ingredient][:name]).id
+      attrs[:ingredient_id] = Ingredient.find_or_create_by_name(params[:ingredient][:name]).id
     end
     part.update_attributes(attrs) 
 
