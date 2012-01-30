@@ -30,7 +30,7 @@ App.Collections.Recipes = Backbone.Collection.extend({
 })
 
 App.Views.Recipe = Backbone.View.extend({
-  tagName: 'li',
+  tagName: 'div',
   className: 'recipe',
   events: {
     'click .add'    : 'newPart',

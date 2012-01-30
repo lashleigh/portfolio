@@ -1,0 +1,15 @@
+<%= form_tag("/recipes/from_params", :method => "post") do %>
+  <%= label_tag(:title) %>
+  <%= text_field_tag(:title, "Bread! #{Recipe.count}") %></br>
+
+  <%= label_tag(:starter) %>
+  <%= text_field_tag(:starter, 30) %></br>
+
+  <%= label_tag(:hydration) %>
+  <%= text_field_tag(:hydration, 75) %></br>
+
+  <%= label_tag(:flour_mass) %>
+  <%= text_field_tag(:flour_mass, 250) %></br>
+
+  <%= submit_tag("Start!") %>
+<% end %>

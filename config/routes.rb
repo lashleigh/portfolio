@@ -6,7 +6,8 @@ Portfolio::Application.routes.draw do
   resources :recipes
 
   constraints(:subdomain => /^baked$/) do
-    match "/" => 'recipe#index'
+    match "/" => 'recipes#index'
+    match "/recipes/from_params" => 'recipes#new_by_params'
     resources :recipes do
       resources :parts
     end

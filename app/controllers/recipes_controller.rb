@@ -1,6 +1,15 @@
 class RecipesController < ApplicationController
   #before_filter :must_be_admin, :except => ['index', 'show']
 
+  def new_by_params
+    logger.info(params)
+    @recipe = Recipe.create!(:title => params[:title] || 'no title')
+    @recipe.interpret(params)
+    @recipe.save
+    redirect_to(@recipe, :notice => 'Recipe was successfully created.')
+    #render :json => 'working?'
+  end
+  
   def index
     @recipes = Recipe.all
 
