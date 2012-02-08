@@ -886,6 +886,9 @@ li.L9 { background: #eee }
 #recipe_container .editing-unit .unit {
   display: none;
 }
+#recipe_container .editing-percent .percent {
+  display: none;
+}
 #recipe_container .amount-col {
   width: 30px;
 }
@@ -894,11 +897,20 @@ li.L9 { background: #eee }
   width: 100%;
   text-align: right;
 }
-#recipe_container .unit-col {
+#recipe_container .unit-col, #recipe_container .percent-col {
   width: 20px;
   text-align: center;
 }
-#recipe_container .unit-col .unit, #recipe_container .unit-col input.edit-unit, #recipe_container .unit-col .new-unit {
+#recipe_container .unit-col .unit,
+#recipe_container .percent-col .unit,
+#recipe_container .unit-col input.edit-unit,
+#recipe_container .percent-col input.edit-unit,
+#recipe_container .unit-col .new-unit,
+#recipe_container .percent-col .new-unit,
+#recipe_container .unit-col .percent,
+#recipe_container .percent-col .percent,
+#recipe_container .unit-col input.edit-percent,
+#recipe_container .percent-col input.edit-percent {
   width: 100%;
 }
 #recipe_container .name-col {
