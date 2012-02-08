@@ -38,7 +38,6 @@ App.Views.Recipe = Backbone.View.extend({
   update_stats: function() {
     var template = _.template($('#recipe-stats').html());
     $(this.el).find('.stats').html(template(this.model.parts.stats()));
-    console.log('update stats');
   },
   newPart: function() {
     var amount = this.new_amount.val();
@@ -81,27 +80,44 @@ App.Views.Part = Backbone.View.extend({
   },
   events: {
     'click .amount' : 'editAmount',
+    'click .percent': 'editPercent',
     'click .name'   : 'editName',
     'click .unit'   : 'editUnit',
     'click .remove': 'clear',
     "keypress .edit-amount"      : "updateAmountOnEnter",
     "keypress .edit-name"      : "updateIngredientOnEnter",
+    "keypress .edit-percent"   : "updatePercentOnEnter",
   },
-  editAmount: function() {
-    $(this.el).addClass('editing-amount');
-    this.input_name.val(this.model.get('ingredient').name);
+  editAmount: function(event) {
+    this.resetFields('editing-amount');
     this.input_amount.removeClass('hidden').focus();
   },
+  editPercent: function() {
+    this.resetFields('editing-percent');
+    this.input_percent.removeClass('hidden').focus();
+  },
   editName: function() {
-    $(this.el).addClass('editing-name'); 
-    this.input_amount.val(this.model.get('amount'));
+    this.resetFields('editing-name');
     this.input_name.removeClass('hidden').focus();
   },
   editUnit: function() {
-    $(this.el).addClass('editing-unit');
+    this.resetFields('editing-unit');
+    this.select_unit.removeClass('hidden').focus();
+  },
+  resetFields: function(editing_field) {
+    $(this.el).addClass(editing_field);
     this.input_name.val(this.model.get('ingredient').name);
     this.input_amount.val(this.model.get('amount'));
-    this.select_unit.removeClass('hidden').val(this.model.get('unit')).focus();
+    this.input_percent.val(this.model.get('percent'));
+    this.select_unit.val(this.model.get('unit'));
+  },
+  updatePercentOnEnter: function(e) {
+    if(e.keyCode == 13) {
+      var percent = truncate(this.input_percent.val());
+      var amount = truncate(percent / 100 * this.model.collection.flour_mass()); 
+      this.model.save({amount: amount, percent: percent});
+      this.exitEditing();
+    }
   },
   updateAmountOnEnter: function(e) {
     if(e.keyCode == 13) {
@@ -132,8 +148,9 @@ App.Views.Part = Backbone.View.extend({
   exitEditing: function() {
     this.input_amount.addClass('hidden');
     this.input_name.addClass('hidden');
+    this.input_percent.addClass('hidden');
     this.select_unit.addClass('hidden');
-    $(this.el).removeClass("editing-amount editing-name editing-unit");
+    $(this.el).removeClass("editing-amount editing-name editing-unit editing-percent");
   },
   remove: function() {
     $(this.el).remove();
@@ -164,12 +181,14 @@ App.Views.Part = Backbone.View.extend({
     $(this.el).html(template(this.model.toJSON()));
     
     this.input_amount = $(this.el).find('.edit-amount'); 
+    this.input_percent= $(this.el).find('.edit-percent'); 
     this.input_name = $(this.el).find('.edit-name');
     this.input_name_id=$(this.el).find('.edit-name-id');
     this.select_unit = $(this.el).find('.edit-unit');
     
     var attrs = this.model.attributes;
     this.input_amount.bind('blur', _.bind(this.exitEditing, this)).val(attrs.amount);
+    this.input_percent.bind('blur', _.bind(this.exitEditing, this)).val(attrs.percent);
     this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(attrs.ingredient.name).autocomplete(this.autocomplete());
     this.select_unit.bind('blur', _.bind(this.exitEditing, this)).val(attrs.unit);
     this.select_unit.bind('change', _.bind(this.updateUnit, this));
@@ -200,12 +219,7 @@ App.Models.Part = Backbone.Model.extend({
     }
     return _.any(errors) ? errors : false
   },
-  percent: function() {
-    var percent = as_percent(this.get('amount') / this.collection.getTotalMass('flour'))
-    this.set({'percent' : percent});
-  },
   initialize: function() {
-    this.bind('change', this.percent, this);
     if(!this.validate(this.attributes)) {
       var id= this.id ? this.id : this.cid;
       this.view = new App.Views.Part({model: this, id: 'part_'+id})
