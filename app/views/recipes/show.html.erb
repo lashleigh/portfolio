@@ -44,16 +44,7 @@
   <tfoot>
     <tr>
       <td class="amount-col"> <input class="new-amount" placeholder="12" /> </td>
-      <td class="unit-col">
-        <select class="new-unit">
-          <option value='g'>g</option>
-          <option value='oz'>oz</option>
-          <option value='ml'>ml</option>
-          <option value='c'>c</option>
-          <option value='t'>t</option>
-          <option value='T'>T</option>
-        </select>
-      </td>
+      <td class="unit-col"> g </td>
       <td class="name-col"> 
         <input id="new-name" placeholder="salt" /> 
         <input id="new-name-id" type="hidden" /> 
@@ -70,17 +61,7 @@
     <span class="amount"> {{amount}} </span>
     <input class="edit-amount hidden" value={{amount}} />
   </td>
-  <td class='unit-col'>
-    <span class="unit">{{unit}}</span>
-    <select class="edit-unit hidden">
-      <option value='g'>g</option>
-      <option value='oz'>oz</option>
-      <option value='ml'>ml</option>
-      <option value='c'>c</option>
-      <option value='t'>t</option>
-      <option value='T'>T</option>
-    </select>
-  </td>
+  <td class='unit-col'> g </td>
   
   <td class='name-col'>
     <span class="primary-name"> {{ingredient.name}} </span>
@@ -97,18 +78,8 @@
     <input class="edit-amount hidden" value={{amount}} />
   </td>
 
-  <td class='unit-col'>
-    <span class="unit">{{unit}}</span>
-    <select class="edit-unit hidden">
-      <option value='g'>g</option>
-      <option value='oz'>oz</option>
-      <option value='ml'>ml</option>
-      <option value='c'>c</option>
-      <option value='t'>t</option>
-      <option value='T'>T</option>
-    </select>
-  </td>
-  
+  <td class='unit-col'> g </td>
+    
   <td class='name-col'>
     <span class="name"> {{ingredient.name}} </span>
     <input class="edit-name hidden" value={{ingredient.name}} />

@@ -43,12 +43,10 @@ App.Views.Recipe = Backbone.View.extend({
     var amount = this.new_amount.val();
     var name = this.new_name.val();
     var id = this.new_name_id.val();
-    var unit = $(this.el).find('.new-unit').val();
     if(!amount || !name) return;
     var newIng = this.model.parts.create({
       percent: Math.floor(1000* amount / this.model.parts.flour_mass())/10,
       amount: amount,
-      unit: unit,
       ingredient_id: id,
       ingredient: {
         name: name
@@ -82,7 +80,6 @@ App.Views.Part = Backbone.View.extend({
     'click .amount' : 'editAmount',
     'click .percent': 'editPercent',
     'click .name'   : 'editName',
-    'click .unit'   : 'editUnit',
     'click .remove': 'clear',
     "keypress .edit-amount"      : "updateAmountOnEnter",
     "keypress .edit-name"      : "updateIngredientOnEnter",
@@ -100,16 +97,11 @@ App.Views.Part = Backbone.View.extend({
     this.resetFields('editing-name');
     this.input_name.removeClass('hidden').focus();
   },
-  editUnit: function() {
-    this.resetFields('editing-unit');
-    this.select_unit.removeClass('hidden').focus();
-  },
   resetFields: function(editing_field) {
     $(this.el).addClass(editing_field);
     this.input_name.val(this.model.get('ingredient').name);
     this.input_amount.val(this.model.get('amount'));
     this.input_percent.val(this.model.get('percent'));
-    this.select_unit.val(this.model.get('unit'));
   },
   updatePercentOnEnter: function(e) {
     if(e.keyCode == 13) {
@@ -141,16 +133,11 @@ App.Views.Part = Backbone.View.extend({
     })
     this.exitEditing();
   },
-  updateUnit: function() {
-    this.model.save({unit: this.select_unit.val()});
-    this.exitEditing();
-  },
   exitEditing: function() {
     this.input_amount.addClass('hidden');
     this.input_name.addClass('hidden');
     this.input_percent.addClass('hidden');
-    this.select_unit.addClass('hidden');
-    $(this.el).removeClass("editing-amount editing-name editing-unit editing-percent");
+    $(this.el).removeClass("editing-amount editing-name editing-percent");
   },
   remove: function() {
     $(this.el).remove();
@@ -184,14 +171,11 @@ App.Views.Part = Backbone.View.extend({
     this.input_percent= $(this.el).find('.edit-percent'); 
     this.input_name = $(this.el).find('.edit-name');
     this.input_name_id=$(this.el).find('.edit-name-id');
-    this.select_unit = $(this.el).find('.edit-unit');
     
     var attrs = this.model.attributes;
     this.input_amount.bind('blur', _.bind(this.exitEditing, this)).val(attrs.amount);
     this.input_percent.bind('blur', _.bind(this.exitEditing, this)).val(attrs.percent);
     this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(attrs.ingredient.name).autocomplete(this.autocomplete());
-    this.select_unit.bind('blur', _.bind(this.exitEditing, this)).val(attrs.unit);
-    this.select_unit.bind('change', _.bind(this.updateUnit, this));
     return this;
   }
 });
@@ -213,9 +197,6 @@ App.Models.Part = Backbone.Model.extend({
       if(attrs.ingredient.name.length < 3) {
         errors.push('ingredient name is too short');
       }
-    }
-    if(!_.isUndefined(attrs.unit)) {
-      // check that the val agrees with rails val
     }
     return _.any(errors) ? errors : false
   },
