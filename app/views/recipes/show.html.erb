@@ -49,6 +49,8 @@
         <input id="new-name" placeholder="salt" /> 
         <input id="new-name-id" type="hidden" /> 
       </td>
+      <td class="percent-col"> </td>
+      <td class="fixed-percent"> </td>
       <td class="button-col"> <button class='icon icononly add button'></button> </td>
     </tr>
   </tfoot>
@@ -66,10 +68,11 @@
   <td class='name-col'>
     <span class="primary-name"> {{ingredient.name}} </span>
   </td>
-  <td class='bakers-percent-col'>
+  <td class='percent-col'> </td>
+  <td class="fixed-percent">
+    <input class="fixed-percent-input" type="checkbox" value={{fixed_percent}} />
   </td>
-  <td class='button-col'>
-  </td>
+  <td class='button-col'> </td>
 
 </script>
 <script type="text/template" id="part-li">
@@ -88,6 +91,9 @@
   <td class='percent-col'>
     <span class="percent">{{percent}}</span>
     <input class="edit-percent hidden" value={{percent}} />
+  </td>
+  <td class="fixed-percent"> 
+    <input class="fixed-percent-input" type="checkbox" value={{fixed_percent}} />
   </td>
   <td class='button-col'>
     <button class='icon icononly remove danger button'></button>

@@ -12,7 +12,7 @@ truncate = function(num) {
 
 App.Models.Recipe = Backbone.Model.extend({
   initialize: function() {
-    this.parts = new App.Collections.PartList
+    this.parts = new App.Collections.PartList;
     this.view = new App.Views.Recipe({model: this, id: 'recipe_'+this.id});
     $("#recipe_container").append(this.view.render().el);
     
@@ -81,9 +81,13 @@ App.Views.Part = Backbone.View.extend({
     'click .percent': 'editPercent',
     'click .name'   : 'editName',
     'click .remove': 'clear',
+    'click .fixed-percent-input': 'toggleFixedPercent',
     "keypress .edit-amount"      : "updateAmountOnEnter",
     "keypress .edit-name"      : "updateIngredientOnEnter",
     "keypress .edit-percent"   : "updatePercentOnEnter",
+  },
+  toggleFixedPercent: function() {
+    this.model.save({'fixed_percent': !this.model.get('fixed_percent')});
   },
   editAmount: function(event) {
     this.resetFields('editing-amount');
@@ -176,6 +180,7 @@ App.Views.Part = Backbone.View.extend({
     this.input_amount.bind('blur', _.bind(this.exitEditing, this)).val(attrs.amount);
     this.input_percent.bind('blur', _.bind(this.exitEditing, this)).val(attrs.percent);
     this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(attrs.ingredient.name).autocomplete(this.autocomplete());
+    this.el.getElementsByClassName('fixed-percent-input')[0].checked = this.model.get('fixed_percent');
     return this;
   }
 });
@@ -205,12 +210,27 @@ App.Models.Part = Backbone.Model.extend({
       var id= this.id ? this.id : this.cid;
       this.view = new App.Views.Part({model: this, id: 'part_'+id})
     }
-  }
+    if(this.get('ingredient').name === 'flour' || this.get('ingredient').name === 'starter' ) {
+      this.bind('change', this.updatePercents, this)
+    }
+  },
+  updatePercents: function() {
+    var flour = this.collection.getTotalMass('flour') + this.collection.getTotalMass('starter') / 2;
+    var that = this;
+    var need_update = this.collection.filter(function(part) { return (part !== that) && (part.get('primary') === false); })
+    _.each(need_update, function(part) {
+      if(part.get('fixed_percent')) {
+        part.set({amount: truncate(part.get('percent')/100 * flour)});
+      } else {
+        part.set({percent: as_percent(part.get('amount') / flour)});
+      }
+    })
+  },
 })
 App.Collections.PartList = Backbone.Collection.extend({
   model: App.Models.Part,
   getTotalMass: function(name) {
-    return _.pluck(_.pluck(this.filter(function(part) {return part.get('ingredient').name == name}), 'attributes'), 'amount').reduce(function(a, b) {return a+b;}, 0)
+    return _.pluck(_.pluck(this.filter(function(part) {return part.get('ingredient').name == name}), 'attributes'), 'amount').reduce(function(a, b) {return parseFloat(a)+parseFloat(b);}, 0)
   },
   stats: function() {
     var half_starter = this.getTotalMass('starter') / 2;
