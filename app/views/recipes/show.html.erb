@@ -42,14 +42,16 @@
     <tbody id="part-list">
     </tbody>
   <tfoot>
-    <tr>
-      <td class="amount-col"> <input class="new-amount" placeholder="12" /> </td>
+    <tr id="new-part">
+      <td class="amount-col"> <input id="new-amount" placeholder="12" /> </td>
       <td class="unit-col"> g </td>
       <td class="name-col"> 
         <input id="new-name" placeholder="salt" /> 
         <input id="new-name-id" type="hidden" /> 
       </td>
-      <td class="percent-col"> </td>
+      <td class='percent-col'>
+        <input id="new-percent" />
+      </td>
       <td class="fixed-percent"> </td>
       <td class="button-col"> <button class='icon icononly add button'></button> </td>
     </tr>

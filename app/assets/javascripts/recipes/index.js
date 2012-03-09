@@ -41,27 +41,38 @@ App.Views.Recipe = Backbone.View.extend({
   },
   newPart: function() {
     var amount = this.new_amount.val();
+    var percent = this.new_percent.val();
     var name = this.new_name.val();
     var id = this.new_name_id.val();
-    if(!amount || !name) return;
+    var fixed_percent = false;
+    if(!name) return;
+    if(isNum(percent)) {
+      amount = truncate(percent/100.0 * this.model.parts.flour_mass());
+      fixed_percent = true;
+    } else if(isNum(amount)) {
+      percent = as_percent(amount / this.model.parts.flour_mass());
+    } else { return; }
     var newIng = this.model.parts.create({
-      percent: Math.floor(1000* amount / this.model.parts.flour_mass())/10,
+      percent: percent, 
       amount: amount,
       ingredient_id: id,
+      fixed_percent: fixed_percent,
       ingredient: {
         name: name
       }
     })
     if(!!newIng) {
-      this.new_amount.val('');
-      this.new_name.val('');
-      this.new_name_id.val('');
+      $(this.el).find('#new-part').find('input').val('');
+    }
+    function isNum(num) {
+      return !!num && parseFloat(num) === num*1.0;
     }
   },
   render: function() {
     var template = _.template($('#recipe-li').html());
     $(this.el).html(template(this.model.toJSON()))
-    this.new_amount = $(this.el).find('.new-amount');
+    this.new_amount = $(this.el).find('#new-amount');
+    this.new_percent= $(this.el).find('#new-percent');
     this.new_name   = $(this.el).find('#new-name');
     this.new_name_id= $(this.el).find('#new-name-id');
     return this;

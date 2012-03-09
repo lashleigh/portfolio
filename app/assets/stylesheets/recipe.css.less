@@ -9,15 +9,12 @@
   .editing-name .name {
     display: none;
   }
-  .editing-unit .unit {
-    display: none;
-  }
   .editing-percent .percent {
     display: none;
   }
   .amount-col {
     width: 30px;
-    .amount, input.edit-amount, input.new-amount {
+    .amount, input.edit-amount, input#new-amount {
       float: right;
       width: 100%;
       text-align: right;
@@ -26,13 +23,13 @@
   .unit-col, .percent-col {
     width: 20px;
     text-align: center;
-    .unit, input.edit-unit, .new-unit, .percent, input.edit-percent {
+    .unit, .percent, input.edit-percent, input#new-percent {
       width: 100%;
     }
   }
   .name-col {
     width: 100px;
-    .name, input.edit-name, input.new-name {
+    .name, input.edit-name, input#new-name {
       float: left;
       width: 92%;
       text-align: left;
