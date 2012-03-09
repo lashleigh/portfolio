@@ -34,6 +34,18 @@ App.Views.Recipe = Backbone.View.extend({
   className: 'recipe',
   events: {
     'click .add'    : 'newPart',
+    'keydown input#new-amount'      : "updateNewPercent",
+    'keydown input#new-percent'     : "updateNewAmount",
+  },
+  updateNewPercent: function() {
+    var percent = as_percent(this.new_amount.val() / this.model.parts.flour_mass());
+    this.new_percent.val('');
+    this.new_percent.attr('placeholder', percent);
+  },
+  updateNewAmount: function() {
+    var amount = truncate(this.new_percent.val() / 100.0 * this.model.parts.flour_mass());
+    this.new_amount.val('');
+    this.new_amount.attr('placeholder', amount);
   },
   update_stats: function() {
     var template = _.template($('#recipe-stats').html());
