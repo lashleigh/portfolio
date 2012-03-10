@@ -4,10 +4,10 @@ var App = {
   Models: {}
 }
 as_percent = function(num) {
-  return Math.floor(1000*num) / 10;
+  return Math.floor(10000*num) / 100;
 }
 truncate = function(num) {
-  return Math.floor(10*num) / 10;
+  return Math.floor(100*num) / 100;
 }
 
 App.Models.Recipe = Backbone.Model.extend({
@@ -50,7 +50,7 @@ App.Views.Recipe = Backbone.View.extend({
   }, 
   updateHydrationOnEnter: function(e) {
     if(e.keyCode == 13) {
-      var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0]
+      var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0];
       var hydration = this.hydration_input.val();
       var total_water = this.model.parts.water_mass();
       var total_flour = this.model.parts.flour_mass();
@@ -58,10 +58,9 @@ App.Views.Recipe = Backbone.View.extend({
       if(min_hydration < hydration) {
         var new_water_mass = truncate((hydration - min_hydration) / 100.0 * total_flour);
         var percent = as_percent(new_water_mass / total_flour);
-        console.log('ok', min_hydration, hydration);
         water.save({amount: new_water_mass, percent: percent});
       } else {
-        console.log('hydration unattainable')
+        //TODO flash warning OR change the flour
       }
       this.exitEditHydration();
       this.update_stats();
@@ -172,7 +171,7 @@ App.Views.Part = Backbone.View.extend({
   updateAmountOnEnter: function(e) {
     if(e.keyCode == 13) {
       var amount = this.input_amount.val();
-      var percent = Math.floor(1000*amount / this.model.collection.flour_mass())/10;
+      var percent = as_percent(amount / this.model.collection.flour_mass());
       this.model.save({amount: amount, percent: percent});
       this.exitEditing();
     }
@@ -221,7 +220,6 @@ App.Views.Part = Backbone.View.extend({
     }
   },
   render: function() {
-    //this.model.set({'percent': Math.floor(1000*this.model.get('amount') / this.model.collection.flour_mass())/10});
     var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
     
