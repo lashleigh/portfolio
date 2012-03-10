@@ -48,6 +48,4 @@ class PartsController < ApplicationController
       render :json => {'message' => 'failed to save'}
     end
   end
-
-
 end

@@ -71,9 +71,7 @@
     <span class="primary-name"> {{ingredient.name}} </span>
   </td>
   <td class='percent-col'> </td>
-  <td class="fixed-percent">
-    <input class="fixed-percent-input" type="checkbox" value={{fixed_percent}} />
-  </td>
+  <td class="fixed-percent"> </td>
   <td class='button-col'> </td>
 
 </script>
@@ -104,8 +102,9 @@
 
 <script type="text/template" id="recipe-stats">
   <div>
-    <span class="hydration"> {{hydration}}</span>% hydration
+    <span class="hydration"> {{hydration}}</span>
     <input class="edit-hydration hidden" value={{hydration}} />
+    % hydration
   </div>
   <div>
     <span class="innoculation"> {{innoculation}}</span>% innoculation

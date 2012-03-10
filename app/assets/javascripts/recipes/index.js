@@ -34,8 +34,38 @@ App.Views.Recipe = Backbone.View.extend({
   className: 'recipe',
   events: {
     'click .add'    : 'newPart',
-    'keydown input#new-amount'      : "updateNewPercent",
-    'keydown input#new-percent'     : "updateNewAmount",
+    'click .hydration' : 'editHydration', 
+    'blur .edit-hydration' : 'exitEditHydration', 
+    'keypress .edit-hydration' : 'updateHydrationOnEnter', 
+    'keyup input#new-amount'      : "updateNewPercent",
+    'keyup input#new-percent'     : "updateNewAmount",
+  },
+  editHydration: function() {
+    $(this.el).addClass('editing-hydration');
+    $(this.el).find('.edit-hydration').removeClass('hidden').focus();
+  }, 
+  exitEditHydration: function() {
+    $(this.el).removeClass('editing-hydration');
+    $(this.el).find('.edit-hydration').addClass('hidden');
+  }, 
+  updateHydrationOnEnter: function(e) {
+    if(e.keyCode == 13) {
+      var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0]
+      var hydration = this.hydration_input.val();
+      var total_water = this.model.parts.water_mass();
+      var total_flour = this.model.parts.flour_mass();
+      var min_hydration = as_percent((total_water - water.get('amount')) / total_flour);
+      if(min_hydration < hydration) {
+        var new_water_mass = truncate((hydration - min_hydration) / 100.0 * total_flour);
+        var percent = as_percent(new_water_mass / total_flour);
+        console.log('ok', min_hydration, hydration);
+        water.save({amount: new_water_mass, percent: percent});
+      } else {
+        console.log('hydration unattainable')
+      }
+      this.exitEditHydration();
+      this.update_stats();
+    }
   },
   updateNewPercent: function() {
     var percent = as_percent(this.new_amount.val() / this.model.parts.flour_mass());
@@ -50,6 +80,7 @@ App.Views.Recipe = Backbone.View.extend({
   update_stats: function() {
     var template = _.template($('#recipe-stats').html());
     $(this.el).find('.stats').html(template(this.model.parts.stats()));
+    this.hydration_input  = $(this.el).find('.edit-hydration');
   },
   newPart: function() {
     var amount = this.new_amount.val();
@@ -83,10 +114,10 @@ App.Views.Recipe = Backbone.View.extend({
   render: function() {
     var template = _.template($('#recipe-li').html());
     $(this.el).html(template(this.model.toJSON()))
-    this.new_amount = $(this.el).find('#new-amount');
-    this.new_percent= $(this.el).find('#new-percent');
-    this.new_name   = $(this.el).find('#new-name');
-    this.new_name_id= $(this.el).find('#new-name-id');
+    this.new_amount       = $(this.el).find('#new-amount');
+    this.new_percent      = $(this.el).find('#new-percent');
+    this.new_name         = $(this.el).find('#new-name');
+    this.new_name_id      = $(this.el).find('#new-name-id');
     return this;
   }
 });
@@ -203,7 +234,10 @@ App.Views.Part = Backbone.View.extend({
     this.input_amount.bind('blur', _.bind(this.exitEditing, this)).val(attrs.amount);
     this.input_percent.bind('blur', _.bind(this.exitEditing, this)).val(attrs.percent);
     this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(attrs.ingredient.name).autocomplete(this.autocomplete());
-    this.el.getElementsByClassName('fixed-percent-input')[0].checked = this.model.get('fixed_percent');
+    if(this.model.get('primary')) {
+    } else {
+      this.el.getElementsByClassName('fixed-percent-input')[0].checked = this.model.get('fixed_percent');
+    }
     return this;
   }
 });
@@ -270,6 +304,9 @@ App.Collections.PartList = Backbone.Collection.extend({
   flour_mass: function() {
     return this.getTotalMass('flour') + this.getTotalMass('starter')/2;
   },
+  water_mass: function() {
+    return this.getTotalMass('water') + this.getTotalMass('starter')/2;
+  }, 
   initialize: function() {
   }
 })

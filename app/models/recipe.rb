@@ -5,6 +5,7 @@ class Recipe
 
   key :title, String, :default => 'bread'
   many :parts
+  many :notes
   timestamps!
 
   def splice(obj, new_index)
