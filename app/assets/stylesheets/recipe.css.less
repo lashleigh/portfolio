@@ -1,4 +1,4 @@
-#recipe_container {
+#recipes_container {
   .recipe {
     padding: 20px;
     color: blue;
@@ -23,10 +23,17 @@
       text-align: right;
     }
   }
-  .unit-col, .percent-col {
+  .unit-col {
+    width: 20px;
+    text-align: center;
+    .unit {
+      width: 100%;
+    }
+  }
+  .percent-col {
     width: 25px;
     text-align: center;
-    .unit, .percent, input.edit-percent, input#new-percent {
+    .percent, input.edit-percent, input#new-percent {
       width: 100%;
     }
   }

@@ -1,4 +1,4 @@
-<div id="recipe_container"> </div>
+<div id="recipes_container"> </div>
 
 <script type="text/javascript">
   var Recipe;
@@ -58,6 +58,7 @@
   </tfoot>
   </table>
   <span class="stats"> </span>
+  <div class="notes_container"></div>
 </script>
 
 <script type="text/template" id="primary-part-li">
@@ -120,3 +121,9 @@
     degrees F
   </div>
 </script>
+
+<script type="text/template" id="note-li">
+  <div class="time">{{time}}</div>
+  <div class="note-body">{{body}}</div>
+</script>
+

@@ -13,22 +13,26 @@ truncate = function(num) {
 App.Models.Recipe = Backbone.Model.extend({
   initialize: function() {
     this.parts = new App.Collections.PartList;
+    this.notes = new App.Collections.NoteList;
     this.view = new App.Views.Recipe({model: this, id: 'recipe_'+this.id});
-    $("#recipe_container").append(this.view.render().el);
+    $("#recipes_container").append(this.view.render().el);
     
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
     this.parts.reset(this.get('parts'));
-
     this.parts.bind('all', this.view.update_stats, this.view)
+
+    this.notes.url = '/recipes/'+this.id+'/notes';
+    this.notes.recipeView = this.view;
+    this.notes.reset(this.get('notes'));
+
     this.view.update_stats();
   }
-})
+});
 App.Collections.Recipes = Backbone.Collection.extend({
   model: App.Models.Recipe,
   url: '/recipes',
-})
-
+});
 App.Views.Recipe = Backbone.View.extend({
   tagName: 'div',
   className: 'recipe',
@@ -54,7 +58,7 @@ App.Views.Recipe = Backbone.View.extend({
       var hydration = this.hydration_input.val();
       var total_water = this.model.parts.water_mass();
       var total_flour = this.model.parts.flour_mass();
-      var min_hydration = as_percent((total_water - water.get('amount')) / total_flour);
+      var min_hydration = (total_water - water.get('amount')) / total_flour * 100;
       if(min_hydration < hydration) {
         var new_water_mass = truncate((hydration - min_hydration) / 100.0 * total_flour);
         var percent = as_percent(new_water_mass / total_flour);
@@ -119,6 +123,20 @@ App.Views.Recipe = Backbone.View.extend({
     this.new_name_id      = $(this.el).find('#new-name-id');
     return this;
   }
+});
+App.Views.Note = Backbone.View.extend({
+  tagName: 'div',
+  className: 'note',
+  initialize: function() {
+    console.log('note view', this);
+    this.template = $('#note-li').html();
+    $(this.model.collection.recipeView.el).find('.notes_container').append(this.render().el);
+  },
+  render: function() {
+    var template = _.template(this.template);
+    $(this.el).html(template(this.model.toJSON()));
+    return this;
+  } 
 });
 App.Views.Part = Backbone.View.extend({
   tagName: 'tr',
@@ -308,4 +326,13 @@ App.Collections.PartList = Backbone.Collection.extend({
   initialize: function() {
   }
 })
-
+App.Models.Note = Backbone.Model.extend({
+  initialize: function() {
+    this.view = new App.Views.Note({model: this, id: 'note_'+this.id})
+  } 
+});
+App.Collections.NoteList = Backbone.Collection.extend({
+  model: App.Models.Note,
+  initialize: function() {
+  }
+});
