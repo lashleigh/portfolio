@@ -4,10 +4,10 @@ var App = {
   Models: {}
 }
 as_percent = function(num) {
-  return Math.floor(10000*num) / 100;
+  return Math.round(10000*num) / 100;
 }
 truncate = function(num) {
-  return Math.floor(100*num) / 100;
+  return Math.round(100*num) / 100;
 }
 
 App.Models.Recipe = Backbone.Model.extend({
@@ -15,7 +15,7 @@ App.Models.Recipe = Backbone.Model.extend({
     this.parts = new App.Collections.PartList;
     this.notes = new App.Collections.NoteList;
     this.view = new App.Views.Recipe({model: this, id: 'recipe_'+this.id});
-    $("#recipes_container").append(this.view.render().el);
+    $("#recipe_container").append(this.view.render().el);
     
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
@@ -28,10 +28,6 @@ App.Models.Recipe = Backbone.Model.extend({
 
     this.view.update_stats();
   }
-});
-App.Collections.Recipes = Backbone.Collection.extend({
-  model: App.Models.Recipe,
-  url: '/recipes',
 });
 App.Views.Recipe = Backbone.View.extend({
   tagName: 'div',
@@ -60,7 +56,7 @@ App.Views.Recipe = Backbone.View.extend({
       var total_flour = this.model.parts.flour_mass();
       var min_hydration = (total_water - water.get('amount')) / total_flour * 100;
       if(min_hydration < hydration) {
-        var new_water_mass = truncate((hydration - min_hydration) / 100.0 * total_flour);
+        var new_water_mass = ((hydration - min_hydration) / 100.0 * total_flour);
         var percent = as_percent(new_water_mass / total_flour);
         water.save({amount: new_water_mass, percent: percent});
       } else {
@@ -116,7 +112,7 @@ App.Views.Recipe = Backbone.View.extend({
   },
   render: function() {
     var template = _.template($('#recipe-li').html());
-    $(this.el).html(template(this.model.toJSON()))
+    $(this.el).html(template(this.model.toJSON()));
     this.new_amount       = $(this.el).find('#new-amount');
     this.new_percent      = $(this.el).find('#new-percent');
     this.new_name         = $(this.el).find('#new-name');
@@ -130,7 +126,7 @@ App.Views.Note = Backbone.View.extend({
   initialize: function() {
     console.log('note view', this);
     this.template = $('#note-li').html();
-    $(this.model.collection.recipeView.el).find('.notes_container').append(this.render().el);
+    $('#notes_container').append(this.render().el);
   },
   render: function() {
     var template = _.template(this.template);
@@ -140,7 +136,7 @@ App.Views.Note = Backbone.View.extend({
 });
 App.Views.Part = Backbone.View.extend({
   tagName: 'tr',
-  className: 'parts',
+  className: 'part',
   initialize: function() {
     this.template = this.model.get('primary') ? $('#primary-part-li').html() : $('#part-li').html();
     $(this.model.collection.recipeView.el).find('#part-list').append(this.render().el)
@@ -237,6 +233,11 @@ App.Views.Part = Backbone.View.extend({
       }
     }
   },
+  truncate: function(hash) {
+    hash.amount = truncate(hash.amount);
+    hash.percent = truncate(hash.percent);
+    return hash
+  },
   render: function() {
     var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
@@ -293,7 +294,7 @@ App.Models.Part = Backbone.Model.extend({
     var need_update = this.collection.filter(function(part) { return (part !== that) && (part.get('primary') === false); })
     _.each(need_update, function(part) {
       if(part.get('fixed_percent')) {
-        part.set({amount: truncate(part.get('percent')/100 * flour)});
+        part.set({amount: part.get('percent')/100 * flour});
       } else {
         part.set({percent: as_percent(part.get('amount') / flour)});
       }
@@ -335,4 +336,8 @@ App.Collections.NoteList = Backbone.Collection.extend({
   model: App.Models.Note,
   initialize: function() {
   }
+});
+App.Collections.Recipes = Backbone.Collection.extend({
+  model: App.Models.Recipe,
+  url: '/recipes'
 });
