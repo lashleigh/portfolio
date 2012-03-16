@@ -124,13 +124,35 @@ App.Views.Note = Backbone.View.extend({
   tagName: 'div',
   className: 'note',
   initialize: function() {
-    console.log('note view', this);
     this.template = $('#note-li').html();
     $('#notes_container').append(this.render().el);
+    this.model.bind('change', this.render, this);
+  },
+  events: {
+    'click .body'  : 'editBody',
+    'click .body-cancel'  : 'exitEditBody',
+    'click .body-submit'  : 'updateBody', 
+  }, 
+  editBody: function() {
+    this.note_body.addClass('hidden');
+    this.edit_body.removeClass('hidden');
+    this.body_input.focus();
+  }, 
+  exitEditBody: function() {
+    this.note_body.removeClass('hidden');
+    this.edit_body.addClass('hidden');
+  }, 
+  updateBody: function() {
+    console.log('save changes');
+    this.model.save({'body' : this.body_input.val()});
+    this.exitEditBody();
   },
   render: function() {
     var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
+    this.note_body = $(this.el).find('.body');
+    this.body_input = $(this.el).find('.body-input');
+    this.edit_body  = $(this.el).find('.edit-body');
     return this;
   } 
 });
@@ -294,7 +316,7 @@ App.Models.Part = Backbone.Model.extend({
     var need_update = this.collection.filter(function(part) { return (part !== that) && (part.get('primary') === false); })
     _.each(need_update, function(part) {
       if(part.get('fixed_percent')) {
-        part.set({amount: part.get('percent')/100 * flour});
+        part.set({amount: truncate(part.get('percent')/100 * flour)});
       } else {
         part.set({percent: as_percent(part.get('amount') / flour)});
       }

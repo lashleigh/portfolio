@@ -124,6 +124,11 @@
 
 <script type="text/template" id="note-li">
   <div class="time">{{time}}</div>
-  <div class="note-body">{{body}}</div>
+  <div class="body">{{body}}</div>
+  <div class="edit-body hidden">
+    <textarea class="body-input" >{{body}}</textarea>
+    <input class="body-submit button" type="button" value = 'Save' />
+    <input class="body-cancel button" type="button" value = 'Cancel' />
+  </div>
 </script>
 
