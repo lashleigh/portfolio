@@ -125,13 +125,18 @@ App.Views.Note = Backbone.View.extend({
   className: 'note',
   initialize: function() {
     this.template = $('#note-li').html();
-    $('#notes_container').append(this.render().el);
+    $('#new-note').after(this.render().el);
     this.model.bind('change', this.render, this);
   },
   events: {
     'click .body'  : 'editBody',
     'click .body-cancel'  : 'exitEditBody',
     'click .body-submit'  : 'updateBody', 
+    'click .remove' : 'destroy',
+  }, 
+  destroy: function() {
+    this.model.destroy();
+    $(this.el).remove();
   }, 
   editBody: function() {
     this.note_body.addClass('hidden');
@@ -143,13 +148,32 @@ App.Views.Note = Backbone.View.extend({
     this.edit_body.addClass('hidden');
   }, 
   updateBody: function() {
-    console.log('save changes');
     this.model.save({'body' : this.body_input.val()});
     this.exitEditBody();
   },
+  localTime: function() {
+    var d = new Date(this.model.get('time'));
+    var hours = d.getHours();
+    var minutes = d.getMinutes();
+    if(minutes < 10) minutes = '0'+minutes;
+    var simple_time = hours > 12 ? hours-12+':'+minutes+' pm' : hours+':'+minutes+'am';
+    if(hours === 0) simple_time = '12:'+minutes+' pm';
+    var today = new Date();
+    var delta_in_days = (today - d) / (1000*60*60*24);
+    var view_ago;
+    if(delta_in_days < 1) {
+      view_ago = 'today';
+    } else if(delta_in_days < 2) {
+      view_ago = 'yesterday';
+    } else {
+      view_ago = Math.floor(delta_in_days) + ' days ago';
+    }
+    return view_ago + ' at ' + simple_time; 
+  }, 
   render: function() {
     var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
+    $(this.el).find('.time').text(this.localTime());
     this.note_body = $(this.el).find('.body');
     this.body_input = $(this.el).find('.body-input');
     this.edit_body  = $(this.el).find('.edit-body');
@@ -357,7 +381,18 @@ App.Models.Note = Backbone.Model.extend({
 App.Collections.NoteList = Backbone.Collection.extend({
   model: App.Models.Note,
   initialize: function() {
-  }
+  },
+  newNote: function() {
+    console.log('new note')
+    var body = $('.new-note-body').val();
+    if(!body) return 
+    var note = this.create({
+      time: (new Date()).toUTCString(),
+      body : $('.new-note-body').val(),
+    })
+    //TODO make this part of a success callback
+    $('.new-note-body').val('');
+  }, 
 });
 App.Collections.Recipes = Backbone.Collection.extend({
   model: App.Models.Recipe,

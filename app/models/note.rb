@@ -4,4 +4,7 @@ class Note
   key :time, Time
   key :body, String
 
+  def as_json(options={})
+    options 
+  end
 end
