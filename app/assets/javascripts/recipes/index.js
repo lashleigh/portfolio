@@ -1,3 +1,7 @@
+function isNum(num) {
+  return !!num && parseFloat(num) === num*1.0;
+}
+
 var App = {
   Collections: {},
   Views: {},
@@ -20,7 +24,7 @@ App.Models.Recipe = Backbone.Model.extend({
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
     this.parts.reset(this.get('parts'));
-    this.parts.bind('all', this.view.update_stats, this.view)
+    this.parts.bind('all', this.view.update_stats, this.view) //TODO this is excessive stats updates
 
     this.notes.url = '/recipes/'+this.id+'/notes';
     this.notes.recipeView = this.view;
@@ -39,6 +43,15 @@ App.Views.Recipe = Backbone.View.extend({
     'keypress .edit-hydration' : 'updateHydrationOnEnter', 
     'keyup input#new-amount'      : "updateNewPercent",
     'keyup input#new-percent'     : "updateNewAmount",
+    'blur .innoculation' : "updateInnoculation",
+  },
+  updateInnoculation: function() {
+    var inn = $('.innoculation').text();
+    if(isNum(inn)) {
+      console.log('new innoculation', inn)
+    } else {
+      $('.innoculation').text(this.model.parts.stats().innoculation);
+    }
   },
   editHydration: function() {
     $(this.el).addClass('editing-hydration');
@@ -106,9 +119,6 @@ App.Views.Recipe = Backbone.View.extend({
     if(!!newIng) {
       $(this.el).find('#new-part').find('input').val('');
     }
-    function isNum(num) {
-      return !!num && parseFloat(num) === num*1.0;
-    }
   },
   render: function() {
     var template = _.template($('#recipe-li').html());
@@ -156,8 +166,13 @@ App.Views.Note = Backbone.View.extend({
     var hours = d.getHours();
     var minutes = d.getMinutes();
     if(minutes < 10) minutes = '0'+minutes;
-    var simple_time = hours > 12 ? hours-12+':'+minutes+' pm' : hours+':'+minutes+'am';
-    if(hours === 0) simple_time = '12:'+minutes+' pm';
+    var am_pm = ' am';
+    if(hours >= 12) {
+      am_pm = ' pm';
+      hours = hours - 12 ? hours - 12 : 12; 
+    }
+    var simple_time = hours+':'+minutes+am_pm;
+
     var today = new Date();
     var delta_in_days = (today - d) / (1000*60*60*24);
     var view_ago;
@@ -335,14 +350,13 @@ App.Models.Part = Backbone.Model.extend({
     }
   },
   updatePercents: function() {
-    var flour = this.collection.getTotalMass('flour') + this.collection.getTotalMass('starter') / 2;
-    var that = this;
-    var need_update = this.collection.filter(function(part) { return (part !== that) && (part.get('primary') === false); })
+    var flour = this.collection.flour_mass();
+    var need_update = this.collection.filter(function(part) { return (part !== this) && (part.get('primary') === false); })
     _.each(need_update, function(part) {
       if(part.get('fixed_percent')) {
-        part.set({amount: truncate(part.get('percent')/100 * flour)});
+        part.save({amount: truncate(part.get('percent')/100 * flour)});
       } else {
-        part.set({percent: as_percent(part.get('amount') / flour)});
+        part.save({percent: as_percent(part.get('amount') / flour)});
       }
     })
   },
@@ -383,7 +397,6 @@ App.Collections.NoteList = Backbone.Collection.extend({
   initialize: function() {
   },
   newNote: function() {
-    console.log('new note')
     var body = $('.new-note-body').val();
     if(!body) return 
     var note = this.create({

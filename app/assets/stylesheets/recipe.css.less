@@ -1,8 +1,12 @@
 #recipe_container {
+  .editable:hover {
+    background: #ffffd3;
+  }
   input {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size:   13px;
     line-height: 18px;
+    background: transparent;
   }
   float: left;
   .recipe {
@@ -44,10 +48,10 @@
     }
   }
   .name-col {
-    width: 75px;
+    width: 100px;
     .name, input.edit-name, input#new-name {
       float: left;
-      width: 75px;
+      width: 100px;
       text-align: left;
       overflow: hidden;
     }
@@ -63,7 +67,7 @@
       height: 2.5em;
     }
     .part:hover {
-      background: #bab;
+      //background: #bab;
     }
     tr:nth-child(odd) {
       background: #ddd;
@@ -77,6 +81,11 @@
   float: left;
   padding-top: 37px;
   width: 300px;
+  .show-body {
+    .button {
+      float: right;
+    }    
+  }
   .note {
     border: gray 1px dashed;
     padding: 12px;

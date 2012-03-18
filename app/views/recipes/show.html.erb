@@ -71,7 +71,7 @@
 
 <script type="text/template" id="primary-part-li">
   <td class='amount-col'>
-    <span class="amount"> {{amount}} </span>
+    <span class="amount editable"> {{amount}} </span>
     <input class="edit-amount hidden" value={{amount}} />
   </td>
   <td class='unit-col'> g </td>
@@ -85,19 +85,19 @@
 
 </script>
 <script type="text/template" id="part-li">
-  <td class='amount-col'>
+  <td class='amount-col editable'>
     <span class="amount"> {{amount}} </span>
     <input class="edit-amount hidden" value={{amount}} />
   </td>
 
   <td class='unit-col'> g </td>
     
-  <td class='name-col'>
+  <td class='name-col editable'>
     <span class="name"> {{ingredient.name}} </span>
     <input class="edit-name hidden" value={{ingredient.name}} />
     <input class="edit-name-id" type="hidden" value={{ingredient_id}} />
   </td>
-  <td class='percent-col'>
+  <td class='percent-col editable'>
     <span class="percent">{{percent}}</span>
     <input class="edit-percent hidden" value={{percent}} />
   </td>
@@ -111,12 +111,12 @@
 
 <script type="text/template" id="recipe-stats">
   <div>
-    <span class="hydration"> {{hydration}}</span>
+    <span class="hydration editable"> {{hydration}}</span>
     <input class="edit-hydration hidden" value={{hydration}} />
     % hydration
   </div>
   <div>
-    <span class="innoculation"> {{innoculation}}</span>% innoculation
+    <span class="innoculation" contenteditable="true"> {{innoculation}}</span>% innoculation
     <input class="edit-innoculation hidden" value={{innoculation}} />
   </div>
   <div class="timing">
@@ -131,9 +131,11 @@
 </script>
 
 <script type="text/template" id="note-li">
-  <div class="time">{{time}}</div>
-  <button class='icon icononly remove danger button'></button>
-  <div class="body">{{body}}</div>
+  <div class="show-body">
+    <span class="time">{{time}}</span>
+    <button class='icon icononly remove danger button'></button>
+    <div class="body">{{body}}</div>
+  </div>
   <div class="edit-body hidden">
     <textarea class="body-input" >{{body}}</textarea>
     <input class="body-submit button" type="button" value = 'Save' />
