@@ -27,7 +27,11 @@ class FaqsController < ApplicationController
   def new
     @faq = Faq.new
     last = Faq.last(:order => :position)
-    @faq.position = last.position + 1
+    if last
+      @faq.position = last.position + 1
+    else
+      @faq.position = 0
+    end
 
     respond_to do |format|
       format.html # new.html.erb
