@@ -2,7 +2,7 @@
   .editable:hover {
     background: #ffffd3;
   }
-  input {
+  textarea, input {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size:   13px;
     line-height: 18px;
@@ -78,6 +78,16 @@
   }
 }
 #notes_container {
+  textarea {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size:   13px;
+    line-height: 18px;
+    background: transparent;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    width: 100%;
+  }
   float: left;
   padding-top: 37px;
   width: 300px;
@@ -86,12 +96,21 @@
       float: right;
     }    
   }
+  #new-note {
+    textarea {
+      background: white;
+    }
+  }
   .note {
     border: gray 1px dashed;
     padding: 12px;
-    .body-input {
+    .body {
       width: 100%;
-      height: 150px;
+      overflow: auto;
+    } 
+    .body-input {
+      color: #333;
+      height: 100px;
     }
   }
 }
