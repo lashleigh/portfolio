@@ -35,7 +35,6 @@ App.Models.Recipe = Backbone.Model.extend({
 });
 App.Views.Recipe = Backbone.View.extend({
   tagName: 'div',
-  className: 'recipe',
   events: {
     'click .add'    : 'newPart',
     'click .hydration' : 'editHydration', 
@@ -44,6 +43,10 @@ App.Views.Recipe = Backbone.View.extend({
     'keyup input#new-amount'      : "updateNewPercent",
     'keyup input#new-percent'     : "updateNewAmount",
     'blur .innoculation' : "updateInnoculation",
+    'click .new-note' : "newNote",
+  },
+  newNote: function() {
+    this.model.notes.newNote();
   },
   updateInnoculation: function() {
     var inn = $('.innoculation').text();
@@ -205,9 +208,9 @@ App.Views.Part = Backbone.View.extend({
     this.model.bind('destroy', this.remove, this);
   },
   events: {
-    'click .amount' : 'editAmount',
-    'click .percent': 'editPercent',
-    'click .name'   : 'editName',
+    'click .amount-col' : 'editAmount',
+    'click .percent-col': 'editPercent',
+    'click .name-col'   : 'editName',
     'click .remove': 'clear',
     'click .fixed-percent-input': 'toggleFixedPercent',
     "keypress .edit-amount"      : "updateAmountOnEnter",
@@ -219,17 +222,21 @@ App.Views.Part = Backbone.View.extend({
   },
   editAmount: function(event) {
     this.resetFields('editing-amount');
+    this.input_amount.parent().addClass('editing');
     this.input_amount.removeClass('hidden').focus();
   },
   editPercent: function() {
     this.resetFields('editing-percent');
+    this.input_percent.parent().addClass('editing');
     this.input_percent.removeClass('hidden').focus();
   },
   editName: function() {
     this.resetFields('editing-name');
+    this.input_name.parent().addClass('editing');
     this.input_name.removeClass('hidden').focus();
   },
   resetFields: function(editing_field) {
+    //$('.recipe').removeClass('not-editing');
     $(this.el).addClass(editing_field);
     this.input_name.val(this.model.get('ingredient').name);
     this.input_amount.val(this.model.get('amount'));
@@ -266,9 +273,10 @@ App.Views.Part = Backbone.View.extend({
     this.exitEditing();
   },
   exitEditing: function() {
-    this.input_amount.addClass('hidden');
-    this.input_name.addClass('hidden');
-    this.input_percent.addClass('hidden');
+    //$('.recipe').addClass('not-editing');
+    this.input_amount.addClass('hidden').parent().removeClass('editing');
+    this.input_name.addClass('hidden').parent().removeClass('editing');
+    this.input_percent.addClass('hidden').parent().removeClass('editing');
     $(this.el).removeClass("editing-amount editing-name editing-percent");
   },
   remove: function() {
