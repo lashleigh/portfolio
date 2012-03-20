@@ -1,28 +1,11 @@
-<li>
-<a href="http://github.com/lashleigh" title="github"><img alt="Github" src="/assets/github.png?1300559778"></a> 
-</li>
-
-<li>
-<a href="http://stackoverflow.com/users/337582/lashleigh" title="stackoverflow"><img alt="Stackoverflow" src="/assets/stackoverflow.png?1300559779" style="background:white;"></a> 
-</li>
-
-<li>
-<a href="http://linkedin.com/in/lashleigh" title="linkedin"><img alt="Linkedin" src="/assets/linkedin.png?1300559778"></a> 
-</li>
-
-<li>
-<a href="http://twitter.com/lashleigh" title="twitter"><img alt="Twitter" src="/assets/twitter.png?1300559779"></a> 
-</li>
-
-<li>
-<a href="http://www.facebook.com/#!/profile.php?id=25902647" title="facebook"><img alt="Facebook" src="/assets/facebook.png?1300559778"></a> 
-</li>
-
-<li>
-<a href="http://youtube.com/user/WasntThisAvailable" title="youtube"><img alt="Youtube" src="/assets/youtube.png?1300559779"></a> 
-</li>
-
-<li>
-<a href="http://www.flickr.com/photos/lashleigh/" title="flickr"><img alt="Flickr" src="/assets/flickr.png?1300559778"></a> 
-</li>
-
+<% [['github',      "http://github.com/lashleigh"], 
+    ['stackoverflow', "http://stackoverflow.com/users/337582/lashleigh"],
+    ['facebook',      "http://www.facebook.com/#!/profile.php?id=25902647"],
+    ['linkedin',      "http://linkedin.com/in/lashleigh"],
+    ['twitter',       "http://twitter.com/lashleigh"],
+    ['youtube',       "http://youtube.com/user/WasntThisAvailable"],
+    ['flickr',        "http://www.flickr.com/photos/lashleigh"]].each do |name, url| %>
+    <li> 
+    <%= link_to image_tag(name+'.png', :alt => name), href=url, :title => name %> 
+    </li>
+<% end %>
