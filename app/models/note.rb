@@ -1,10 +1,7 @@
 class Note
   include MongoMapper::EmbeddedDocument
 
-  key :time, Time
-  key :body, String
+  key :time, Time, :required => true
+  key :body, String, :required => true
 
-  def as_json(options={})
-    options 
-  end
 end

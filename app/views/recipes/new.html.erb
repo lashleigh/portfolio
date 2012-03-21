@@ -1,4 +1,4 @@
-<%= form_tag("/recipes/from_params", :method => "post") do %>
+<%= form_tag("/recipes", :method => "post") do %>
   <%= label_tag(:title) %>
   <%= text_field_tag(:title, "Bread! #{Recipe.count}") %></br>
 

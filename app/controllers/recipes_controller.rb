@@ -1,15 +1,6 @@
 class RecipesController < ApplicationController
   #before_filter :must_be_admin, :except => ['index', 'show']
 
-  def new_by_params
-    logger.info(params)
-    @recipe = Recipe.create!(:title => params[:title] || 'no title')
-    @recipe.interpret(params)
-    @recipe.save
-    redirect_to(@recipe, :notice => 'Recipe was successfully created.')
-    #render :json => 'working?'
-  end
-  
   def index
     @recipes = Recipe.all
 
@@ -50,16 +41,13 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.xml
   def create
-    @recipe = Recipe.new(params[:recipe])
+    @recipe = Recipe.create!(:title => params[:title] || 'no title')
+    @recipe.interpret(params)
 
-    respond_to do |format|
-      if @recipe.save
-        format.html { redirect_to(@recipe, :notice => 'Recipe was successfully created.') }
-        format.xml  { render :xml => @recipe, :status => :created, :location => @recipe }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @recipe.errors, :status => :unprocessable_entity }
-      end
+    if @recipe.save
+      redirect_to(@recipe, :notice => 'Recipe was successfully created.')
+    else
+      #TODO what should happen? I have no idea
     end
   end
 

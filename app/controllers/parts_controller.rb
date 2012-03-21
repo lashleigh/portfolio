@@ -1,21 +1,14 @@
 class PartsController < ApplicationController
-  def new
-    @recipe = Recipe.find(params[:recipe_id])
-    part = Part.new
-    render :json => part
-  end
-
   def create
     recipe = Recipe.find(params[:recipe_id])
-    attrs = params.reject {|p| p == 'ingredient'}
-    part = Part.new(attrs)
+    part = Part.new({:amount => params[:amount], :percent => params[:percent], :fixed_percent => params[:fixed_percent]})
     if params[:ingredient_id].blank?
       ingredient = Ingredient.find_or_create_by_name(params[:ingredient][:name])
       part.ingredient = ingredient
     end
     recipe.parts.push(part)  
     
-    if recipe.save
+    if part and part.save
       render :json => part
     else
       render :json => {'message' => 'failed to save'}
@@ -25,11 +18,10 @@ class PartsController < ApplicationController
   def update
     recipe = Recipe.find(params[:recipe_id])
     part = recipe.parts.find(params[:id])
-    attrs = params.select {|p| part.attributes.keys.include? p}
     if part.ingredient.name != params[:ingredient][:name]
-      attrs[:ingredient_id] = Ingredient.find_or_create_by_name(params[:ingredient][:name]).id
+      part.ingredient = Ingredient.find_or_create_by_name(params[:ingredient][:name])
     end
-    part.update_attributes(attrs) 
+    part.update_attributes({:amount => params[:amount], :percent => params[:percent], :fixed_percent => params[:fixed_percent]}) 
 
     if recipe.save
       render :json => part

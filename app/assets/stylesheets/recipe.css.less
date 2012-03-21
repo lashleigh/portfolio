@@ -78,6 +78,10 @@
   }
 }
 #notes_container {
+  float: left;
+  padding-top: 37px;
+  width: 300px;
+  
   textarea {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size:   13px;
@@ -88,9 +92,6 @@
     border: none;
     width: 100%;
   }
-  float: left;
-  padding-top: 37px;
-  width: 300px;
   .show-body {
     .button {
       float: right;
@@ -99,6 +100,7 @@
   #new-note {
     textarea {
       background: white;
+      overflow: hidden;
     }
   }
   .note {
@@ -111,6 +113,8 @@
     .body-input {
       color: #333;
       height: 100px;
+      width: 100%;
+      overflow: hidden;
     }
   }
 }

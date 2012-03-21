@@ -24,7 +24,7 @@ App.Models.Recipe = Backbone.Model.extend({
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
     this.parts.reset(this.get('parts'));
-    this.parts.bind('all', this.view.update_stats, this.view) //TODO this is excessive stats updates
+    //this.parts.bind('all', this.view.update_stats, this.view) //TODO this is excessive stats updates
 
     this.notes.url = '/recipes/'+this.id+'/notes';
     this.notes.recipeView = this.view;
@@ -44,6 +44,12 @@ App.Views.Recipe = Backbone.View.extend({
     'keyup input#new-percent'     : "updateNewAmount",
     'blur .innoculation' : "updateInnoculation",
     'click .new-note' : "newNote",
+    'keyup #new-note-body' : "resizeNote",
+    'focus #new-note-body' : "resizeNote",
+  },
+  resizeNote: function() {
+    var note = $('#new-note-body');
+    note.css('height', note[0].scrollHeight+'px');
   },
   newNote: function() {
     this.model.notes.newNote();
@@ -64,20 +70,23 @@ App.Views.Recipe = Backbone.View.extend({
     $(this.el).removeClass('editing-hydration');
     $(this.el).find('.edit-hydration').addClass('hidden');
   }, 
+  newWaterMass: function() {
+    var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0];
+    var hydration = this.hydration_input.val();
+    var total_water = this.model.parts.water_mass();
+    var total_flour = this.model.parts.flour_mass();
+    var min_hydration = (total_water - water.get('amount')) / total_flour * 100;
+    if(min_hydration < hydration) {
+      var new_water_mass = ((hydration - min_hydration) / 100.0 * total_flour);
+      var percent = as_percent(new_water_mass / total_flour);
+      water.save({amount: new_water_mass, percent: percent});
+    } else {
+      //TODO flash warning OR change the flour
+    }
+  }, 
   updateHydrationOnEnter: function(e) {
     if(e.keyCode == 13) {
-      var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0];
-      var hydration = this.hydration_input.val();
-      var total_water = this.model.parts.water_mass();
-      var total_flour = this.model.parts.flour_mass();
-      var min_hydration = (total_water - water.get('amount')) / total_flour * 100;
-      if(min_hydration < hydration) {
-        var new_water_mass = ((hydration - min_hydration) / 100.0 * total_flour);
-        var percent = as_percent(new_water_mass / total_flour);
-        water.save({amount: new_water_mass, percent: percent});
-      } else {
-        //TODO flash warning OR change the flour
-      }
+      this.newWaterMass();
       this.exitEditHydration();
       this.update_stats();
     }
@@ -140,12 +149,14 @@ App.Views.Note = Backbone.View.extend({
     this.template = $('#note-li').html();
     $('#new-note').after(this.render().el);
     this.model.bind('change', this.render, this);
+    this.setHeight();
   },
   events: {
     'click .body'  : 'editBody',
     'click .body-cancel'  : 'exitEditBody',
     'click .body-submit'  : 'updateBody', 
     'click .remove' : 'destroy',
+    'keyup .body-input': 'updateBodyHeight',
   }, 
   destroy: function() {
     this.model.destroy();
@@ -188,6 +199,13 @@ App.Views.Note = Backbone.View.extend({
     }
     return view_ago + ' at ' + simple_time; 
   }, 
+  updateBodyHeight: function() {
+    this.body_input.css('height', this.body_input[0].scrollHeight+'px');
+  },
+  setHeight: function() {
+    console.log(this.note_body.height());
+    this.body_input.css('height', this.note_body.css('height'));
+  },
   render: function() {
     var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
@@ -195,6 +213,7 @@ App.Views.Note = Backbone.View.extend({
     this.note_body = $(this.el).find('.body');
     this.body_input = $(this.el).find('.body-input');
     this.edit_body  = $(this.el).find('.edit-body');
+    this.setHeight();
     return this;
   } 
 });
@@ -354,8 +373,12 @@ App.Models.Part = Backbone.Model.extend({
       this.view = new App.Views.Part({model: this, id: 'part_'+id})
     }
     if(this.get('ingredient').name === 'flour' || this.get('ingredient').name === 'starter' ) {
-      this.bind('change', this.updatePercents, this)
+      this.bind('change', this.updatePercents, this);
+      this.bind('change', this.maintainHydration, this);
     }
+  },
+  maintainHydration: function() {
+    this.collection.recipeView.newWaterMass();
   },
   updatePercents: function() {
     var flour = this.collection.flour_mass();
@@ -405,14 +428,14 @@ App.Collections.NoteList = Backbone.Collection.extend({
   initialize: function() {
   },
   newNote: function() {
-    var body = $('.new-note-body').val();
+    var body = $('#new-note-body').val();
     if(!body) return 
     var note = this.create({
       time: (new Date()).toUTCString(),
-      body : $('.new-note-body').val(),
+      body : $('#new-note-body').val(),
     })
     //TODO make this part of a success callback
-    $('.new-note-body').val('');
+    $('#new-note-body').val('');
   }, 
 });
 App.Collections.Recipes = Backbone.Collection.extend({
