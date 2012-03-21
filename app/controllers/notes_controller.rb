@@ -7,12 +7,11 @@ class NotesController < ApplicationController
 
   def create
     recipe = Recipe.find(params[:recipe_id])
-    attrs = params.reject {|p| p == 'ingredient'}
-    note = Note.new(attrs)
+    note = Note.new(:time => params[:time], :body => params[:body])
     recipe.notes.push(note)  
     
-    if recipe.save
-      render :json => note
+    if note and note.save
+      render :json => {:id => note.id, :time => note.time, :body => note.body}
     else
       render :json => {'message' => 'failed to save'}
     end
@@ -21,11 +20,13 @@ class NotesController < ApplicationController
   def update
     recipe = Recipe.find(params[:recipe_id])
     note = recipe.notes.find(params[:id])
-    attrs = params.select {|p| note.attributes.keys.include? p}
-    note.update_attributes(attrs) 
+    note.time = params[:time]
+    note.body = params[:body]
 
-    if recipe.save
-      render :json => note
+    if note and note.save
+      #TODO figure out why just rendering the note returns extraneous data
+      #render :json => note 
+      render :json => {:id => note.id, :time => note.time, :body => note.body}
     else
       render :json => {'message' => 'failed to save'}
     end
