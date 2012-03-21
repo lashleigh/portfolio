@@ -18,8 +18,8 @@ App.Models.Recipe = Backbone.Model.extend({
   initialize: function() {
     this.parts = new App.Collections.PartList;
     this.notes = new App.Collections.NoteList;
-    this.view = new App.Views.Recipe({model: this, id: 'recipe_'+this.id});
-    $("#recipe_container").append(this.view.render().el);
+    this.view = new App.Views.Recipe({model: this, el: $('#recipe_container')});
+    this.view.render();
     
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
@@ -34,7 +34,6 @@ App.Models.Recipe = Backbone.Model.extend({
   }
 });
 App.Views.Recipe = Backbone.View.extend({
-  tagName: 'div',
   events: {
     'click .add'    : 'newPart',
     'click .hydration' : 'editHydration', 
@@ -133,8 +132,6 @@ App.Views.Recipe = Backbone.View.extend({
     }
   },
   render: function() {
-    var template = _.template($('#recipe-li').html());
-    $(this.el).html(template(this.model.toJSON()));
     this.new_amount       = $(this.el).find('#new-amount');
     this.new_percent      = $(this.el).find('#new-percent');
     this.new_name         = $(this.el).find('#new-name');

@@ -1,4 +1,37 @@
-<div id="recipe_container" class="" > </div>
+<div id="recipe_container" > 
+  <div class="recipe">
+    <div id="recipe-title">
+      <span> <%= @recipe.title %> </span>
+      <input class="hidden" value=<%= @recipe.title %> />
+    </div>
+    <table>
+      <tbody id="part-list">
+      </tbody>
+      <tfoot>
+        <tr id="new-part">
+          <td class="amount-col"> <input id="new-amount" placeholder="12" /> </td>
+          <td class="unit-col">g</td>
+          <td class="name-col"> 
+            <input id="new-name" placeholder="salt" /> 
+            <input id="new-name-id" type="hidden" /> 
+          </td>
+          <td class='percent-col'>
+            <input id="new-percent" />
+          </td>
+          <td class="fixed-percent"> </td>
+          <td class="button-col"> <button class='icon icononly add button'></button> </td>
+        </tr>
+      </tfoot>
+    </table>
+    <span class="stats"> </span>
+  </div>
+  <div id="notes_container">
+    <div id="new-note" class="note">
+      <textarea id="new-note-body" ></textarea></br>
+      <input class="new-note button" type="button" value='New Note' />
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
   var Recipe;
@@ -34,40 +67,6 @@
   });
 </script>
 
-<script type="text/template" id="recipe-li">
-  <div class='recipe not-editing'>
-    <a href='/recipes/{{id}}' class="title">
-      {{title}}
-    </a>
-    <table>
-      <tbody id="part-list">
-      </tbody>
-      <tfoot>
-        <tr id="new-part">
-          <td class="amount-col"> <input id="new-amount" placeholder="12" /> </td>
-          <td class="unit-col">g</td>
-          <td class="name-col"> 
-            <input id="new-name" placeholder="salt" /> 
-            <input id="new-name-id" type="hidden" /> 
-          </td>
-          <td class='percent-col'>
-            <input id="new-percent" />
-          </td>
-          <td class="fixed-percent"> </td>
-          <td class="button-col"> <button class='icon icononly add button'></button> </td>
-        </tr>
-      </tfoot>
-    </table>
-    <span class="stats"> </span>
-  </div>
-  <div id="notes_container">
-    <div id="new-note" class="note">
-      <textarea id="new-note-body" ></textarea></br>
-      <input class="new-note button" type="button" value='New Note' />
-    </div>
-  </div>
-</script>
-
 <script type="text/template" id="primary-part-li">
   <td class='amount-col editable'>
     <span class="amount"> {{amount}} </span>
@@ -81,8 +80,8 @@
   <td class='percent-col'> </td>
   <td class="fixed-percent"> </td>
   <td class='button-col'> </td>
-
 </script>
+
 <script type="text/template" id="part-li">
   <td class='amount-col editable'>
     <span class="amount"> {{amount}} </span>
