@@ -3,7 +3,7 @@
     float: left;
     padding: 20px;
   }
-  .part input {
+  .part input, #hydration, #innoculation {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size:   13px;
     line-height: 18px;
@@ -12,8 +12,25 @@
   .editable:hover, .editing {
     background: #ffffd3;
   }
-  .editing-hydration .hydration {
-    display: none;
+[contenteditable]:hover:not(:focus) {
+  outline: 1px dotted #ccc;
+    background: #ffffd3;
+}
+  #hydration, #innoculation { 
+    span, input {
+      width: 3em;
+    }
+    input {
+      display: none;
+    }
+  }
+  .editing-hydration, .editing-innoculation {
+    span {
+      display:none
+    }
+    input {
+      display: inline !important;
+    }
   }
   .editing-amount .amount {
     display: none;

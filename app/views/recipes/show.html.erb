@@ -108,14 +108,14 @@
 </script>
 
 <script type="text/template" id="recipe-stats">
-  <div>
-    <span class="hydration editable"> {{hydration}}</span>
-    <input class="edit-hydration hidden" value={{hydration}} />
-    % hydration
+  <div id="hydration" class="editable">
+    <span contenteditable='true' >{{hydration}}</span>
+    <input value={{hydration}} />% hydration
   </div>
-  <div>
-    <span class="innoculation" contenteditable="true"> {{innoculation}}</span>% innoculation
-    <input class="edit-innoculation hidden" value={{innoculation}} />
+  <div id="innoculation">
+    <span contenteditable='true' >{{innoculation}}</span>
+    <input value={{innoculation}} />
+    % innoculation
   </div>
   <div class="timing">
     Doubled in 

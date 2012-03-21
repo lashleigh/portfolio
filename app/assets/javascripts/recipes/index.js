@@ -18,8 +18,9 @@ App.Models.Recipe = Backbone.Model.extend({
   initialize: function() {
     this.parts = new App.Collections.PartList;
     this.notes = new App.Collections.NoteList;
-    this.view = new App.Views.Recipe({model: this, el: $('#recipe_container')});
+    this.view = new App.Views.Recipe({model: this, el: document.getElementById('recipe_container')});
     this.view.render();
+    this.view.$el = $('#recipe_container'); //TODO not getting defined on its own - why it that?
     
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
@@ -36,12 +37,14 @@ App.Models.Recipe = Backbone.Model.extend({
 App.Views.Recipe = Backbone.View.extend({
   events: {
     'click .add'    : 'newPart',
-    'click .hydration' : 'editHydration', 
-    'blur .edit-hydration' : 'exitEditHydration', 
-    'keypress .edit-hydration' : 'updateHydrationOnEnter', 
+    //'click #hydration' : 'editHydration', 
+    //'blur  #hydration input' : 'exitEditHydration', 
+    'keydown #hydration span' : 'updateHydrationOnEnter', 
+    //'click #innoculation' : "editInnoculation",
+    //'blur  #innoculation input' : "exitEditInnoculation",
+    'keydown #innoculation span' : "updateInnoculation",
     'keyup input#new-amount'      : "updateNewPercent",
     'keyup input#new-percent'     : "updateNewAmount",
-    'blur .innoculation' : "updateInnoculation",
     'click .new-note' : "newNote",
     'keyup #new-note-body' : "resizeNote",
     'focus #new-note-body' : "resizeNote",
@@ -53,25 +56,34 @@ App.Views.Recipe = Backbone.View.extend({
   newNote: function() {
     this.model.notes.newNote();
   },
-  updateInnoculation: function() {
-    var inn = $('.innoculation').text();
-    if(isNum(inn)) {
-      console.log('new innoculation', inn)
-    } else {
-      $('.innoculation').text(this.model.parts.stats().innoculation);
+  editInnoculation: function() {
+    this.$el.find('#innoculation').addClass('editing-innoculation').find('input').focus();
+  }, 
+  exitEditInnoculation: function() {
+    this.$el.find('#innoculation').removeClass('editing-innoculation');
+  }, 
+  updateInnoculation: function(e) {
+    if(e.keyCode === 13) {
+      e.preventDefault();
+      var inn = $('#innoculation input').val();
+      if(isNum(inn)) {
+        console.log('new innoculation', inn)
+      } else {
+        $('#innoculation span').text(this.model.parts.stats().innoculation);
+      }
     }
   },
   editHydration: function() {
-    $(this.el).addClass('editing-hydration');
-    $(this.el).find('.edit-hydration').removeClass('hidden').focus();
+    this.hydration.addClass('editing-hydration');
+    this.hydration_input.focus();
   }, 
   exitEditHydration: function() {
-    $(this.el).removeClass('editing-hydration');
-    $(this.el).find('.edit-hydration').addClass('hidden');
+    this.hydration.removeClass('editing-hydration');
   }, 
   newWaterMass: function() {
     var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0];
-    var hydration = this.hydration_input.val();
+    //var hydration = this.hydration_input.val();
+    var hydration = this.hydration.find('span').text();
     var total_water = this.model.parts.water_mass();
     var total_flour = this.model.parts.flour_mass();
     var min_hydration = (total_water - water.get('amount')) / total_flour * 100;
@@ -85,6 +97,7 @@ App.Views.Recipe = Backbone.View.extend({
   }, 
   updateHydrationOnEnter: function(e) {
     if(e.keyCode == 13) {
+      e.preventDefault();
       this.newWaterMass();
       this.exitEditHydration();
       this.update_stats();
@@ -103,7 +116,8 @@ App.Views.Recipe = Backbone.View.extend({
   update_stats: function() {
     var template = _.template($('#recipe-stats').html());
     $(this.el).find('.stats').html(template(this.model.parts.stats()));
-    this.hydration_input  = $(this.el).find('.edit-hydration');
+    this.hydration        = $(this.el).find('#hydration');
+    this.hydration_input  = this.hydration.find('input');
   },
   newPart: function() {
     var amount = this.new_amount.val();
@@ -200,7 +214,6 @@ App.Views.Note = Backbone.View.extend({
     this.body_input.css('height', this.body_input[0].scrollHeight+'px');
   },
   setHeight: function() {
-    console.log(this.note_body.height());
     this.body_input.css('height', this.note_body.css('height'));
   },
   render: function() {
