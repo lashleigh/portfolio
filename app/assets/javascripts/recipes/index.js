@@ -36,15 +36,17 @@ App.Models.Recipe = Backbone.Model.extend({
 });
 App.Views.Recipe = Backbone.View.extend({
   events: {
-    'click .add'    : 'newPart',
-    //'click #hydration' : 'editHydration', 
-    //'blur  #hydration input' : 'exitEditHydration', 
-    'keydown #hydration span' : 'updateHydrationOnEnter', 
-    //'click #innoculation' : "editInnoculation",
-    //'blur  #innoculation input' : "exitEditInnoculation",
-    'keydown #innoculation span' : "updateInnoculation",
+    'click #hydration' : 'editHydration', 
+    'blur  #hydration input' : 'exitEditHydration', 
+    'keyup #hydration input' : 'updateHydrationOnEnter', 
+    
+    'click #innoculation' : "editInnoculation",
+    'blur  #innoculation input' : "exitEditInnoculation",
+    'keyup #innoculation input' : "updateInnoculation",
+    
     'keyup input#new-amount'      : "updateNewPercent",
     'keyup input#new-percent'     : "updateNewAmount",
+    'click .add'    : 'newPart',
     'click .new-note' : "newNote",
     'keyup #new-note-body' : "resizeNote",
     'focus #new-note-body' : "resizeNote",
@@ -64,13 +66,20 @@ App.Views.Recipe = Backbone.View.extend({
   }, 
   updateInnoculation: function(e) {
     if(e.keyCode === 13) {
-      e.preventDefault();
       var inn = $('#innoculation input').val();
-      if(isNum(inn)) {
-        console.log('new innoculation', inn)
-      } else {
-        $('#innoculation span').text(this.model.parts.stats().innoculation);
-      }
+      if(!isNum(inn)) return;
+      var starter = this.model.parts.filter(function(p) {return p.get('ingredient').name === 'starter'; })[0];
+      var flour =   this.model.parts.filter(function(p) {return p.get('ingredient').name === 'flour'; })[0];
+      var water =   this.model.parts.filter(function(p) {return p.get('ingredient').name === 'water'; })[0];
+      var total_flour = this.model.parts.flour_mass();
+      var half_starter = inn / 100.0 * total_flour;
+      var hydration = this.hydration.find('span').text();
+      starter.save({amount: truncate(half_starter*2)})
+      flour.save({amount: truncate(total_flour - half_starter)})
+      water.save({amount: truncate(hydration / 100.0 * total_flour - half_starter)})
+      console.log(total_flour, half_starter, hydration)
+      this.exitEditInnoculation();
+      this.update_stats();
     }
   },
   editHydration: function() {
@@ -82,8 +91,7 @@ App.Views.Recipe = Backbone.View.extend({
   }, 
   newWaterMass: function() {
     var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0];
-    //var hydration = this.hydration_input.val();
-    var hydration = this.hydration.find('span').text();
+    var hydration = this.hydration_input.val();
     var total_water = this.model.parts.water_mass();
     var total_flour = this.model.parts.flour_mass();
     var min_hydration = (total_water - water.get('amount')) / total_flour * 100;
@@ -97,7 +105,6 @@ App.Views.Recipe = Backbone.View.extend({
   }, 
   updateHydrationOnEnter: function(e) {
     if(e.keyCode == 13) {
-      e.preventDefault();
       this.newWaterMass();
       this.exitEditHydration();
       this.update_stats();
@@ -237,9 +244,9 @@ App.Views.Part = Backbone.View.extend({
     this.model.bind('destroy', this.remove, this);
   },
   events: {
-    'click .amount-col' : 'editAmount',
-    'click .percent-col': 'editPercent',
-    'click .name-col'   : 'editName',
+    'click .amount' : 'editAmount',
+    'click .percent': 'editPercent',
+    'click .name'   : 'editName',
     'click .remove': 'clear',
     'click .fixed-percent-input': 'toggleFixedPercent',
     "keypress .edit-amount"      : "updateAmountOnEnter",
@@ -389,6 +396,7 @@ App.Models.Part = Backbone.Model.extend({
   },
   maintainHydration: function() {
     this.collection.recipeView.newWaterMass();
+    this.collection.recipeView.update_stats();
   },
   updatePercents: function() {
     var flour = this.collection.flour_mass();
