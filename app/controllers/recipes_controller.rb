@@ -14,7 +14,6 @@ class RecipesController < ApplicationController
   # GET /recipes/1.xml
   def show
     @recipe = Recipe.find(params[:id])
-    @ingredients = Ingredient.autocomplete_list
 
     respond_to do |format|
       format.html # show.html.erb
@@ -36,6 +35,7 @@ class RecipesController < ApplicationController
   # GET /recipes/1/edit
   def edit
     @recipe = Recipe.find(params[:id])
+    @ingredients = Ingredient.autocomplete_list
   end
 
   # POST /recipes
@@ -54,16 +54,15 @@ class RecipesController < ApplicationController
   # PUT /recipes/1
   # PUT /recipes/1.xml
   def update
-    @recipe = Recipe.find(params[:id])
+    recipe = Recipe.find(params[:id])
+    if !params[:title].blank?
+      recipe.title = params[:title]
+    end
 
-    respond_to do |format|
-      if @recipe.update_attributes(params[:recipe])
-        format.html { redirect_to(@recipe, :notice => 'Recipe was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @recipe.errors, :status => :unprocessable_entity }
-      end
+    if recipe.save
+      render :json => recipe
+    else
+      render :json => {'message' => 'failed to save'}
     end
   end
 

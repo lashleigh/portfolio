@@ -2,6 +2,26 @@
   .recipe {
     float: left;
     padding: 20px;
+    #recipe-title {
+    padding: 12px;
+      span, input {
+        font-family: verdana, arial, helvetica, sans-serif;
+        font-size:   25px;
+        line-height: 18px;
+        width: 100%;
+      }
+    }
+    .editable:hover, .editing {
+      background: #ffffd3;
+    }
+    .editing {
+      span, h1 {
+        display:none;
+      }
+      input {
+        display: inline !important;
+      }
+    }
   }
   .part input, #hydration, #innoculation {
     font-family: verdana, arial, helvetica, sans-serif;
@@ -9,33 +29,13 @@
     line-height: 18px;
     background: transparent;
   }
-  .editable:hover, .editing {
-    background: #ffffd3;
-  }
-  #hydration, #innoculation { 
+  #hydration, #innoculation, #recipe-title { 
     span, input {
       width: 3em;
     }
     input {
       display: none;
     }
-  }
-  .editing-hydration, .editing-innoculation {
-    span {
-      display:none
-    }
-    input {
-      display: inline !important;
-    }
-  }
-  .editing-amount .amount {
-    display: none;
-  }
-  .editing-name .name {
-    display: none;
-  }
-  .editing-percent .percent {
-    display: none;
   }
   .amount-col {
     width: 50px;
@@ -78,9 +78,10 @@
   #part-list {
     .part {
       height: 2.5em;
-    }
-    .part:hover {
-      //background: #bab;
+      width: 300px;
+      .editable input {
+        display: none;
+      }
     }
     tr:nth-child(odd) {
       background: #ddd;
@@ -116,9 +117,20 @@
       overflow: hidden;
     }
   }
+  .note.editing {
+    .show-body .body {
+       display: none;
+    }
+    .edit-body {
+       display: inline !important;
+    }
+  }
   .note {
     border: gray 1px dashed;
     padding: 12px;
+    .edit-body {
+       display: none;
+    }
     .body {
       width: 100%;
       overflow: auto;

@@ -3,6 +3,7 @@ class Recipe
   before_create :basic_parts
 
   key :title, String, :default => 'bread'
+  key :photo, String
   many :parts
   many :notes
   timestamps!

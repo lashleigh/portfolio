@@ -1,0 +1,142 @@
+<div id="recipe_container" > 
+  <div class="recipe">
+    <div id="recipe-title" class="editable">
+      <span><%= @recipe.title %></span>
+      <input value=<%= @recipe.title %> />
+    </div>
+    <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
+    <table>
+      <tbody id="part-list">
+      </tbody>
+      <tfoot>
+        <tr id="new-part">
+          <td class="amount-col"> <input id="new-amount" placeholder="12" /> </td>
+          <td class="unit-col">g</td>
+          <td class="name-col"> 
+            <input id="new-name" placeholder="salt" /> 
+            <input id="new-name-id" type="hidden" /> 
+          </td>
+          <td class='percent-col'>
+            <input id="new-percent" />
+          </td>
+          <td class="fixed-percent"> </td>
+          <td class="button-col"> <button class='icon icononly add button'></button> </td>
+        </tr>
+      </tfoot>
+    </table>
+    <span class="stats"> </span>
+  </div>
+  <div id="notes_container">
+    <div id="new-note" class="note">
+      <textarea id="new-note-body" ></textarea></br>
+      <input class="new-note button" type="button" value='New Note' />
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var Recipe;
+  var ingredients = <%= @ingredients.to_json.html_safe %>;
+  $(function() {
+    // By default, Underscore uses ERB-style template delimiters, this change
+    // makes it use mustache style.
+    _.templateSettings = {
+      interpolate : /\{\{([\s\S]+?)\}\}/g
+    };
+    Recipe = new App.Models.Recipe(<%= @recipe.to_json(:include => {:parts => {:include => {:ingredient => {:only => :name}}}} ).html_safe %>);
+
+    $( "#new-name" ).autocomplete({
+      minLength: 0,
+      source: ingredients,
+      focus: function( event, ui ) {
+        $( "#new-name" ).val( ui.item.label );
+        return false;
+      },
+      select: function( event, ui ) {
+        $( "#new-name" ).val( ui.item.label );
+        $( "#new-name-id" ).val( ui.item.value );
+
+        return false;
+      }
+    })
+    $.ui.autocomplete.prototype._renderItem = function( ul, item ) {
+      return $( "<li></li>" )
+        .data( "item.autocomplete", item )
+        .append( "<a>" + item.label + "</a>" )
+        .appendTo( ul );
+    };
+  });
+</script>
+
+<script type="text/template" id="primary-part-li">
+  <td class='amount-col editable'>
+    <span class="amount"> {{amount}} </span>
+    <input class="edit-amount" value={{amount}} />
+  </td>
+  <td class='unit-col'> g </td>
+  
+  <td class='name-col'>
+    <span class="primary-name"> {{ingredient.name}} </span>
+  </td>
+  <td class='percent-col'> </td>
+  <td class="fixed-percent"> </td>
+  <td class='button-col'> </td>
+</script>
+
+<script type="text/template" id="part-li">
+  <td class='amount-col editable'>
+    <span class="amount"> {{amount}} </span>
+    <input class="edit-amount" value={{amount}} />
+  </td>
+
+  <td class='unit-col'> g </td>
+    
+  <td class='name-col editable'>
+    <span class="name"> {{ingredient.name}} </span>
+    <input class="edit-name" type="text" value={{ingredient.name}} />
+    <input class="edit-name-id" type="hidden" value={{ingredient_id}} />
+  </td>
+  <td class='percent-col editable'>
+    <span class="percent">{{percent}}</span>
+    <input class="edit-percent " value={{percent}} />
+  </td>
+  <td class="fixed-percent"> 
+    <input class="fixed-percent-input" type="checkbox" value={{fixed_percent}} />
+  </td>
+  <td class='button-col'>
+    <button class='icon icononly remove danger button'></button>
+  </td>
+</script>
+
+<script type="text/template" id="recipe-stats">
+  <div id="hydration" class="editable">
+    <span >{{hydration}}</span>
+    <input value={{hydration}} />% hydration
+  </div>
+  <div id="innoculation">
+    <span >{{innoculation}}</span>
+    <input value={{innoculation}} />
+    % innoculation
+  </div>
+  <div class="timing">
+    Doubled in 
+    <span class="doubling"> {{doubling}} </span> hrs 
+    at 
+    <span class="temp"> {{temp}} </span>
+    degrees F
+  </div>
+</script>
+
+<script type="text/template" id="note-li">
+  <div class="show-body">
+    <span class="time">{{time}}</span>
+    <button class='icon icononly remove danger button'></button>
+    <div class="body">{{body}}</div>
+  </div>
+  <div class="edit-body">
+    <textarea class="body-input" >{{body}}</textarea>
+    <input class="body-submit button" type="button" value = 'Save' />
+    <input class="body-cancel button" type="button" value = 'Cancel' />
+  </div>
+</script>
+

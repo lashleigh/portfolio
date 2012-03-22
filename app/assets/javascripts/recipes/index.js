@@ -15,6 +15,7 @@ truncate = function(num) {
 }
 
 App.Models.Recipe = Backbone.Model.extend({
+  url: '/recipes',
   initialize: function() {
     this.parts = new App.Collections.PartList;
     this.notes = new App.Collections.NoteList;
@@ -22,6 +23,7 @@ App.Models.Recipe = Backbone.Model.extend({
     this.view.render();
     this.view.$el = $('#recipe_container'); //TODO not getting defined on its own - why it that?
     
+    this.url = '/recipes/'+this.id; 
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
     this.parts.reset(this.get('parts'));
@@ -36,6 +38,13 @@ App.Models.Recipe = Backbone.Model.extend({
 });
 App.Views.Recipe = Backbone.View.extend({
   events: {
+    'click .editable span' : 'editField',
+    'blur  .editable input': 'exitEditField',
+    'keyup .editable input': 'updateTitle',
+    //'click #recipe-title h1' : 'editTitle',
+    //'blue  #title input': 'exitEditTitle',
+    //'keyup #title input': 'updateTitle',
+
     'click #hydration' : 'editHydration', 
     'blur  #hydration input' : 'exitEditHydration', 
     'keyup #hydration input' : 'updateHydrationOnEnter', 
@@ -58,11 +67,30 @@ App.Views.Recipe = Backbone.View.extend({
   newNote: function() {
     this.model.notes.newNote();
   },
+  editField: function(e) {
+    $(e.currentTarget).next().focus().parent().addClass('editing');
+    this.$el.find('#recipe-title input').val(this.model.get('title')).focus();
+  },
+  exitEditField: function(e) {
+    $(e.currentTarget).parent().removeClass('editing');
+  },
+  updateTitle: function(e) {
+    if(e.keyCode === 13) {
+      var title = this.$el.find('#recipe-title input')
+      this.model.save({title : title.val()});
+      title.prev().text(title.val()).parent().removeClass('editing');
+    }     
+  },
+  editTitle: function(e) {
+    this.$el.find('#recip-title span').parent().addClass('editing');
+    this.$el.find('#recipe-title input').focus();
+     //this.$el.find('#title').addClass('editing-title').find('input').focus();
+  },
   editInnoculation: function() {
-    this.$el.find('#innoculation').addClass('editing-innoculation').find('input').focus();
+    this.$el.find('#innoculation').addClass('editing').find('input').focus();
   }, 
   exitEditInnoculation: function() {
-    this.$el.find('#innoculation').removeClass('editing-innoculation');
+    this.$el.find('#innoculation').removeClass('editing');
   }, 
   updateInnoculation: function(e) {
     if(e.keyCode === 13) {
@@ -77,17 +105,16 @@ App.Views.Recipe = Backbone.View.extend({
       starter.save({amount: truncate(half_starter*2)})
       flour.save({amount: truncate(total_flour - half_starter)})
       water.save({amount: truncate(hydration / 100.0 * total_flour - half_starter)})
-      console.log(total_flour, half_starter, hydration)
       this.exitEditInnoculation();
       this.update_stats();
     }
   },
   editHydration: function() {
-    this.hydration.addClass('editing-hydration');
+    this.hydration.addClass('editing');
     this.hydration_input.focus();
   }, 
   exitEditHydration: function() {
-    this.hydration.removeClass('editing-hydration');
+    this.hydration.removeClass('editing');
   }, 
   newWaterMass: function() {
     var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0];
@@ -168,6 +195,7 @@ App.Views.Note = Backbone.View.extend({
     $('#new-note').after(this.render().el);
     this.model.bind('change', this.render, this);
     this.setHeight();
+    this.$el = $(this.el);
   },
   events: {
     'click .body'  : 'editBody',
@@ -181,13 +209,11 @@ App.Views.Note = Backbone.View.extend({
     $(this.el).remove();
   }, 
   editBody: function() {
-    this.note_body.addClass('hidden');
-    this.edit_body.removeClass('hidden');
+    this.$el.addClass('editing');
     this.body_input.focus();
   }, 
   exitEditBody: function() {
-    this.note_body.removeClass('hidden');
-    this.edit_body.addClass('hidden');
+    this.$el.removeClass('editing');
   }, 
   updateBody: function() {
     this.model.save({'body' : this.body_input.val()});
@@ -229,7 +255,6 @@ App.Views.Note = Backbone.View.extend({
     $(this.el).find('.time').text(this.localTime());
     this.note_body = $(this.el).find('.body');
     this.body_input = $(this.el).find('.body-input');
-    this.edit_body  = $(this.el).find('.edit-body');
     this.setHeight();
     return this;
   } 
@@ -244,9 +269,7 @@ App.Views.Part = Backbone.View.extend({
     this.model.bind('destroy', this.remove, this);
   },
   events: {
-    'click .amount' : 'editAmount',
-    'click .percent': 'editPercent',
-    'click .name'   : 'editName',
+    'click .editable span' : 'editField',
     'click .remove': 'clear',
     'click .fixed-percent-input': 'toggleFixedPercent',
     "keypress .edit-amount"      : "updateAmountOnEnter",
@@ -256,24 +279,8 @@ App.Views.Part = Backbone.View.extend({
   toggleFixedPercent: function() {
     this.model.save({'fixed_percent': !this.model.get('fixed_percent')});
   },
-  editAmount: function(event) {
-    this.resetFields('editing-amount');
-    this.input_amount.parent().addClass('editing');
-    this.input_amount.removeClass('hidden').focus();
-  },
-  editPercent: function() {
-    this.resetFields('editing-percent');
-    this.input_percent.parent().addClass('editing');
-    this.input_percent.removeClass('hidden').focus();
-  },
-  editName: function() {
-    this.resetFields('editing-name');
-    this.input_name.parent().addClass('editing');
-    this.input_name.removeClass('hidden').focus();
-  },
-  resetFields: function(editing_field) {
-    //$('.recipe').removeClass('not-editing');
-    $(this.el).addClass(editing_field);
+  editField: function(e) {
+    $(e.currentTarget).next().focus().parent().addClass('editing');
     this.input_name.val(this.model.get('ingredient').name);
     this.input_amount.val(this.model.get('amount'));
     this.input_percent.val(this.model.get('percent'));
@@ -283,15 +290,13 @@ App.Views.Part = Backbone.View.extend({
       var percent = truncate(this.input_percent.val());
       var amount = truncate(percent / 100 * this.model.collection.flour_mass()); 
       this.model.save({amount: amount, percent: percent});
-      this.exitEditing();
     }
   },
   updateAmountOnEnter: function(e) {
     if(e.keyCode == 13) {
-      var amount = this.input_amount.val();
+      var amount = truncate(this.input_amount.val());
       var percent = as_percent(amount / this.model.collection.flour_mass());
       this.model.save({amount: amount, percent: percent});
-      this.exitEditing();
     }
   },
   updateIngredientOnEnter: function(e) {
@@ -306,14 +311,9 @@ App.Views.Part = Backbone.View.extend({
         name: this.input_name.val()
       }
     })
-    this.exitEditing();
   },
-  exitEditing: function() {
-    //$('.recipe').addClass('not-editing');
-    this.input_amount.addClass('hidden').parent().removeClass('editing');
-    this.input_name.addClass('hidden').parent().removeClass('editing');
-    this.input_percent.addClass('hidden').parent().removeClass('editing');
-    $(this.el).removeClass("editing-amount editing-name editing-percent");
+  exitEditing: function(e) {
+    $(e.currentTarget).parent().removeClass('editing');
   },
   remove: function() {
     $(this.el).remove();
@@ -338,11 +338,6 @@ App.Views.Part = Backbone.View.extend({
       }
     }
   },
-  truncate: function(hash) {
-    hash.amount = truncate(hash.amount);
-    hash.percent = truncate(hash.percent);
-    return hash
-  },
   render: function() {
     var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
@@ -356,8 +351,7 @@ App.Views.Part = Backbone.View.extend({
     this.input_amount.bind('blur', _.bind(this.exitEditing, this)).val(attrs.amount);
     this.input_percent.bind('blur', _.bind(this.exitEditing, this)).val(attrs.percent);
     this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(attrs.ingredient.name).autocomplete(this.autocomplete());
-    if(this.model.get('primary')) {
-    } else {
+    if(!this.model.get('primary')) {
       this.el.getElementsByClassName('fixed-percent-input')[0].checked = this.model.get('fixed_percent');
     }
     return this;
