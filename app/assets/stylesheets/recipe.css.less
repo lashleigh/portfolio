@@ -82,6 +82,12 @@
       .editable input {
         display: none;
       }
+      .button {
+        opacity: 0.5;
+      }
+    }
+    .part:hover {
+      .button {opacity: 1.0;}
     }
     tr:nth-child(odd) {
       background: #ddd;
@@ -93,7 +99,7 @@
 }
 #notes_container {
   float: left;
-  padding-top: 37px;
+  padding-top: 67px;
   width: 300px;
   
   textarea {
@@ -126,7 +132,8 @@
     }
   }
   .note {
-    border: gray 1px dashed;
+  background: white;
+    border: 1px solid rgba(0, 0, 0, .1);
     padding: 12px;
     .edit-body {
        display: none;

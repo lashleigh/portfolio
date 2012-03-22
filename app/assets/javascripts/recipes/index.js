@@ -227,21 +227,30 @@ App.Views.Note = Backbone.View.extend({
     var am_pm = ' am';
     if(hours >= 12) {
       am_pm = ' pm';
-      hours = hours - 12 ? hours - 12 : 12; 
+      hours = hours - 12;
     }
-    var simple_time = hours+':'+minutes+am_pm;
+    if(!hours) hours = 12;
+    return hours+':'+minutes+am_pm;
+  },
+  getLocalTime: function() {
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var d = new Date(this.model.get('time'));
+    var delta_in_hours = (new Date() - d) / (1000*60*60);
+    return time_ago(delta_in_hours, this); 
 
-    var today = new Date();
-    var delta_in_days = (today - d) / (1000*60*60*24);
-    var view_ago;
-    if(delta_in_days < 1) {
-      view_ago = 'today';
-    } else if(delta_in_days < 2) {
-      view_ago = 'yesterday';
-    } else {
-      view_ago = Math.floor(delta_in_days) + ' days ago';
+    function time_ago(delta, that) {
+      if(delta < 1) {
+        return Math.round(delta*60)+'m ago';
+      } else if(delta < 4) {
+        return Math.floor(delta)+'h '+ Math.round((delta-Math.floor(delta))*60)+ 'm ago';
+      } else if(delta < 24) {
+        return Math.round(delta) + 'h ago';
+      } else if(delta < 96) {
+        return Math.floor(delta/24)+'d '+ Math.round((delta/24-Math.floor(delta/24))*24)+ 'h ago';
+      } else {
+        return d.getDate()+' '+months[d.getMonth()]+' @ '+that.localTime();
+      }
     }
-    return view_ago + ' at ' + simple_time; 
   }, 
   updateBodyHeight: function() {
     this.body_input.css('height', this.body_input[0].scrollHeight+'px');
@@ -252,7 +261,7 @@ App.Views.Note = Backbone.View.extend({
   render: function() {
     var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
-    $(this.el).find('.time').text(this.localTime());
+    $(this.el).find('.time').text(this.getLocalTime());
     this.note_body = $(this.el).find('.body');
     this.body_input = $(this.el).find('.body-input');
     this.setHeight();
