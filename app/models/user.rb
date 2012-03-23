@@ -7,7 +7,7 @@ class User
     
   
   def self.create_with_omniauth(auth)  
-    user = User.new(:name => auth["user_info"]["name"], 
+    user = User.new(:name => auth["info"]["name"], 
                     :provider => auth["provider"],
                     :uid => auth["uid"]  
                    )
