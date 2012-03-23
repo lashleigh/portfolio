@@ -38,21 +38,21 @@ App.Models.Recipe = Backbone.Model.extend({
 });
 App.Views.Recipe = Backbone.View.extend({
   events: {
-    'click .editable span' : 'editField',
+    'click .editable' : 'editFields',
     'blur  .editable input': 'exitEditField',
     'keyup .editable input': 'updateTitle',
     //'click #recipe-title h1' : 'editTitle',
-    //'blue  #title input': 'exitEditTitle',
+    //'blur  #title input': 'exitEditTitle',
     //'keyup #title input': 'updateTitle',
 
-    'click #hydration' : 'editHydration', 
+    /*'click #hydration' : 'editHydration', 
     'blur  #hydration input' : 'exitEditHydration', 
     'keyup #hydration input' : 'updateHydrationOnEnter', 
     
     'click #inoculation' : "editInnoculation",
     'blur  #inoculation input' : "exitEditInnoculation",
     'keyup #inoculation input' : "updateInnoculation",
-    
+    */
     'keyup input#new-amount'      : "updateNewPercent",
     'keyup input#new-percent'     : "updateNewAmount",
     'click .add'    : 'newPart',
@@ -67,9 +67,11 @@ App.Views.Recipe = Backbone.View.extend({
   newNote: function() {
     this.model.notes.newNote();
   },
-  editField: function(e) {
-    $(e.currentTarget).next().focus().parent().addClass('editing');
-    this.$('#recipe-title input').val(this.model.get('title')).focus();
+  editFields: function(e) {
+    console.log(e, $(e.currentTarget).find('input'))
+    var input = $(e.currentTarget).find('input');
+    input.focus().parent().addClass('editing');
+    //this.$('#recipe-title input').val(this.model.get('title')).focus();
   },
   exitEditField: function(e) {
     $(e.currentTarget).parent().removeClass('editing');
@@ -149,7 +151,7 @@ App.Views.Recipe = Backbone.View.extend({
   },
   update_stats: function() {
     var template = _.template($('#recipe-stats').html());
-    this.$('.stats').html(template(this.model.parts.stats()));
+    this.$('#stats').html(template(this.model.parts.stats()));
     this.hydration        = this.$('#hydration');
     this.hydration_input  = this.hydration.find('input');
   },
@@ -278,7 +280,7 @@ App.Views.Part = Backbone.View.extend({
     this.model.bind('destroy', this.remove, this);
   },
   events: {
-    'click .editable span' : 'editField',
+    'click .editable ' : 'editField',
     'click .remove': 'clear',
     'click .fixed-percent-input': 'toggleFixedPercent',
     "keypress .edit-amount"      : "updateAmountOnEnter",
@@ -289,7 +291,8 @@ App.Views.Part = Backbone.View.extend({
     this.model.save({'fixed_percent': !this.model.get('fixed_percent')});
   },
   editField: function(e) {
-    $(e.currentTarget).next().focus().parent().addClass('editing');
+  console.log(e)
+    $(e.currentTarget).find('input.val').focus().parent().addClass('editing');
     this.input_name.val(this.model.get('ingredient').name);
     this.input_amount.val(this.model.get('amount'));
     this.input_percent.val(this.model.get('percent'));
@@ -426,6 +429,7 @@ App.Collections.PartList = Backbone.Collection.extend({
     return {
       hydration: as_percent((water + half_starter) / (flour + half_starter)),
       inoculation: as_percent(inoculation),
+      flour_mass: flour+half_starter,
       doubling: truncate(-3 * Math.log(inoculation) / Math.log(2)),
       temp: 72
     }

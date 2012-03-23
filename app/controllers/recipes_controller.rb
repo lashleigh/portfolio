@@ -14,6 +14,7 @@ class RecipesController < ApplicationController
   # GET /recipes/1.xml
   def show
     @recipe = Recipe.find(params[:id])
+    @stats = @recipe.stats
 
     respond_to do |format|
       format.html # show.html.erb

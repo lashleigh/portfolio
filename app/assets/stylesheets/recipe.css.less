@@ -1,15 +1,44 @@
 #recipe_container {
-  width: 800px;
-  .stats {
-    float: left;
-    padding: 12px;
-    background: #EEE;
-    width: 275px;
-  }
+  width: 960px;
   .editable:hover, .editing {
     background: #ffffd3;
   }
-  .recipe .editing, .stats .editing, #recipe-title.editing {
+  #stats {
+    float: left;
+    padding: 12px;
+    background: #EEE;
+    width: 375px;
+    div {
+      clear: both;
+      line-height: 1.8em;
+    }
+    .label {
+      width: 71px;
+      float: left;
+      text-align: right;
+    }
+    .val {
+      float: left;
+      text-align: left;
+      margin-left: 15px;
+      margin-right: 5px;
+    }
+  }
+  #stats div { 
+    input {
+      display: none;
+      width: 2em;
+    }
+  }
+  #stats .editing {
+    span.val {
+      display:none !important;
+    }
+    input {
+      display: inline !important;
+    }
+  }
+  .recipe .editing, #recipe-title.editing {
     span {
       display:none !important;
     }
@@ -35,25 +64,17 @@
       display: none;
     }
   }
-  .part input, #hydration, #inoculation {
+  .part input {
     font-family: verdana, arial, helvetica, sans-serif;
     font-size:   13px;
     line-height: 18px;
     background: transparent;
   }
-  #hydration, #inoculation { 
-    span, input {
-      width: 3em;
-    }
-    input {
-      display: none;
-    }
-  }
   .amount-col {
     width: 50px;
     .amount, input.edit-amount, input#new-amount {
       float: right;
-      width: 50px;
+      width: 100%;
       text-align: right;
       overflow: hidden;
     }
@@ -67,7 +88,7 @@
     text-align: center;
     .percent, input.edit-percent, input#new-percent {
       float: left; // Somehow having a float here stops the column from size adjusting to accomodate overlong values
-      width: 45px;
+      width: 100%;
       text-align: center;
       overflow: hidden;
     }
@@ -76,7 +97,7 @@
     width: 130px;
     .name, input.edit-name, input#new-name {
       float: left;
-      width: 130px;
+      width: 100%;
       text-align: left;
       overflow: hidden;
     }
@@ -84,7 +105,7 @@
   .amount-col, .name-col, .percent-col, .fixed-percent, .button-col {
     padding: 0 10px 0 10px;
   }
-  table {
+  .recipe table {
     border-spacing: 0px;
     width: 400px;
   }
@@ -92,6 +113,8 @@
     border-top: 1px solid #AAA;
     margin-top: 0.5em;
     padding-top: 0.5em;
+    padding-bottom: 1em;
+    float: left;
     div {
       float: left;
     }
@@ -121,7 +144,7 @@
 #notes_container {
   float: left;
   padding-top: 12px;
-  width: 300px;
+  width: 400px;
   
   textarea {
     font-family: verdana, arial, helvetica, sans-serif;

@@ -8,6 +8,16 @@ class Recipe
   many :notes
   timestamps!
 
+  def stats
+    starter = self.mass_of('starter')
+    water = self.mass_of('water')
+    flour = self.mass_of('flour')
+    return {'hydration' => (100 * (starter/2 + water) / (starter/2 + flour)).round(2), 'inoculation' => (starter / 2 *100 / flour).round(2), 'flour_mass' => flour + starter/2}
+  end
+  def mass_of(name)
+    self.parts.select {|p| p.ingredient.name == name }.map {|p| p.amount}.sum
+  end
+
   def basic_parts
     self.parts << Part.new(:primary => true, :ingredient => Ingredient.find_or_create_by_name('starter'))
     self.parts << Part.new(:primary => true, :ingredient => Ingredient.find_or_create_by_name('flour'))

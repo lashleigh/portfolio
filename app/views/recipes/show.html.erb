@@ -1,7 +1,6 @@
 <div id="recipe_container" > 
+  <h1 id="recipe-title"> <%= @recipe.title %> </h1></br>
   <div class="recipe">
-    <h1> <%= @recipe.title %> </h1></br>
-    <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
     <table>
       <tbody id="part-list">
         <% @recipe.parts.each do |p| %>  
@@ -14,7 +13,22 @@
         <% end %>
       </tbody>
     </table>
-    <span class="stats"> </span>
+  </br>
+  <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
+  </div>
+  <div id="stats">
+    <div id="hydration">
+      <span class='label'>hydration</span>
+      <span class='val'><%=@stats['hydration'] %> %</span>
+    </div>
+    <div id="inoculation">
+      <span class="label">inoculation</span>
+      <span class='val'><%=@stats['inoculation'] %> %</span>
+    </div>
+    <div id="flour_mass">
+      <span class="label">flour mass</span>
+      <span class='val'><%=@stats['flour_mass'] %> g</span>
+    </div>
   </div>
   <div id="notes_container">
     <% @recipe.notes.reverse.each do |n| %>

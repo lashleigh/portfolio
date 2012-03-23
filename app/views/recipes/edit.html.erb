@@ -1,7 +1,7 @@
 <div id="recipe_container" > 
   <div id="recipe-title" class="editable">
-    <span><%= @recipe.title %></span>
-    <input value=<%= @recipe.title %> />
+    <span class='val'><%= @recipe.title %></span>
+    <input class='val' value=<%= @recipe.title %> />
   </div>
   <div class="recipe">
     <table>
@@ -21,10 +21,11 @@
       <div class="fixed-percent"> </div>
       <div class="button-col"> <button class='icon icononly add button'></button> </div>
     </div>
-    
-    <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
+    <div id="recipe-photo"> 
+      <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
+    </div>
   </div>
-  <div class="stats"> </div>
+  <div id="stats"> </div>
   <div id="notes_container">
     <div id="new-note" class="note">
       <textarea id="new-note-body" rows='3'></textarea></br>
@@ -85,19 +86,19 @@
 <script type="text/template" id="part-li">
   <td class='amount-col editable'>
     <span class="amount"> {{amount}} </span>
-    <input class="edit-amount" value={{amount}} />
+    <input class="val edit-amount" value={{amount}} />
   </td>
 
   <td class='unit-col'> g </td>
     
   <td class='name-col editable'>
     <span class="name"> {{ingredient.name}} </span>
-    <input class="edit-name" type="text" value={{ingredient.name}} />
+    <input class="val edit-name" type="text" value={{ingredient.name}} />
     <input class="edit-name-id" type="hidden" value={{ingredient_id}} />
   </td>
   <td class='percent-col editable'>
     <span class="percent">{{percent}}</span>
-    <input class="edit-percent " value={{percent}} />
+    <input class="val edit-percent " value={{percent}} />
   </td>
   <td class="fixed-percent"> 
     <input class="fixed-percent-input" type="checkbox" value={{fixed_percent}} />
@@ -108,22 +109,24 @@
 </script>
 
 <script type="text/template" id="recipe-stats">
-  <div id="hydration" class="editable">
-    <span >{{hydration}}</span>
-    <input value={{hydration}} />% hydration
-  </div>
-  <div id="inoculation">
-    <span >{{inoculation}}</span>
-    <input value={{inoculation}} />
-    % inoculation
-  </div>
-  <div class="timing">
-    Doubled in 
-    <span class="doubling"> {{doubling}} </span> hrs 
-    at 
-    <span class="temp"> {{temp}} </span>
-    degrees F
-  </div>
+    <div id="hydration" class='editable'>
+      <span class='label'>hydration</span>
+      <span class='val'>{{hydration}}</span>
+      <input class='val' value={{hydration}} />
+      <span class='symbol'>%</span>
+    </div>
+    <div id="inoculation" class='editable'>
+      <span class="label">inoculation</span>
+      <span class='val'>{{inoculation}}</span>
+      <input class='val' value={{inoculation}} />
+      <span class='symbol'>%</span>
+    </div>
+    <div id="flour_mass" class='editable'>
+      <span class="label">flour mass</span>
+      <span class='val'>{{flour_mass}}</span>
+      <input class='val' value={{flour_mass}} />
+      <span class='symbol'>g</span>
+    </div>
 </script>
 
 <script type="text/template" id="note-li">
