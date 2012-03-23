@@ -49,9 +49,9 @@ App.Views.Recipe = Backbone.View.extend({
     'blur  #hydration input' : 'exitEditHydration', 
     'keyup #hydration input' : 'updateHydrationOnEnter', 
     
-    'click #innoculation' : "editInnoculation",
-    'blur  #innoculation input' : "exitEditInnoculation",
-    'keyup #innoculation input' : "updateInnoculation",
+    'click #inoculation' : "editInnoculation",
+    'blur  #inoculation input' : "exitEditInnoculation",
+    'keyup #inoculation input' : "updateInnoculation",
     
     'keyup input#new-amount'      : "updateNewPercent",
     'keyup input#new-percent'     : "updateNewAmount",
@@ -87,14 +87,14 @@ App.Views.Recipe = Backbone.View.extend({
      //this.$el.find('#title').addClass('editing-title').find('input').focus();
   },
   editInnoculation: function() {
-    this.$el.find('#innoculation').addClass('editing').find('input').focus();
+    this.$el.find('#inoculation').addClass('editing').find('input').focus();
   }, 
   exitEditInnoculation: function() {
-    this.$el.find('#innoculation').removeClass('editing');
+    this.$el.find('#inoculation').removeClass('editing');
   }, 
   updateInnoculation: function(e) {
     if(e.keyCode === 13) {
-      var inn = $('#innoculation input').val();
+      var inn = $('#inoculation input').val();
       if(!isNum(inn)) return;
       var starter = this.model.parts.filter(function(p) {return p.get('ingredient').name === 'starter'; })[0];
       var flour =   this.model.parts.filter(function(p) {return p.get('ingredient').name === 'flour'; })[0];
@@ -422,11 +422,11 @@ App.Collections.PartList = Backbone.Collection.extend({
     var half_starter = this.getTotalMass('starter') / 2;
     var water = this.getTotalMass('water');
     var flour = this.getTotalMass('flour');
-    var innoculation = half_starter / (flour + half_starter);
+    var inoculation = half_starter / (flour + half_starter);
     return {
       hydration: as_percent((water + half_starter) / (flour + half_starter)),
-      innoculation: as_percent(innoculation),
-      doubling: truncate(-3 * Math.log(innoculation) / Math.log(2)),
+      inoculation: as_percent(inoculation),
+      doubling: truncate(-3 * Math.log(inoculation) / Math.log(2)),
       temp: 72
     }
   },
