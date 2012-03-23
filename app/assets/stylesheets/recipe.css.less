@@ -1,26 +1,38 @@
 #recipe_container {
+  width: 800px;
+  .stats {
+    float: left;
+    padding: 12px;
+    background: #EEE;
+    width: 275px;
+  }
+  .editable:hover, .editing {
+    background: #ffffd3;
+  }
+  .recipe .editing, .stats .editing, #recipe-title.editing {
+    span {
+      display:none !important;
+    }
+    input {
+      display: inline !important;
+    }
+  }
   .recipe {
     float: left;
-    padding: 20px;
-    #recipe-title {
+    padding: 0 20px;
+  }
+  #recipe-title {
+    margin: 20px 20px 0 20px;
     padding: 12px;
-      span, input {
-        font-family: verdana, arial, helvetica, sans-serif;
-        font-size:   25px;
-        line-height: 18px;
-        width: 100%;
-      }
+    width: 375px;
+    span, input {
+      font-family: verdana, arial, helvetica, sans-serif;
+      font-size:   25px;
+      line-height: 18px;
+      width: 100%;
     }
-    .editable:hover, .editing {
-      background: #ffffd3;
-    }
-    .editing {
-      span, h1 {
-        display:none;
-      }
-      input {
-        display: inline !important;
-      }
+    input {
+      display: none;
     }
   }
   .part input, #hydration, #innoculation {
@@ -29,7 +41,7 @@
     line-height: 18px;
     background: transparent;
   }
-  #hydration, #innoculation, #recipe-title { 
+  #hydration, #innoculation { 
     span, input {
       width: 3em;
     }
@@ -61,10 +73,10 @@
     }
   }
   .name-col {
-    width: 100px;
+    width: 130px;
     .name, input.edit-name, input#new-name {
       float: left;
-      width: 100px;
+      width: 130px;
       text-align: left;
       overflow: hidden;
     }
@@ -74,6 +86,15 @@
   }
   table {
     border-spacing: 0px;
+    width: 400px;
+  }
+  #new-part {
+    border-top: 1px solid #AAA;
+    margin-top: 0.5em;
+    padding-top: 0.5em;
+    div {
+      float: left;
+    }
   }
   #part-list {
     .part {
@@ -83,7 +104,7 @@
         display: none;
       }
       .button {
-        opacity: 0.5;
+        opacity: 0;
       }
     }
     .part:hover {
@@ -99,7 +120,7 @@
 }
 #notes_container {
   float: left;
-  padding-top: 67px;
+  padding-top: 12px;
   width: 300px;
   
   textarea {
@@ -111,11 +132,6 @@
     margin: 0px;
     border: none;
     width: 100%;
-  }
-  .show-body {
-    .button {
-      float: right;
-    }    
   }
   #new-note {
     textarea {
@@ -132,7 +148,13 @@
     }
   }
   .note {
-  background: white;
+    :hover .remove.button {
+      opacity: 1.0;
+    }
+    .remove.button {
+      opacity: 0.0;
+    }
+    background: #eee;
     border: 1px solid rgba(0, 0, 0, .1);
     padding: 12px;
     .edit-body {
@@ -147,6 +169,13 @@
       height: 100px;
       width: 100%;
       overflow: hidden;
+      margin-bottom: 1em;
+    }
+    .time {
+      float: left;
+    }
+    .remove {
+      float: right;
     }
   }
 }

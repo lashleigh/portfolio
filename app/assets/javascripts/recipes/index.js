@@ -69,21 +69,21 @@ App.Views.Recipe = Backbone.View.extend({
   },
   editField: function(e) {
     $(e.currentTarget).next().focus().parent().addClass('editing');
-    this.$el.find('#recipe-title input').val(this.model.get('title')).focus();
+    this.$('#recipe-title input').val(this.model.get('title')).focus();
   },
   exitEditField: function(e) {
     $(e.currentTarget).parent().removeClass('editing');
   },
   updateTitle: function(e) {
     if(e.keyCode === 13) {
-      var title = this.$el.find('#recipe-title input')
+      var title = this.$('#recipe-title input')
       this.model.save({title : title.val()});
       title.prev().text(title.val()).parent().removeClass('editing');
     }     
   },
   editTitle: function(e) {
-    this.$el.find('#recip-title span').parent().addClass('editing');
-    this.$el.find('#recipe-title input').focus();
+    this.$('#recip-title span').parent().addClass('editing');
+    this.$('#recipe-title input').focus();
      //this.$el.find('#title').addClass('editing-title').find('input').focus();
   },
   editInnoculation: function() {
@@ -149,8 +149,8 @@ App.Views.Recipe = Backbone.View.extend({
   },
   update_stats: function() {
     var template = _.template($('#recipe-stats').html());
-    $(this.el).find('.stats').html(template(this.model.parts.stats()));
-    this.hydration        = $(this.el).find('#hydration');
+    this.$('.stats').html(template(this.model.parts.stats()));
+    this.hydration        = this.$('#hydration');
     this.hydration_input  = this.hydration.find('input');
   },
   newPart: function() {

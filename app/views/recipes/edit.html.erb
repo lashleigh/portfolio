@@ -1,34 +1,33 @@
 <div id="recipe_container" > 
+  <div id="recipe-title" class="editable">
+    <span><%= @recipe.title %></span>
+    <input value=<%= @recipe.title %> />
+  </div>
   <div class="recipe">
-    <div id="recipe-title" class="editable">
-      <span><%= @recipe.title %></span>
-      <input value=<%= @recipe.title %> />
-    </div>
-    <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
     <table>
       <tbody id="part-list">
       </tbody>
-      <tfoot>
-        <tr id="new-part">
-          <td class="amount-col"> <input id="new-amount" placeholder="12" /> </td>
-          <td class="unit-col">g</td>
-          <td class="name-col"> 
-            <input id="new-name" placeholder="salt" /> 
-            <input id="new-name-id" type="hidden" /> 
-          </td>
-          <td class='percent-col'>
-            <input id="new-percent" />
-          </td>
-          <td class="fixed-percent"> </td>
-          <td class="button-col"> <button class='icon icononly add button'></button> </td>
-        </tr>
-      </tfoot>
     </table>
-    <span class="stats"> </span>
+    <div id="new-part">
+      <div class="amount-col"> <input id="new-amount" placeholder="12" /> </div>
+      <div class="unit-col">g</div>
+      <div class="name-col"> 
+        <input id="new-name" placeholder="salt" /> 
+        <input id="new-name-id" type="hidden" /> 
+      </div>
+      <div class='percent-col'>
+        <input id="new-percent" />
+      </div>
+      <div class="fixed-percent"> </div>
+      <div class="button-col"> <button class='icon icononly add button'></button> </div>
+    </div>
+    
+    <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
   </div>
+  <div class="stats"> </div>
   <div id="notes_container">
     <div id="new-note" class="note">
-      <textarea id="new-note-body" ></textarea></br>
+      <textarea id="new-note-body" rows='3'></textarea></br>
       <input class="new-note button" type="button" value='New Note' />
     </div>
   </div>
@@ -129,7 +128,7 @@
 
 <script type="text/template" id="note-li">
   <div class="show-body">
-    <span class="time">{{time}}</span>
+    <div class="time">{{time}}</div>
     <button class='icon icononly remove danger button'></button>
     <div class="body">{{body}}</div>
   </div>
