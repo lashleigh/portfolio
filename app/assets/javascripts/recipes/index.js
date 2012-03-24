@@ -1,7 +1,6 @@
 function isNum(num) {
   return !!num && parseFloat(num) === num*1.0;
 }
-
 var App = {
   Collections: {},
   Views: {},
@@ -41,6 +40,9 @@ App.Views.Recipe = Backbone.View.extend({
     'keydown #recipe-title .val': 'updateTitleOnEnter', 
     'keydown #hydration    .val': 'updateHydrationOnEnter',
     'keydown #inoculation  .val': 'updateInoculationOnEnter',
+    'keydown #flour-mass   .val': 'updateMassOnEnter',
+    'blur #hydration .val' : 'setHydration',
+    'blur #recipe-title .val' : 'setTitle',
 
     'keyup input#new-amount'      : "updateNewPercent",
     'keyup input#new-percent'     : "updateNewAmount",
@@ -55,6 +57,13 @@ App.Views.Recipe = Backbone.View.extend({
   },
   newNote: function() {
     this.model.notes.newNote();
+  },
+  setHydration: function() {
+    //TODO reset the hydration if it isn't saved
+    //$('#hydration .val').text(this.model
+  },
+  setTitle: function() {
+    $('#recipe-title .val').text(this.model.get('title'));
   },
   updateTitleOnEnter: function(e) {
     if(e.keyCode === 13) {
@@ -85,6 +94,11 @@ App.Views.Recipe = Backbone.View.extend({
       this.update_stats();
     }
   },
+  updateMassOnEnter: function(e) {
+    if(e.keyCode === 13) {
+      e.preventDefault();
+    }
+  },
   newWaterMass: function() {
     var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0];
     var hydration = this.hydration_val.text();
@@ -92,7 +106,7 @@ App.Views.Recipe = Backbone.View.extend({
     var total_flour = this.model.parts.flour_mass();
     var min_hydration = (total_water - water.get('amount')) / total_flour * 100;
     if(min_hydration < hydration) {
-      var new_water_mass = ((hydration - min_hydration) / 100.0 * total_flour);
+      var new_water_mass = truncate((hydration - min_hydration) / 100.0 * total_flour);
       var percent = as_percent(new_water_mass / total_flour);
       water.save({amount: new_water_mass, percent: percent});
     } else {
