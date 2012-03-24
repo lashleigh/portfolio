@@ -25,7 +25,7 @@
       <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
     </div>
   </div>
-  <div id="stats"> </div>
+  <ul id="stats"> </ul>
   <div id="notes_container">
     <div id="new-note" class="note">
       <textarea id="new-note-body" rows='3'></textarea></br>
@@ -109,24 +109,21 @@
 </script>
 
 <script type="text/template" id="recipe-stats">
-    <div id="hydration" class='editable'>
-      <span class='label'>hydration</span>
+    <li id="hydration" class='editable'>
       <span class='val'>{{hydration}}</span>
       <input class='val' value={{hydration}} />
-      <span class='symbol'>%</span>
-    </div>
-    <div id="inoculation" class='editable'>
-      <span class="label">inoculation</span>
+      <span class='label'>hydration</span>
+    </li>
+    <li id="inoculation" class='editable'>
       <span class='val'>{{inoculation}}</span>
       <input class='val' value={{inoculation}} />
-      <span class='symbol'>%</span>
-    </div>
-    <div id="flour_mass" class='editable'>
-      <span class="label">flour mass</span>
+      <span class="label">inoculation</span>
+    </li>
+    <li id="flour_mass" class='editable'>
       <span class='val'>{{flour_mass}}</span>
       <input class='val' value={{flour_mass}} />
-      <span class='symbol'>g</span>
-    </div>
+      <span class="label">flour mass</span>
+    </li>
 </script>
 
 <script type="text/template" id="note-li">

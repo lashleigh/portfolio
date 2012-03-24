@@ -8,23 +8,32 @@
     padding: 12px;
     background: #EEE;
     width: 375px;
-    div {
-      clear: both;
-      line-height: 1.8em;
+    li {
+      float: left;
+      line-height: 2.0em;
+      padding: 1em 0;
+      width: 33%;
+    }
+    .label, .val {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
     }
     .label {
-      width: 71px;
       float: left;
-      text-align: right;
+      text-align: center;
     }
     .val {
+      font-size: 2em;
+      text-align: center;
       float: left;
-      text-align: left;
-      margin-left: 15px;
-      margin-right: 5px;
+    }
+    input.val {
+      width: 80%;
+      margin: 0 auto;
     }
   }
-  #stats div { 
+  #stats li { 
     input {
       display: none;
       width: 2em;
@@ -127,7 +136,7 @@
         display: none;
       }
       .remove.button {
-        opacity: 0;
+        opacity: 0.25;
       }
     }
     .part:hover {
@@ -175,7 +184,7 @@
       opacity: 1.0;
     }
     .remove.button {
-      opacity: 0.0;
+      opacity: 0.25;
     }
     background: #eee;
     border: 1px solid rgba(0, 0, 0, .1);
