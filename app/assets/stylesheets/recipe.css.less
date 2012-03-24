@@ -1,5 +1,6 @@
 #recipe_container {
   width: 960px;
+  overflow: hidden;
   .editable:hover, .editing {
     background: #ffffd3;
   }
@@ -133,11 +134,14 @@
         display: none;
       }
       .remove.button {
-        opacity: 0.25;
+        opacity: 0;
+      }
+      .remove.button:hover {
+        opacity: 1.0 !important;
       }
     }
     .part:hover {
-      .remove.button {opacity: 1.0;}
+      .remove.button {opacity: 0.50;}
     }
     tr:nth-child(odd) {
       background: #ddd;

@@ -2,6 +2,7 @@ class Ingredient
   include MongoMapper::Document
 
   key :name, String, :required => true
+  key :category, String
   many :parts
 
   def self.autocomplete_list

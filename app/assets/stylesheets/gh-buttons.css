@@ -286,7 +286,7 @@ http://github.com/necolas/css3-github-buttons
 .button.danger {
     color: #900;
 }
-.button.danger.icononly,
+.button.danger.fixed-percent-input,
 .button.danger:hover,
 .button.danger:focus,
 .button.danger:active {     
