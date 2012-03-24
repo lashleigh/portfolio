@@ -288,6 +288,7 @@ App.Views.Part = Backbone.View.extend({
     "keypress .edit-percent"   : "updatePercentOnEnter",
   },
   toggleFixedPercent: function() {
+    this.$('button.fixed-percent-input').toggleClass('lock unlock danger positive')
     this.model.save({'fixed_percent': !this.model.get('fixed_percent')});
   },
   editField: function(e) {
@@ -364,7 +365,7 @@ App.Views.Part = Backbone.View.extend({
     this.input_percent.bind('blur', _.bind(this.exitEditing, this)).val(attrs.percent);
     this.input_name.bind('blur', _.bind(this.exitEditing, this)).val(attrs.ingredient.name).autocomplete(this.autocomplete());
     if(!this.model.get('primary')) {
-      this.el.getElementsByClassName('fixed-percent-input')[0].checked = this.model.get('fixed_percent');
+      this.model.get('fixed_percent') ? this.$('button.fixed-percent-input').addClass('lock positive') : this.$('button.fixed-percent-input').addClass('unlock danger');
     }
     return this;
   }
