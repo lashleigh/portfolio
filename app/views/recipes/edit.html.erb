@@ -1,7 +1,6 @@
 <div id="recipe_container" > 
   <div id="recipe-title" class="editable">
-    <span class='val'><%= @recipe.title %></span>
-    <input class='val' value=<%= @recipe.title %> />
+    <span class='val' contentEditable='true' ><%= @recipe.title %></span>
   </div>
   <div class="recipe">
     <table>
@@ -71,7 +70,7 @@
 <script type="text/template" id="primary-part-li">
   <td class='amount-col editable'>
     <span class="amount"> {{amount}} </span>
-    <input class="edit-amount" value={{amount}} />
+    <input class="val edit-amount" value={{amount}} />
   </td>
   <td class='unit-col'> g </td>
   
@@ -110,18 +109,15 @@
 
 <script type="text/template" id="recipe-stats">
     <li id="hydration" class='editable'>
-      <span class='val'>{{hydration}}</span>
-      <input class='val' value={{hydration}} />
+      <span class='val' contentEditable='true'>{{hydration}}</span>
       <span class='label'>hydration</span>
     </li>
     <li id="inoculation" class='editable'>
-      <span class='val'>{{inoculation}}</span>
-      <input class='val' value={{inoculation}} />
+      <span class='val' contentEditable='true'>{{inoculation}}</span>
       <span class="label">inoculation</span>
     </li>
     <li id="flour_mass" class='editable'>
-      <span class='val'>{{flour_mass}}</span>
-      <input class='val' value={{flour_mass}} />
+      <span class='val' contentEditable='true'>{{flour_mass}}</span>
       <span class="label">flour mass</span>
     </li>
 </script>
