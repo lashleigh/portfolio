@@ -379,6 +379,8 @@ App.Models.Part = Backbone.Model.extend({
     if(this.get('ingredient').name === 'flour' || this.get('ingredient').name === 'starter' ) {
       this.bind('change', this.updatePercents, this);
       this.bind('change', this.maintainHydration, this);
+    } else if(this.get('ingredient').name === 'water') {
+      this.bind('change', this.collection.recipeView.update_stats, this.collection.recipeView);
     }
   },
   maintainHydration: function() {

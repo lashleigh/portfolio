@@ -10,6 +10,7 @@ class Note
 
   def as_json(options={})
     {
+      :id => self.id,
       :time => self.time,
       :body => self.body,
       :markdown => self.markdown
