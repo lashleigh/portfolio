@@ -42,7 +42,7 @@
     _.templateSettings = {
       interpolate : /\{\{([\s\S]+?)\}\}/g
     };
-    Recipe = new App.Models.Recipe(<%= @recipe.to_json(:include => {:parts => {:include => {:ingredient => {:only => :name}}}} ).html_safe %>);
+    Recipe = new App.Models.Recipe(<%= @recipe.to_json(:only => [:title, :id], :methods => [:parts_name, :notes_md]).html_safe %>);
 
     $( "#new-name" ).autocomplete({
       minLength: 0,
@@ -126,7 +126,7 @@
   <div class="show-body">
     <div class="time">{{time}}</div>
     <button class='icon icononly remove danger button'></button>
-    <div class="body">{{body}}</div>
+    <div class="body">{{markdown}}</div>
   </div>
   <div class="edit-body">
     <textarea class="body-input" >{{body}}</textarea>

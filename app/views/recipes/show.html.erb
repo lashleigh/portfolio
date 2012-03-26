@@ -16,25 +16,25 @@
   </br>
   <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
   </div>
-  <div id="stats">
-    <div id="hydration">
+  <ul id="stats">
+    <li id="hydration">
+      <span class='val'><%=@stats['hydration'].round() %>%</span>
       <span class='label'>hydration</span>
-      <span class='val'><%=@stats['hydration'] %> %</span>
-    </div>
-    <div id="inoculation">
+    </li>
+    <li id="inoculation">
+      <span class='val'><%=@stats['inoculation'].round() %>%</span>
       <span class="label">inoculation</span>
-      <span class='val'><%=@stats['inoculation'] %> %</span>
-    </div>
-    <div id="flour_mass">
+    </li>
+    <li id="flour_mass">
+      <span class='val'><%=@stats['flour_mass'].round() %>g</span>
       <span class="label">flour mass</span>
-      <span class='val'><%=@stats['flour_mass'] %> g</span>
-    </div>
-  </div>
+    </li>
+  </ul>
   <div id="notes_container">
     <% @recipe.notes.reverse.each do |n| %>
       <div class="note"> 
         <span class="time"> <%= time_ago_in_words(n.time) %> ago </span></br>
-        <span class="body"> <%= n.body %> </span>
+        <span class="body"> <%= markdown.render(n.body).html_safe %> </span>
       </div>
     <% end %>
   </div>

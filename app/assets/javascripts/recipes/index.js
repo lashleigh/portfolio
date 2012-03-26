@@ -25,12 +25,12 @@ App.Models.Recipe = Backbone.Model.extend({
     this.url = '/recipes/'+this.id; 
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
-    this.parts.reset(this.get('parts'));
+    this.parts.reset(this.get('parts_name'));
     //this.parts.bind('all', this.view.update_stats, this.view) //TODO this is excessive stats updates
 
     this.notes.url = '/recipes/'+this.id+'/notes';
     this.notes.recipeView = this.view;
-    this.notes.reset(this.get('notes'));
+    this.notes.reset(this.get('notes_md'));
 
     this.view.update_stats();
   }
@@ -243,6 +243,7 @@ App.Views.Note = Backbone.View.extend({
   },
   render: function() {
     var template = _.template(this.template);
+    console.log(this.model.toJSON());
     $(this.el).html(template(this.model.toJSON()));
     $(this.el).find('.time').text(this.getLocalTime());
     this.note_body = $(this.el).find('.body');
@@ -438,6 +439,7 @@ App.Collections.NoteList = Backbone.Collection.extend({
     var note = this.create({
       time: (new Date()).toUTCString(),
       body : $('#new-note-body').val(),
+      markdown : $('#new-note-body').val(),
     })
     //TODO make this part of a success callback
     $('#new-note-body').val('');

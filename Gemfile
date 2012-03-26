@@ -7,6 +7,7 @@ gem 'mongo'
 gem 'bson'
 gem 'bson_ext'
 gem 'RedCloth'
+gem 'redcarpet'
 gem 'omniauth-twitter'
 gem 'mustache'
 group :assets do 

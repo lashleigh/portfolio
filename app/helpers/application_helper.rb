@@ -1,4 +1,7 @@
 module ApplicationHelper
+  def markdown 
+    Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
+  end 
   def red(text)
     RedCloth.new(text).to_html.html_safe
   end

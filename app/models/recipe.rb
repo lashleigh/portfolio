@@ -7,7 +7,13 @@ class Recipe
   many :parts
   many :notes
   timestamps!
-
+  
+  def notes_md
+    self.notes.as_json(:methods => :markdown)
+  end
+  def parts_name
+    self.parts.as_json(:include => {:ingredient => {:only => :name}})
+  end
   def stats
     starter = self.mass_of('starter')
     water = self.mass_of('water')
