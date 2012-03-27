@@ -2,18 +2,22 @@
   width: 960px;
   overflow: hidden;
   .editable:hover, .editing {
-    background: #ffffd3;
+    background: #ffffd3 !important;
   }
   #stats {
     float: left;
     padding: 12px;
-    background: #EEE;
+    background: #E0E0E0;
     width: 375px;
+    border: 1px solid #CCC;
     li {
       float: left;
       line-height: 2.0em;
       padding: 1em 0;
-      width: 33%;
+      width: 31.9%;
+      background: white;
+      border-radius: 10px;
+      margin: 0 1%;
     }
     .label, .val {
       margin-left: auto;
@@ -134,14 +138,14 @@
         display: none;
       }
       .remove.button {
-        opacity: 0;
+        opacity: .25;
       }
       .remove.button:hover {
         opacity: 1.0 !important;
       }
     }
     .part:hover {
-      .remove.button {opacity: 0.50;}
+      .remove.button {opacity: 0.75;}
     }
     tr:nth-child(odd) {
       background: #ddd;
@@ -180,14 +184,17 @@
        display: inline !important;
     }
   }
-  .note {
+  .note:hover {
+    background: #ffffd3 !important;
+  }
+  .note, #new-note {
     :hover .remove.button {
       opacity: 1.0;
     }
     .remove.button {
       opacity: 0.25;
     }
-    background: #eee;
+    background: #e0e0e0;
     border: 1px solid rgba(0, 0, 0, .1);
     padding: 12px;
     .edit-body {

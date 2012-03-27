@@ -71,6 +71,7 @@ App.Views.Recipe = Backbone.View.extend({
       var title = this.$('#recipe-title .val')
       this.model.save({title : title.text()}, { success: function(model, response) {
           console.log(model, response);
+          $('#recipe-title').animate({background: 'blue'}, 5000, function() {})
           }, error: function(model, response) {
           }
       });
