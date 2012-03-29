@@ -1,6 +1,3 @@
-function isNum(num) {
-  return !!num && parseFloat(num) === num*1.0;
-}
 var App = {
   Collections: {},
   Views: {},
@@ -12,8 +9,11 @@ as_percent = function(num) {
 truncate = function(num) {
   return Math.round(100*num) / 100;
 }
+function isNum(num) {
+  return !!num && parseFloat(num) === num*1.0;
+}
 
-App.Models.Recipe = Backbone.Model.extend({
+App.Models.Recipe = Backbone.NestedModel.extend({
   url: '/recipes',
   initialize: function() {
     this.parts = new App.Collections.PartList;
@@ -26,6 +26,7 @@ App.Models.Recipe = Backbone.Model.extend({
     this.parts.url = '/recipes/'+this.id+'/parts';
     this.parts.recipeView = this.view;
     this.parts.reset(this.get('parts_name'));
+    this.parts.initializeAfterReset();
     //this.parts.bind('all', this.view.update_stats, this.view) //TODO this is excessive stats updates
 
     this.notes.url = '/recipes/'+this.id+'/notes';
@@ -41,8 +42,9 @@ App.Views.Recipe = Backbone.View.extend({
     'keydown #hydration    .val': 'updateHydrationOnEnter',
     'keydown #inoculation  .val': 'updateInoculationOnEnter',
     'keydown #flour-mass   .val': 'updateMassOnEnter',
-    'blur #hydration .val' : 'setHydration',
-    'blur #recipe-title .val' : 'setTitle',
+    'blur #recipe-title .val' : 'resetTitle',
+    'blur #hydration .val' : 'resetHydration',
+    'blur #inoculation .val' : 'resetInoculation',
 
     'keyup input#new-amount'      : "updateNewPercent",
     'keyup input#new-percent'     : "updateNewAmount",
@@ -58,12 +60,14 @@ App.Views.Recipe = Backbone.View.extend({
   newNote: function() {
     this.model.notes.newNote();
   },
-  setHydration: function() {
+  resetHydration: function() {
     //TODO reset the hydration if it isn't saved
     //$('#hydration .val').text(this.model
   },
-  setTitle: function() {
+  resetTitle: function() {
     $('#recipe-title .val').text(this.model.get('title'));
+  },
+  resetInoculation: function() {
   },
   updateTitleOnEnter: function(e) {
     if(e.keyCode === 13) {
@@ -83,9 +87,9 @@ App.Views.Recipe = Backbone.View.extend({
       e.preventDefault();
       var inn = $('#inoculation .val').text();
       if(!isNum(inn)) return;
-      var starter = this.model.parts.filter(function(p) {return p.get('ingredient').name === 'starter'; })[0];
-      var flour =   this.model.parts.filter(function(p) {return p.get('ingredient').name === 'flour'; })[0];
-      var water =   this.model.parts.filter(function(p) {return p.get('ingredient').name === 'water'; })[0];
+      var starter = this.model.parts.starter; //filter(function(p) {return p.get('ingredient.name') === 'starter'; })[0];
+      var flour =   this.model.parts.flour; //filter(function(p) {return p.get('ingredient.name') === 'flour'; })[0];
+      var water =   this.model.parts.water; //filter(function(p) {return p.get('ingredient.name') === 'water'; })[0];
       var total_flour = this.model.parts.flour_mass();
       var half_starter = inn / 100.0 * total_flour;
       var hydration = this.hydration.find('span').text();
@@ -101,7 +105,7 @@ App.Views.Recipe = Backbone.View.extend({
     }
   },
   newWaterMass: function() {
-    var water = this.model.parts.filter(function(p) { return p.get('ingredient').name === 'water'; })[0];
+    var water = this.model.parts.water; //filter(function(p) { return p.get('ingredient.name') === 'water'; })[0];
     var hydration = this.hydration_val.text();
     var total_water = this.model.parts.water_mass();
     var total_flour = this.model.parts.flour_mass();
@@ -281,7 +285,7 @@ App.Views.Part = Backbone.View.extend({
   },
   editField: function(e) {
     $(e.currentTarget).next().focus();
-    this.input_name.val(this.model.get('ingredient').name);
+    this.input_name.val(this.model.get('ingredient.name'));
     this.input_amount.val(this.model.get('amount'));
     this.input_percent.val(this.model.get('percent'));
   },
@@ -352,7 +356,7 @@ App.Views.Part = Backbone.View.extend({
   }
 });
 
-App.Models.Part = Backbone.Model.extend({
+App.Models.Part = Backbone.NestedModel.extend({
   validate: function(attrs) {
     var errors = [];
     if(!_.isUndefined(attrs.amount)) {
@@ -377,10 +381,10 @@ App.Models.Part = Backbone.Model.extend({
       var id= this.id ? this.id : this.cid;
       this.view = new App.Views.Part({model: this, id: 'part_'+id})
     }
-    if(this.get('ingredient').name === 'flour' || this.get('ingredient').name === 'starter' ) {
+    if(this.get('ingredient.name') === 'flour' || this.get('ingredient.name') === 'starter' ) {
       this.bind('change', this.updatePercents, this);
-      this.bind('change', this.maintainHydration, this);
-    } else if(this.get('ingredient').name === 'water') {
+      //this.bind('change', this.maintainHydration, this);
+    } else if(this.get('ingredient.name') === 'water') {
       this.bind('change', this.collection.recipeView.update_stats, this.collection.recipeView);
     }
   },
@@ -402,18 +406,27 @@ App.Models.Part = Backbone.Model.extend({
 })
 App.Collections.PartList = Backbone.Collection.extend({
   model: App.Models.Part,
+  initializeAfterReset: function() {
+    this.starter = this.where({'ingredient.name' : 'starter' })[0];
+    this.flour = this.where({'ingredient.name' : 'flour' })[0];
+    this.water = this.where({'ingredient.name' : 'water' })[0];
+  },
+  getTotalMassByCategory: function(category) {
+    return _(this.where({'ingredient.category' : category })).map(function(a) {return a.get('amount');}).reduce(function(a,b) {return a+b;}, 0);
+  },
   getTotalMass: function(name) {
-    return _.pluck(_.pluck(this.filter(function(part) {return part.get('ingredient').name == name}), 'attributes'), 'amount').reduce(function(a, b) {return parseFloat(a)+parseFloat(b);}, 0)
+    return _(this.where({'ingredient.name' : name })).map(function(a) {return a.get('amount');}).reduce(function(a,b) {return a+b;}, 0);
   },
   stats: function() {
     var half_starter = this.getTotalMass('starter') / 2;
     var water = this.getTotalMass('water');
     var flour = this.getTotalMass('flour');
     var inoculation = half_starter / (flour + half_starter);
+    console.log(half_starter, water, flour);
     return {
       hydration: as_percent((water + half_starter) / (flour + half_starter)),
       inoculation: as_percent(inoculation),
-      flour_mass: flour+half_starter,
+      flour_mass: truncate(flour+half_starter),
       doubling: truncate(-3 * Math.log(inoculation) / Math.log(2)),
       temp: 72
     }
@@ -427,7 +440,7 @@ App.Collections.PartList = Backbone.Collection.extend({
   initialize: function() {
   }
 })
-App.Models.Note = Backbone.Model.extend({
+App.Models.Note = Backbone.NestedModel.extend({
   initialize: function() {
     this.view = new App.Views.Note({model: this, id: 'note_'+this.id})
   } 

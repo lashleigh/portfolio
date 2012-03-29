@@ -4,7 +4,8 @@ class User
   key :uid, String
   key :name, String
   key :admin, Boolean, :default => false
-    
+  
+  #attr_protected :admin
   
   def self.create_with_omniauth(auth)  
     user = User.new(:name => auth["info"]["name"], 

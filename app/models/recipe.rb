@@ -15,10 +15,10 @@ class Recipe
     self.parts.as_json(:include => {:ingredient => {:only => :name}})
   end
   def stats
-    starter = self.mass_of('starter')
+    half_starter = self.mass_of('starter') / 2.0;
     water = self.mass_of('water')
     flour = self.mass_of('flour')
-    return {'hydration' => (100 * (starter/2 + water) / (starter/2 + flour)).round(2), 'inoculation' => (starter / 2 *100 / flour).round(2), 'flour_mass' => flour + starter/2}
+    return {'hydration' => (100 * (half_starter + water) / (half_starter + flour)).round(2), 'inoculation' => (half_starter *100 / flour).round(2), 'flour_mass' => flour + half_starter}
   end
   def mass_of(name)
     self.parts.select {|p| p.ingredient.name == name }.map {|p| p.amount}.sum
