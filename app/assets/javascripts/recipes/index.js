@@ -18,9 +18,9 @@ App.Models.Recipe = Backbone.NestedModel.extend({
   initialize: function() {
     this.parts = new App.Collections.PartList;
     this.notes = new App.Collections.NoteList;
-    this.view = new App.Views.Recipe({model: this, el: document.getElementById('recipe_container')});
+    this.view = new App.Views.Recipe({model: this})
+    this.view.setElement(document.getElementById('recipe_container'));
     this.view.render();
-    this.view.$el = $('#recipe_container'); //TODO not getting defined on its own - why it that?
     
     this.url = '/recipes/'+this.id; 
     this.parts.url = '/recipes/'+this.id+'/parts';
@@ -39,12 +39,12 @@ App.Models.Recipe = Backbone.NestedModel.extend({
 App.Views.Recipe = Backbone.View.extend({
   events: {
     'keydown #recipe-title .val': 'updateTitleOnEnter', 
-    'keydown #hydration    .val': 'updateHydrationOnEnter',
-    'keydown #inoculation  .val': 'updateInoculationOnEnter',
-    'keydown #flour-mass   .val': 'updateMassOnEnter',
+    //'keydown #hydration    .val': 'updateHydrationOnEnter',
+    //'keydown #inoculation  .val': 'updateInoculationOnEnter',
+    //'keydown #flour-mass   .val': 'updateMassOnEnter',
     'blur #recipe-title .val' : 'resetTitle',
-    'blur #hydration .val' : 'resetHydration',
-    'blur #inoculation .val' : 'resetInoculation',
+    //'blur #hydration .val' : 'resetHydration',
+    //'blur #inoculation .val' : 'resetInoculation',
 
     'keyup input#new-amount'      : "updateNewPercent",
     'keyup input#new-percent'     : "updateNewAmount",
@@ -164,14 +164,14 @@ App.Views.Recipe = Backbone.View.extend({
       }
     })
     if(!!newIng) {
-      $(this.el).find('#new-part').find('input').val('');
+      this.$('#new-part').find('input').val('');
     }
   },
   render: function() {
-    this.new_amount       = $(this.el).find('#new-amount');
-    this.new_percent      = $(this.el).find('#new-percent');
-    this.new_name         = $(this.el).find('#new-name');
-    this.new_name_id      = $(this.el).find('#new-name-id');
+    this.new_amount       = this.$('#new-amount');
+    this.new_percent      = this.$('#new-percent');
+    this.new_name         = this.$('#new-name');
+    this.new_name_id      = this.$('#new-name-id');
     return this;
   }
 });
@@ -183,7 +183,6 @@ App.Views.Note = Backbone.View.extend({
     $('#new-note').after(this.render().el);
     this.model.bind('change', this.render, this);
     this.setHeight();
-    this.$el = $(this.el);
   },
   events: {
     'click .body'  : 'editBody',
@@ -250,9 +249,9 @@ App.Views.Note = Backbone.View.extend({
     var template = _.template(this.template);
     console.log(this.model.toJSON());
     $(this.el).html(template(this.model.toJSON()));
-    $(this.el).find('.time').text(this.getLocalTime());
-    this.note_body = $(this.el).find('.body');
-    this.body_input = $(this.el).find('.body-input');
+    this.$('.time').text(this.getLocalTime());
+    this.note_body = this.$('.body');
+    this.body_input = this.$('.body-input');
     this.setHeight();
     return this;
   } 
@@ -270,30 +269,36 @@ App.Views.Part = Backbone.View.extend({
     'click .editable span ' : 'editField',
     'click .remove': 'clear',
     'click .fixed-percent-input': 'toggleFixedPercent',
-    'focusin .editable input' : 'toggleEditingClass',
-    'focusout .editable input': 'toggleEditingClass',
-    "keypress .edit-amount"      : "updateAmountOnEnter",
-    "keypress .edit-name"      : "updateIngredientOnEnter",
-    "keypress .edit-percent"   : "updatePercentOnEnter",
+    'focusin .editable input'  : 'toggleEditingClass',
+    'focusout .editable input' : 'toggleEditingClass',
+    "keyup .edit-amount"    : "updateAmountOnEnter",
+    "keyup .edit-name"      : "updateIngredientOnEnter",
+    "keyup .edit-percent"   : "updatePercentOnEnter",
   },
   toggleFixedPercent: function() {
     this.$('button.fixed-percent-input').toggleClass('lock unlock danger positive')
     this.model.save({'fixed_percent': !this.model.get('fixed_percent')});
   },
   toggleEditingClass: function(e) {
+  console.log('toggle editing', e, e.currentTarget, $(e.currentTarget).next())
     this.$(e.currentTarget).parent().toggleClass('editing')
   },
   editField: function(e) {
+  console.log('toggle edit field', e, e.currentTarget, $(e.currentTarget).next())
     $(e.currentTarget).next().focus();
     this.input_name.val(this.model.get('ingredient.name'));
     this.input_amount.val(this.model.get('amount'));
     this.input_percent.val(this.model.get('percent'));
   },
   updatePercentOnEnter: function(e) {
+    console.log(e.keyCode);
     if(e.keyCode == 13) {
       var percent = truncate(this.input_percent.val());
       var amount = truncate(percent / 100 * this.model.collection.flour_mass()); 
       this.model.save({amount: amount, percent: percent});
+    } else if(e.keyCode == 27) {
+      //TODO This doesn't work and I'm not sure why
+      //$(e.currentTarget).blur();
     }
   },
   updateAmountOnEnter: function(e) {
@@ -301,11 +306,13 @@ App.Views.Part = Backbone.View.extend({
       var amount = truncate(this.input_amount.val());
       var percent = as_percent(amount / this.model.collection.flour_mass());
       this.model.save({amount: amount, percent: percent});
+    } else if(e.keyCode == 27) {
     }
   },
   updateIngredientOnEnter: function(e) {
     if(e.keyCode == 13) {
       this.saveIngredient();
+    } else if(e.keyCode == 27) {
     }
   },
   saveIngredient: function() {
@@ -343,12 +350,11 @@ App.Views.Part = Backbone.View.extend({
     var template = _.template(this.template);
     $(this.el).html(template(this.model.toJSON()));
     
-    this.input_amount = $(this.el).find('.edit-amount'); 
-    this.input_percent= $(this.el).find('.edit-percent'); 
-    this.input_name = $(this.el).find('.edit-name');
-    this.input_name_id=$(this.el).find('.edit-name-id');
+    this.input_amount = this.$('.edit-amount'); 
+    this.input_percent= this.$('.edit-percent'); 
+    this.input_name = this.$('.edit-name');
+    this.input_name_id=this.$('.edit-name-id');
     
-    var attrs = this.model.attributes;
     if(!this.model.get('primary')) {
       this.model.get('fixed_percent') ? this.$('button.fixed-percent-input').addClass('lock positive') : this.$('button.fixed-percent-input').addClass('unlock danger');
     }
@@ -381,10 +387,11 @@ App.Models.Part = Backbone.NestedModel.extend({
       var id= this.id ? this.id : this.cid;
       this.view = new App.Views.Part({model: this, id: 'part_'+id})
     }
-    if(this.get('ingredient.name') === 'flour' || this.get('ingredient.name') === 'starter' ) {
+    if(this.get('ingredient.category') === 'flour' || this.get('ingredient.name') === 'starter' ) {
+      console.log(this, this.get('ingredient.category'));
       this.bind('change', this.updatePercents, this);
       //this.bind('change', this.maintainHydration, this);
-    } else if(this.get('ingredient.name') === 'water') {
+    } else if(this.get('ingredient.category') === 'water') {
       this.bind('change', this.collection.recipeView.update_stats, this.collection.recipeView);
     }
   },
@@ -415,12 +422,12 @@ App.Collections.PartList = Backbone.Collection.extend({
     return _(this.where({'ingredient.category' : category })).map(function(a) {return a.get('amount');}).reduce(function(a,b) {return a+b;}, 0);
   },
   getTotalMass: function(name) {
-    return _(this.where({'ingredient.name' : name })).map(function(a) {return a.get('amount');}).reduce(function(a,b) {return a+b;}, 0);
+    return _(this.where({'ingredient.name'     : name     })).map(function(a) {return a.get('amount');}).reduce(function(a,b) {return a+b;}, 0);
   },
   stats: function() {
     var half_starter = this.getTotalMass('starter') / 2;
-    var water = this.getTotalMass('water');
-    var flour = this.getTotalMass('flour');
+    var water = this.getTotalMassByCategory('water');
+    var flour = this.getTotalMassByCategory('flour');
     var inoculation = half_starter / (flour + half_starter);
     console.log(half_starter, water, flour);
     return {
@@ -432,10 +439,10 @@ App.Collections.PartList = Backbone.Collection.extend({
     }
   },
   flour_mass: function() {
-    return this.getTotalMass('flour') + this.getTotalMass('starter')/2;
+    return this.getTotalMassByCategory('flour') + this.getTotalMass('starter')/2;
   },
   water_mass: function() {
-    return this.getTotalMass('water') + this.getTotalMass('starter')/2;
+    return this.getTotalMassByCategory('water') + this.getTotalMass('starter')/2;
   }, 
   initialize: function() {
   }
