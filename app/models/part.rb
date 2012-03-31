@@ -10,6 +10,10 @@ class Part
   #attr_protected :primary
   belongs_to :ingredient
 
+  def as_json(options)
+    super(:include => {:ingredient => {:only => [:name, :category]}})
+  end
+
   def truncate
     self.amount = self.amount.round(2)
     self.percent = self.percent.round(2)

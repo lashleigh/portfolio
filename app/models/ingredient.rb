@@ -5,6 +5,6 @@ class Ingredient
   key :category, String, :required => true, :default => 'other', :in => ['flour', 'water', 'salt', 'other']
 
   def self.autocomplete_list
-    all.map {|i| {'label'=> i.name, 'value' => i.id.as_json} }
+    all.map {|i| {'label'=> i.name, 'value' => i.id.as_json, 'category' => i.category} }
   end
 end

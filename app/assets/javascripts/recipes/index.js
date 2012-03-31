@@ -27,7 +27,7 @@ App.Models.Recipe = Backbone.NestedModel.extend({
     this.parts.recipeView = this.view;
     this.parts.reset(this.get('parts_name'));
     this.parts.initializeAfterReset();
-    //this.parts.bind('all', this.view.update_stats, this.view) //TODO this is excessive stats updates
+    this.parts.bind('all', this.view.update_stats, this.view) //TODO this is excessive stats updates
 
     this.notes.url = '/recipes/'+this.id+'/notes';
     this.notes.recipeView = this.view;
@@ -74,8 +74,6 @@ App.Views.Recipe = Backbone.View.extend({
       e.preventDefault();
       var title = this.$('#recipe-title .val')
       this.model.save({title : title.text()}, { success: function(model, response) {
-          console.log(model, response);
-          $('#recipe-title').animate({background: 'blue'}, 5000, function() {})
           }, error: function(model, response) {
           }
       });
@@ -247,7 +245,6 @@ App.Views.Note = Backbone.View.extend({
   },
   render: function() {
     var template = _.template(this.template);
-    console.log(this.model.toJSON());
     $(this.el).html(template(this.model.toJSON()));
     this.$('.time').text(this.getLocalTime());
     this.note_body = this.$('.body');
@@ -280,18 +277,15 @@ App.Views.Part = Backbone.View.extend({
     this.model.save({'fixed_percent': !this.model.get('fixed_percent')});
   },
   toggleEditingClass: function(e) {
-  console.log('toggle editing', e, e.currentTarget, $(e.currentTarget).next())
     this.$(e.currentTarget).parent().toggleClass('editing')
   },
   editField: function(e) {
-  console.log('toggle edit field', e, e.currentTarget, $(e.currentTarget).next())
     $(e.currentTarget).next().focus();
     this.input_name.val(this.model.get('ingredient.name'));
     this.input_amount.val(this.model.get('amount'));
     this.input_percent.val(this.model.get('percent'));
   },
   updatePercentOnEnter: function(e) {
-    console.log(e.keyCode);
     if(e.keyCode == 13) {
       var percent = truncate(this.input_percent.val());
       var amount = truncate(percent / 100 * this.model.collection.flour_mass()); 
@@ -319,7 +313,7 @@ App.Views.Part = Backbone.View.extend({
     this.model.save({
       ingredient_id: this.input_name_id.val(), 
       ingredient: {
-        name: this.input_name.val()
+        name: this.input_name.val(),
       }
     })
   },
@@ -355,6 +349,9 @@ App.Views.Part = Backbone.View.extend({
     this.input_name = this.$('.edit-name');
     this.input_name_id=this.$('.edit-name-id');
     
+    this.input_name.autocomplete(this.autocomplete());
+
+    
     if(!this.model.get('primary')) {
       this.model.get('fixed_percent') ? this.$('button.fixed-percent-input').addClass('lock positive') : this.$('button.fixed-percent-input').addClass('unlock danger');
     }
@@ -383,13 +380,13 @@ App.Models.Part = Backbone.NestedModel.extend({
     return _.any(errors) ? errors : false
   },
   initialize: function() {
-    if(!this.validate(this.attributes)) {
-      var id= this.id ? this.id : this.cid;
-      this.view = new App.Views.Part({model: this, id: 'part_'+id})
-    }
+    this.view = new App.Views.Part({model: this, id: 'part_'+this.id});
+    this.on('change:ingredient.category', function(model, category) {
+      console.log(model, category);
+    });
     if(this.get('ingredient.category') === 'flour' || this.get('ingredient.name') === 'starter' ) {
-      console.log(this, this.get('ingredient.category'));
       this.bind('change', this.updatePercents, this);
+      this.bind('change', this.collection.recipeView.update_stats, this.collection.recipeView);
       //this.bind('change', this.maintainHydration, this);
     } else if(this.get('ingredient.category') === 'water') {
       this.bind('change', this.collection.recipeView.update_stats, this.collection.recipeView);
@@ -429,7 +426,6 @@ App.Collections.PartList = Backbone.Collection.extend({
     var water = this.getTotalMassByCategory('water');
     var flour = this.getTotalMassByCategory('flour');
     var inoculation = half_starter / (flour + half_starter);
-    console.log(half_starter, water, flour);
     return {
       hydration: as_percent((water + half_starter) / (flour + half_starter)),
       inoculation: as_percent(inoculation),

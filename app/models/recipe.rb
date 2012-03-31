@@ -12,7 +12,7 @@ class Recipe
     self.notes.as_json(:methods => :markdown)
   end
   def parts_name
-    self.parts.as_json(:include => {:ingredient => {:only => [:name, :category]}})
+    self.parts.as_json
   end
   def stats
     half_starter = self.mass_of('starter') / 2.0;
