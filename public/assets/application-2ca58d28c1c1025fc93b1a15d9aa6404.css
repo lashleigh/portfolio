@@ -163,7 +163,7 @@ http://github.com/necolas/css3-github-buttons
     width: 12px; 
     height: 12px; 
     margin: 0 0.75em 0 -0.25em; 
-    background: url(gh-icons.png) 0 99px no-repeat;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAF0CAYAAAA5NvltAAAPM0lEQVR42u1d7ZHjOA7Vj6vanwpBISgEheAQFIJCUAgKgSE4BIbAEBSCQtDZfaTn6REAyZu2e3drVMUaj1uNJ4EkAOKruy6%2F%2BsfwjxHiZ%2FM6z7N%2FDP8Y4fm5dH8fCZ9xmCCR%2BJNwukwQJm6CCMRNEI24CGIQF0FKxC8gFcQzkBriL5BK4i%2BQJ4CjpwzG%2F93jlxw9ZTD%2B7xKbHPDZA0EPLHQwBy6xIC7RdHlgoZMmuhMAOm0VxX8vAPgz7ZIArI2WAZSuPwD%2FYoC3LtO3brS3i4q3C7u3i%2Bu3K5yPqMyPKH0GaTFbQi3xTlr3lQCuhfhr3VcSz1RkrV2kskmZZJVNEvG9kfjeQjwBeB7G8tyjLLqMVlFxNoqK8yMA1g5uYVHQWPT2FfSjIN%2B60T4iKiQdXQPiWoSdqxXXQPzvPdG%2FDeKFEQyl74Vhqs6z0Ww5W82WtwO8nUU%2Frtm%2BfZm%2BdaN9v6h4Kp13juL1n7%2F%2B6h8jPMb3S1cgfsbxffpBIP4coYH4a6M9iblIrLeIp5%2FzpJrLNRJHIkMFcSQymHtBIHZqxCNAaDk6aewQiVccn%2BS9UOL5t4gIAlGJKyB1IiKCuBJxAnEm8beLik%2FJIk16zo9xPMaY3taSno%2F%2Fz49xPMblfk3%2Bz%2FD9F0h8KlH%2BR%2BLp%2BgJJAJIGWwSdfIsA0vJchD1xSwA1zpAZFkSNM2RGFpVAZlxxFbs5uz9di3LS7KVfUNhyOcri%2FXONKwfeYK4Rdun%2BWXlyyejSiO8SSAI4BJ5Lc7JEgIN5rszJkgBGAJkVI8zBKhoBZFaEn%2BM5eILcFEtvEVbRE%2BSmCL%2Fs%2FtqT%2Flqp0dK1voDIEatZ2s%2FPKxGxLG2fQBBAuiZcAOyHENg0ZTuaADyxZSKBdwEg1%2FIKAL%2BkKgFswJ4ZAJ574y4AbMCeGQCee%2BPewqI0ybUsEif5D8DPA6zCcBpAXJY8HAO8XVRc3jARitdqsK7LWPG%2FN8juT7u1BDBFWfS1W0sAcS5WJmoBrDAFawXAr89EVLsygIJhnAHMoNGkzxeAKHdmMAIunyUAD5E%2F6TMDeIj8ZZ9LLBqTwVvDoqhCx99h0a2RRbcWFm1R%2BdeyaIvK%2F7OryCtyCIcHAK%2FIIRweAVoCFE3X82Q5PsauHMSf34%2FCitkVejuvpg6IexrpzLwTwK7YREnK7gzwRVw5NyeQniSoVyY2gfQMEBSALf58IoCgAGzx55PEohAJro%2BxwKn%2FjN%2FNxKIQCa7RVO9Rm70sb2OSn4BHHOlNNmOSQ7TmDniTjVmSnh6dVPOTRRHoFDbTQmfnZN0dmXZLjr%2Fo9VqR93FlnYLKdNHrtSLvcaMxwCpM9qi8gSg28BQkAYTIlkOYl00ACOCj4CubAw%2FEDth0W1pFRl7LAZtuw%2FMbO6QSyK0hDfGUzmx8DdGKO8jL4uLPmPgQJ%2Figt%2Fia9E5QkQcQTQoHvxulSSTWHHy6SU9%2BGIpnBZAhPvlhrKAVQIaOjVswwLwA4iTjlgUggLjkSjgEG5Ul5td9SRwIy9XTd6%2F7JGJSVsJFZQoA7MrxrJOlPK%2FAqVkKgBdcOS8AiUVSTNliURb1wPucsoL62knmxDGe5Lcv07dvtI%2BIChR4A0jUoULgDQAwaETHqAdYXbr4XUADLLIoCOrSxe%2FChUUVcZyLaVObBocASwXAUnDK8rUgz50U7RPYNcDkZtE%2BgV1Dx08qzM%2Fl51J6jyCXLtY1EjgEFWoBSCIjA3gvi94%2ByZ9apu%2FdaG8VFZ%2BKoy1CHAHHHSVqZMNh8P%2BOb7MIegDHTgpnEfQAjp0VzsEKxUjmuMMpZqxI5ni5lu8VroQdJMG9YvL3Vl%2BFb%2FRV%2BFaAvRGg6Q1wDooA0hw4CAihh2UTVlHasX1cUehh2axVFGr2AayiULsPZsptnGBI5spMsmeCoYqWSbN%2FDA%2B7bf%2FUXPEwfmrhW8uNVnP%2FE%2BDeCHCvBoj6%2BKgFiKvqqAKgLJGt9AsUKLXv5xQU1h2lFBTzfiLuhMwci7gT8ixM4jP7Jyimz8Rn9k8wQEC7CLwtNwWAg9MH%2Byxe98envXgfo5fr4tYUkga8EN663h8JJVNlSZZE%2FD691RStOtzFKW4%2FAEB6qylaG5enPylTLfteyErQclsuWQmJWJYVxd8Ti7TsnGtexSfsop5SgA6IgBwkyntywCbFMgt%2Bu9e%2BcA3ufS62Kl3u%2FfGDTwAsDQBL5eEjO4TUzIN2VDL5j9e9YFWI2kuzKmpTot9SLrZ3FdVEALLXVBNJTtqSSc%2B%2BI9Ok7yqCpSWQscUecrVp0LCqXAvxqjRo6XTfQrwIouwHV0N8g8iTCELEN4g85SBA%2FKDA0ATKX9rJBwWGJhDZTnryXjHEXm9CT65twF9vgkrfmJtkK02o9AsZI%2B71dmymKwDFFBM1%2FMUAaZJrAdIktwB4MsJKAJ6MMBkg%2FrvG4OkO%2FxcB4HS5x7HizyQAa0gAzflF6Cj3ZMosBacURwWXGp0QyM2%2FFHRCIDe%2FCLJ0eT3gqIRi0APpJB1h%2BSUmiH4gyzSZNMHcDGI8mfTyBCCYbKbp5emSdhW%2F14iH%2BNQTeAEu4TCh%2FmAAEMcHFCaulRMPCnGtnHiQiN%2BA9ympZul%2B5V4z8Rvw3mMaBCfyBcwj0hxVwpOvNcl7iTiyRHPnIHG8VHcOsgIrqy1R7OHJ91KfCjGnsQBQLXPYPaDKIMkfbcmgS5FJjQxigJIMkgBMGSQAmDJIAlhh9WTnBgFgzXKJrueGC8AKvHdKdhrOwwq8d1J2GgPUHP4QoOr8xwDsM70IOgGAfaYs6DKAFZbqCrt4VQBWWKoreF3WEkBKg54rASaqvVEBNmUvbgrAVshUywCOSIy974cCcECWGnrfDwlgLqyimQDmUqmStNH%2ByKIflEWCn60kizpBNv2RRX9k0T9WFikpV7uQxNQbsbNdSGK6NMSYBfemj7v4kv%2BViqoEj4uPu%2FiQ6nCw3iaQ0dt31%2BLPk%2BptAhq9UQjObJseXX3zhROesqqymn2kW4PxG7TlalnXvtG6ruphZyYKdOWCLCkH%2BDwr2j1swmHQAtj4MFgCwAPiUQGAB8Qs73qhFTR219LVS%2BEVnyQhJQgN4lNKmPTEewexfy8kTHrivYOQ1%2BUgvlHUaddcOJEVG0WddsuFIyVV8tIdDV%2BRE0paR21SDzrO7lJKKIfZz1%2BNwnYrJdR1cu%2BoVdqE8OROSWrNNqHodMLkGS312UqekU791q7OTv2l9B%2FpDfqWN1B82NkbYN4vazAnxNIw79fRpsvmhpOKcdPh%2FwclqRg33cHpP0jcA7FD0slE3AOxQ9PJuO7PUniL1v1ZE97K%2BlIUJGbWl6JGPMy1gTkAqSP%2Br2hK8tGQu9RHMBgA4Sz09CoZXplOtgwvTSdLpmPf5e0kuPDTkQ%2B113Qynm4cbLqd5I9Un%2Bxg0%2B2kk9XKUtfJTQvFylIjB9ssXe0FkW1V9%2FZCIs2%2FpXT1%2FIlWZ%2F%2FcmH4sF7jEMo30Q%2FS0YCyz7ObnaKySgthJ0VhxDlK0m5LHZortc0x%2FIgU0c8Ir8zzEJ58JCGuVHckgT4RnkqhOyqVYjTCwlONlhYHd%2B1n0O5MMDsJskq1lmnIcQ0xzKBkMKccxxM%2Fft9HOvK9X026u2cXtooJ0gtQD3jojezqnNf%2FJDl9xAC%2F6MVjZO8uVICh7Z7kSssZUgp5WiUsStoZ4VxFyd4oI9y3EgxIV14i%2FjLK3Eu9aiEv51iXiGHIvEseQey3xTliCrpBEyU2qXMkDyeZ7qXEtm%2B9F92ZV%2BqfhdbR9pyi%2FY2o6tjDwKVVdPBrlZWMeAhXXMxoUHh6khw9IS8fBZWN48OglgNT8YhR0wyIAZDmmlHSfAbzKAyChLJUIrALACWoynXom%2BCwCBLAmnsRvBYAA1sQUE2lUAE8VFCNM%2BCQAeDoyoZNkkgAGILhwmYwAMFBw9FImkwHAU6OhdddcDvDUYr61CEDW3EEdZ7SYMnqB%2BxqAVKK0Wk4TwXcq3i9aYqlUuAYA1v%2FQArCW3D58ZLVEUEZcsrQNWVbM8foDYANAVmwanvTB5eeay0BzMXQVmbJmnX5NF6y3A3D3q53abF1%2BbhQ8YxTEcybzn2X6gwAf8V0bJ81LNZ11yD7zZvM5QFSZK5VnBDa8KI6zUnlGyAyvSHwzNthN0Mebsb9uFwAyG%2BdoDyULYxbmaqFyvdtJ3YsZIO3ekdg1K4sh7V5uMTGLKtPqaacAFJMFJIC7spp8FHIMcC8kDtgsIkNsL7GIDLG9NMkj9VNbCpM8Ul3m0rJMN2mjGct0q9loaYzSJAsbLY3s%2Fo6Uiys1aSPl4s5SkzalZ8uOXkgluZ5LAaYSUGLPoTXIE1bMSqfMTVvnW1w1fRyr5hg8oSEeRJ9WqxbtpC58KzhjD6EZwEnRWMy3O7I3iYRWmosQ32SC7yYgtJ7Cn%2B87r%2B3AJwRIdeEoRQOp0B0AklJBKRpIhe7MIhefGk%2BXKzZliHrhpLYeeLpcKVvkJnVC7OF8fNCkOyHHt4fz8UGT%2FvK%2BD0KngQCtL0di0yB0GgiQJfgSeukNRmorhE%2B9IStT5g21FcKn3nC1sY%2FCQ2eBiX4WwPj1JPsnWEEe30iLBLoGh1TR646poL4EQqmgvgYEk1n70psQn%2FuaN0HX%2FVxiF7rulbxTV3IKlircqzsMSJ71IkhDK4O%2FB8giJHp3BsjCid5altqpJNpbod6zqDYFkKnihONaARCk6hewdLIlzOVqAaT4pnZpvRK6BhMmux%2FT0K2%2FHPA1KA1drex9OUM%2BkV800aRK41UAQUUMkzJOnhMssk3FDfj5kv9CRbZr%2FBc%2FZ4dyrGA56cknA2ASNNpkAVg64%2F8vo%2F9XsahXwr8agNUrYdVyejlxKRgAUiJTkAA%2B8me%2B0aS%2F1TTUBsDbWdFQ%2BzMJTBHg4F6nBQA1PVpjz9nQdxzPDDeJ4NLgu07thWp91wu2Hj0r%2FqTiSHUGZ2EljRgYcgZxRxGpvmAbuVP5k4oSyL3BbFH9SJZb4bd1Mp7TcHLvVqdWOkJ56sg0aKtJy%2FGSGmEsRo7XovksJuH7SXIYxqeehO%2Bni8PQyODnLt2aQ%2BqQssg137XX8okUAK%2FlE%2F0YAFt3WwFgkxyCFkDX%2FepxumieX2E1rbxyivEDy7Xccj%2F%2BwnNzcLszbJzKftPhzNud3cXMkO7avZ5Hav2qJQycgpttYIB7waq%2BE8C9IKrvP1Kf%2FFaA0t9ICwQQKrTZ173%2FBXUhp0eEZgYeAAAAAElFTkSuQmCC) 0 99px no-repeat;
 }
 
 .button.icon.icononly:before {
@@ -336,12 +336,39 @@ http://github.com/necolas/css3-github-buttons
     font-weight: bold;
 }
 
+/* ............................................................................................................. Positive */
+.button.positive.icononly,
+.button.positive:hover,
+.button.positive:focus,
+.button.positive:active {
+    border-color: #45BF55;
+    background-color: #96ED89;
+    border-bottom-color: #45bf55;
+    color: #fff;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#96Ed89), to(#45bf55));
+    background-image: -moz-linear-gradient(#96Ed89, #45bf55);
+    background-image: -o-linear-gradient(#96Ed89, #45bf55);
+    background-image: linear-gradient(#96Ed89, #45bf55);
+    
+}
+
+
+.button.positive:active,
+.button.positive.active {
+    border-color: #45bf55;
+    border-bottom-color: #45bf55;
+    background-color: #45bf55;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#45bf55), to(#96Ed89));
+    background-image: -moz-linear-gradient(#45bf55, #96Ed89);
+    background-image: -o-linear-gradient(#45bf55, #96Ed89);
+    background-image: linear-gradient(#45bf55, #96Ed89);
+}
 /* ............................................................................................................. Danger */
 
 .button.danger {
     color: #900;
 }
-
+.button.danger.fixed-percent-input,
 .button.danger:hover,
 .button.danger:focus,
 .button.danger:active {     
@@ -507,7 +534,7 @@ body {
   font-family: Georgia, sans-serif;
   line-height: 1.4em;
   font-size: 100%;
-  background: -webkit-gradient(linear, left top, right bottom, from(#eeeeee), to(#cccccc)) fixed;
+  background: -webkit-gradient(linear, left top, right bottom, from(#eeeeee), to(#e9e9e9)) fixed;
 }
 ul {
   list-style: none;
@@ -1096,33 +1123,68 @@ li.L9 { background: #eee }
 }
 #recipe_container {
   width: 960px;
+  overflow: hidden;
 }
 #recipe_container .editable:hover,
 #recipe_container .editing {
-  background: #ffffd3;
+  background: #ffffd3 !important;
 }
 #recipe_container #stats {
   float: left;
   padding: 12px;
-  background: #EEE;
+  background: #E0E0E0;
   width: 375px;
+  border: 1px solid #CCC;
 }
-#recipe_container #stats div {
-  clear: both;
-  line-height: 1.8em;
+#recipe_container #stats li {
+  float: left;
+  line-height: 2.0em;
+  padding: 1em 0;
+  width: 31.9%;
+  background: white;
+  border-radius: 10px;
+  margin: 0 1%;
+}
+#recipe_container #stats li.lock {
+  border-color: #45BF55;
+  background-color: #96ED89;
+  border-bottom-color: #45BF55;
+  color: white;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#96ed89), to(#45bf55));
+  background-image: -moz-linear-gradient(#96ed89, #45bf55);
+  background-image: -o-linear-gradient(#96ed89, #45bf55);
+  background-image: linear-gradient(#96ed89, #45bf55);
+}
+#recipe_container #stats li.unlock {
+  border-color: #B53F3A;
+  border-bottom-color: #A0302A;
+  color: white;
+  background-color: #DC5F59;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dc5f59), to(#b33630));
+  background-image: -moz-linear-gradient(#dc5f59, #b33630);
+  background-image: -o-linear-gradient(#dc5f59, #b33630);
+  background-image: linear-gradient(#dc5f59, #b33630);
+}
+#recipe_container #stats .label,
+#recipe_container #stats .val {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 #recipe_container #stats .label {
-  width: 71px;
   float: left;
-  text-align: right;
+  text-align: center;
 }
 #recipe_container #stats .val {
+  font-size: 2em;
+  text-align: center;
   float: left;
-  text-align: left;
-  margin-left: 15px;
-  margin-right: 5px;
 }
-#recipe_container #stats div input {
+#recipe_container #stats input.val {
+  width: 80%;
+  margin: 0 auto;
+}
+#recipe_container #stats li input {
   display: none;
   width: 2em;
 }
@@ -1149,15 +1211,11 @@ li.L9 { background: #eee }
   padding: 12px;
   width: 375px;
 }
-#recipe_container #recipe-title span,
-#recipe_container #recipe-title input {
+#recipe_container #recipe-title span {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 25px;
   line-height: 18px;
   width: 100%;
-}
-#recipe_container #recipe-title input {
-  display: none;
 }
 #recipe_container .part input {
   font-family: verdana, arial, helvetica, sans-serif;
@@ -1231,14 +1289,18 @@ li.L9 { background: #eee }
 #recipe_container #part-list .part .editable input {
   display: none;
 }
-#recipe_container #part-list .part .button {
-  opacity: 0;
+#recipe_container #part-list .part .remove.button {
+  opacity: .25;
 }
-#recipe_container #part-list .part:hover .button {
-  opacity: 1.0;
+#recipe_container #part-list .part .remove.button:hover {
+  opacity: 1.0 !important;
+}
+#recipe_container #part-list .part:hover .remove.button {
+  opacity: 0.75;
 }
 #recipe_container #part-list tr:nth-child(odd) {
-  background: #ddd;
+  background: #E0E0E0;
+  opacity: 0.9;
 }
 #recipe_container .bakers-percent-col,
 #recipe_container .bakers-percent {
@@ -1269,35 +1331,38 @@ li.L9 { background: #eee }
 #notes_container .note.editing .edit-body {
   display: inline !important;
 }
-#notes_container .note {
-  background: #eee;
+#notes_container .note:hover {
+  background: #ffffd3 !important;
+}
+#notes_container .note,
+#notes_container #new-note {
+  background: #e0e0e0;
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 12px;
 }
-#notes_container .note :hover .remove.button {
-  opacity: 1.0;
-}
-#notes_container .note .remove.button {
-  opacity: 0.0;
-}
-#notes_container .note .edit-body {
+#notes_container .note .edit-body,
+#notes_container #new-note .edit-body {
   display: none;
 }
-#notes_container .note .body {
+#notes_container .note .body,
+#notes_container #new-note .body {
   width: 100%;
   overflow: auto;
 }
-#notes_container .note .body-input {
+#notes_container .note .body-input,
+#notes_container #new-note .body-input {
   color: #333;
   height: 100px;
   width: 100%;
   overflow: hidden;
   margin-bottom: 1em;
 }
-#notes_container .note .time {
+#notes_container .note .time,
+#notes_container #new-note .time {
   float: left;
 }
-#notes_container .note .remove {
+#notes_container .note .remove,
+#notes_container #new-note .remove {
   float: right;
 }
 body { background-color: #fff; color: #333; }
