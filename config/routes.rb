@@ -4,6 +4,7 @@ Portfolio::Application.routes.draw do
   resources :shows
   resources :slides
     
+  resources :ingredients
   resources :recipes do
     resources :parts
     resources :notes

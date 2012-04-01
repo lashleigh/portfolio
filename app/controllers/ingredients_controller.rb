@@ -1,20 +1,17 @@
 class IngredientsController < ApplicationController
   def index
-    all = Ingredient.autocomplete_list
-    render :json => all
-  end
-  def new
-    @recipe = Recipe.find(params[:recipe_id])
-    @ingredient = Ingredient.new
-    render :json => @ingredient
+    @ingredients = Ingredient.all
+
+    respond_to do |format|
+      format.html  # index.html.erb
+      format.json  { render :json => @ingredients }
+    end
   end
 
   def create
-    @recipe = Recipe.find(params[:recipe_id])
-    @ingredient = Ingredient.new(:amount => params[:amount], :name => params[:name], :unit => params[:unit])
-    @recipe.ingredients.push(@ingredient)  
+    @ingredient = Ingredient.new(:name => params[:name], :category => params[:category])
     
-    if @recipe.save
+    if @ingredient.save
       render :json => @ingredient
     else
       render :json => {'message' => 'failed to save'}
@@ -22,16 +19,10 @@ class IngredientsController < ApplicationController
   end
 
   def update
-    @recipe = Recipe.find(params[:recipe_id])
-    @ingredient = @recipe.ingredients.find(params[:id])
-    attrs = params.select {|p| @ingredient.attributes.keys.include? p}
-    if params[:order]
-      @recipe.splice(@ingredient, params[:order])
-    else
-      @ingredient.update_attributes(attrs) 
-    end
+    @ingredient = Ingredient.find(params[:id])
+    @ingredient.update_attributes({:name => params[:name], :category => params[:category]})
 
-    if @recipe.save
+    if @ingredient.save
       render :json => @ingredient
     else
       render :json => {'message' => 'failed to save'}
@@ -39,14 +30,12 @@ class IngredientsController < ApplicationController
   end
 
   def destroy
-    @recipe = Recipe.find(params[:recipe_id])
-    @recipe.ingredients.delete_if {|i| i.id.as_json === params[:id] }
+    @ingredient = Ingredient.find(params[:id])
 
-    if @recipe.save
-      render :json => {'message' => 'saved'} 
+    if @ingredient.destroy
+      render :json => {'message' => 'success'} 
     else
-      render :json => {'message' => 'failed to save'}
+      render :json => {'message' => 'failed to destroy'}
     end
   end
-
 end

@@ -1,0 +1,14 @@
+<div id="ingredients_container">
+<% @ingredients.each do |i| %>
+  <div class="ingredient" id=<%="ingredient_#{i.id}"%>>
+    <%= select_tag "category", options_for_select(["other", "flour", "salt", "water"], :selected => i.category) %>
+    <span contentEditable='true' class='name'><%= i.name %></span>
+  </div>
+<% end %>
+</div>
+<script type="text/javascript">
+  var Ingredients;
+  $(function() {
+    Ingredients = new App.Collections.Ingredients(<%= @ingredients.to_json.html_safe %>); 
+  })
+</script>
