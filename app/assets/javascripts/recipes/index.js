@@ -39,6 +39,7 @@ App.Models.Recipe = Backbone.NestedModel.extend({
 App.Views.Recipe = Backbone.View.extend({
   events: {
     'keydown #recipe-title .val': 'updateTitleOnEnter', 
+    'keydown #recipe-photo textarea' : 'updatePhotoOnEnter',
     //'keydown #hydration    .val': 'updateHydrationOnEnter',
     //'keydown #inoculation  .val': 'updateInoculationOnEnter',
     //'keydown #flour-mass   .val': 'updateMassOnEnter',
@@ -68,6 +69,20 @@ App.Views.Recipe = Backbone.View.extend({
     $('#recipe-title .val').text(this.model.get('title'));
   },
   resetInoculation: function() {
+  },
+  updatePhotoOnEnter: function(e) {
+    if(e.keyCode === 13) {
+      e.preventDefault();
+      var photo = this.$('#recipe-photo textarea');
+      this.model.save({photo : photo.val()}, { 
+        success: function(model, response) {
+          $('#recipe-photo span').html(photo.val());
+        }, 
+        error: function(model, response) {
+        }
+      });
+      photo.blur();
+    }
   },
   updateTitleOnEnter: function(e) {
     if(e.keyCode === 13) {

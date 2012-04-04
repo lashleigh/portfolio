@@ -59,6 +59,9 @@ class RecipesController < ApplicationController
     if !params[:title].blank?
       recipe.title = params[:title]
     end
+    if !params[:photo].blank?
+      recipe.photo = params[:photo]
+    end
 
     if recipe.save
       render :json => recipe

@@ -21,7 +21,8 @@
       <div class="button-col"> <button class='icon icononly add button'></button> </div>
     </div>
     <div id="recipe-photo"> 
-      <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
+      <span><%= @recipe.photo ? @recipe.photo.html_safe : ''%></span>
+      <textarea><%= @recipe.photo.html_safe %></textarea>
     </div>
   </div>
   <ul id="stats"> </ul>

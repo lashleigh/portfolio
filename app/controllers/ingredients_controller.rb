@@ -1,6 +1,6 @@
 class IngredientsController < ApplicationController
   def index
-    @ingredients = Ingredient.all
+    @ingredients = Ingredient.sort(:category).all
 
     respond_to do |format|
       format.html  # index.html.erb

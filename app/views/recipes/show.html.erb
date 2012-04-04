@@ -13,8 +13,9 @@
         <% end %>
       </tbody>
     </table>
-  </br>
-  <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
+    <div id='recipe-photo'>
+      <%= @recipe.photo ? @recipe.photo.html_safe : ''%>
+    </div>
   </div>
   <ul id="stats">
     <li id="hydration">

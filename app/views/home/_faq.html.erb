@@ -1,14 +1,14 @@
-<div class="<%= faq.visible ? "":" draft"%>">
+<div>
   <div class="question">
-    <h4><%= faq.question %></h4>
+    <% if current_user and current_user.admin %>
+      <h2><%= link_to faq.question, edit_faq_path(faq) %></h2>
+    <% else %>
+      <h2><%= faq.question %></h2>
+    <% end %>
   </div>
   <div class="answer">
     <%= red(faq.answer) %>
     <div class="updated_at">Updated <%= time_ago_in_words(faq.updated_at) %> ago.</div>
-    <% if current_user and current_user.admin %>
-      <%= link_to 'Edit', edit_faq_path(faq) %>
-      <%= link_to 'Destroy', faq, :confirm => 'Are you sure?', :method => :delete %>
-    <% end %>
   </div>
 </div>
 
