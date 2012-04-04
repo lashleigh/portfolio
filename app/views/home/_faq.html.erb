@@ -1,14 +1,12 @@
-<div>
-  <div class="question">
-    <% if current_user and current_user.admin %>
-      <h2><%= link_to faq.question, edit_faq_path(faq) %></h2>
-    <% else %>
-      <h2><%= faq.question %></h2>
-    <% end %>
-  </div>
-  <div class="answer">
-    <%= red(faq.answer) %>
-    <div class="updated_at">Updated <%= time_ago_in_words(faq.updated_at) %> ago.</div>
-  </div>
+<div class="question">
+  <% if current_user and current_user.admin %>
+    <h2><%= link_to faq.question, edit_faq_path(faq) %></h2>
+  <% else %>
+    <h2><%= faq.question %></h2>
+  <% end %>
+</div>
+<div class="answer">
+  <%= red(faq.answer) %>
+  <div class="updated_at">Updated <%= time_ago_in_words(faq.updated_at) %> ago.</div>
 </div>
 

@@ -49,7 +49,8 @@ p {
 }
 #arrow {
   width: 30px;
-  margin: -5px 10px;
+  margin: 5px 10px;
+  float: left;
 }
 .arrow_down {
   .rotate(180deg);
@@ -112,8 +113,7 @@ p {
       left: 40px;
       text-shadow: rgba(0, 0, 0, 0.6) 2px 2px 5px;
       color: @white;
-      font-size: 35px;
-      font-weight: normal;
+      font-size: 30px;
     }
   }
 }
@@ -124,7 +124,7 @@ p {
 }
 #about {
   clear: both;
-  margin: 30px auto;
+  margin: 30px 80px;
   width: @width - 220px;
   p {
     font-size: 20px;
@@ -141,18 +141,27 @@ p {
 #qanda {
   padding: 20px;
   overflow: hidden;
+  span {
+    float: left;
+  }
   h2 {
     float: left;
-    font-weight:normal;
-    font-size: 25px;
+    font-weight:bold;
+    font-size: 20px;
+    line-height: 24px;
   }
   .question {
     margin: 4px 0 0 10px;
     clear: both;
+    cursor: s-resize;
+    :hover {
+      color: @blue;
+    }
   }
   .answer {
+    display: none;
     margin: 10px 20px;
-    width: @width - 150px;
+    width: @width - 200px;
     float: left;
     p {
       font-size: 16px;
@@ -163,14 +172,14 @@ p {
 
 ul#networks {
   position: absolute;
-  left: 8em;
+  left: 100px;
   bottom: 15px;
   a:hover {
     background: transparent;
   }
   li {
     float: left;
-    padding: 0 0.5em;
+    padding: 0 1em 0 0;
   }
   img {
   }

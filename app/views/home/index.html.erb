@@ -4,5 +4,8 @@
   </div>
 <% end %>
 <div id="qanda">
-  <%= render :partial => 'faq', :collection => @faqs %>
+  <%= image_tag 'up_arrow.png', :id => "arrow", :class=> 'arrow_up fast_transition' %>
+  <span>
+    <%= render :partial => 'faq', :collection => @faqs %>
+  </span>
 </div>
