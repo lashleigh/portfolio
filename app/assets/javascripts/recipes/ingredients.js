@@ -1,9 +1,7 @@
 App.Views.Ingredient = Backbone.View.extend({
   initialize: function() {
-
   },
   events: {
-    'click' : 'console',
     'keydown .name' : 'updateNameOnEnter',
     'change #category' : 'newCategory',
   },
@@ -35,5 +33,4 @@ App.Models.Ingredient = Backbone.Model.extend({
 App.Collections.Ingredients = Backbone.Collection.extend({
   model : App.Models.Ingredient,
   url: '/ingredients',
-
 })

@@ -3,6 +3,7 @@ class Faq
   key :visible,       Boolean, :default => false
   key :question, String
   key :answer, String
+  key :link, String
   key :position, Integer
   timestamps!
 

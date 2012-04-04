@@ -190,7 +190,7 @@ App.Views.Recipe = Backbone.View.extend({
 });
 App.Views.Note = Backbone.View.extend({
   tagName: 'div',
-  className: 'note',
+  className: 'note editable',
   initialize: function() {
     this.template = $('#note-li').html();
     $('#new-note').after(this.render().el);
