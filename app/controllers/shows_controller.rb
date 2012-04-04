@@ -45,8 +45,6 @@ class ShowsController < ApplicationController
 
     respond_to do |format|
       if @show.save
-        @show.new_slide
-        @show.reload
         format.html { redirect_to(@show, :notice => 'Show was successfully created.') }
         format.xml  { render :xml => @show, :status => :created, :location => @show }
       else

@@ -4,6 +4,7 @@ class Faq
   key :question, String
   key :answer, String
   key :link, String
+  key :tags, Array
   key :position, Integer
   timestamps!
 

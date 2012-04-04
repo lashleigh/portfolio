@@ -3,9 +3,4 @@ class HomeController < ApplicationController
     @about = Faq.find_by_question('about')
     @faqs = Faq.visible.sort(:position).all
   end
-
-  def admin
-    render :layout => 'faqs'
-  end
-
 end

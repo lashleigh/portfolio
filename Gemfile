@@ -9,6 +9,8 @@ gem 'bson_ext'
 gem 'RedCloth'
 gem 'redcarpet'
 gem 'omniauth-twitter'
+gem 'omniauth-openid'
+gem "cancan"
 gem 'mustache'
 group :assets do 
   gem 'less'
