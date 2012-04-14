@@ -1,13 +1,8 @@
 class RecipesController < ApplicationController
   #before_filter :must_be_admin, :except => ['index', 'show']
-  before_filter :must_be_signed_in #, :except => ['index', 'show']
 
   def index
-    if current_user
-      @recipes = Recipe.where(:user => current_user.id).all
-    else
-      @recipes = Recipe.all
-    end
+    @recipes = Recipe.all
 
     respond_to do |format|
       format.html # index.html.erb
