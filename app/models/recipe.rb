@@ -6,6 +6,7 @@ class Recipe
   key :photo, String
   many :parts
   many :notes
+  belongs_to :user
   timestamps!
   
   def notes_md

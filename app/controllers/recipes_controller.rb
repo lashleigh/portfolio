@@ -1,8 +1,13 @@
 class RecipesController < ApplicationController
   #before_filter :must_be_admin, :except => ['index', 'show']
+  before_filter :must_be_signed_in #, :except => ['index', 'show']
 
   def index
-    @recipes = Recipe.all
+    if current_user
+      @recipes = Recipe.where(:user => current_user.id).all
+    else
+      @recipes = Recipe.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -42,7 +47,7 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.xml
   def create
-    @recipe = Recipe.create!(:title => params[:title] || 'no title')
+    @recipe = Recipe.create!(:title => params[:title] || 'no title', :user => current_user)
     @recipe.interpret(params)
 
     if @recipe.save

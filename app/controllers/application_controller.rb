@@ -14,6 +14,9 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+  def must_be_signed_in
+    !!@current_user
+  end
 
   private  
   def current_user  

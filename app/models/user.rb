@@ -6,6 +6,7 @@ class User
   key :admin, Boolean, :default => false
   
   #attr_protected :admin
+  many :recipes
   
   def self.create_with_omniauth(auth)  
     user = User.new(:name => auth["info"]["name"], 
