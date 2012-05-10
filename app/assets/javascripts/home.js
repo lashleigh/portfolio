@@ -4,8 +4,8 @@ $(function() {
   number_of_questions = $(".question").length;
   number_visible = $(".answer:visible").length;
 
-  $("code").addClass("prettyprint");
-  prettyPrint();
+  /*$("code").addClass("prettyprint");
+  prettyPrint();*/
 
   $("#arrow").bind("click", function() {
     if($(this).hasClass("arrow_up")) {

@@ -6,6 +6,6 @@
     ['youtube',       "http://youtube.com/user/WasntThisAvailable"],
     ['flickr',        "http://www.flickr.com/photos/lashleigh"]].each do |name, url| %>
     <li> 
-    <%= link_to image_tag(name+'.png', :alt => name), href=url, :title => name %> 
+    <%= link_to image_tag('networks/'+name+'.png', :alt => name), href=url, :title => name %> 
     </li>
 <% end %>

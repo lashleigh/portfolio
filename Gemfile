@@ -1,12 +1,12 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
+gem 'rails', '3.2.3'
 gem "mongo_mapper"
 
+gem 'therubyracer'
 gem 'mongo'
 gem 'bson'
 gem 'bson_ext'
-gem 'RedCloth'
 gem 'redcarpet'
 gem 'omniauth-twitter'
 gem 'omniauth-openid'
