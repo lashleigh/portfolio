@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '3.1.0'
 gem "mongo_mapper"
 
+gem 'unicorn'
 gem 'therubyracer'
 gem 'mongo'
 gem 'bson'
