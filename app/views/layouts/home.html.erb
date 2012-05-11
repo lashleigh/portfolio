@@ -5,19 +5,24 @@
     <%= csrf_meta_tag %>
 </head>
 <body>
-  <div id="page_wrap">
+  <div class='container'>
     <div id="flash_wrap">
       <% flash.each do |name, msg| %>  
         <%= content_tag :div, msg, :id => "flash#{name}" %>  
       <% end %> 
     </div>
-    <div id="content_wrap">
-      <%= render 'home/header' %>
-      <div id="content">
-        <%= yield %>
-      </div>
-      <%= render 'home/footer' %>
+    <div class="row">
+      <span class="span12" id="name_header">
+        <%= render 'home/header' %>
+      </span>
     </div>
+    <div class="row">
+      <span class="span12" id='content'>
+        <%= yield %>
+      </span>
+    </div>
+    <%= render 'home/footer' %>
   </div>
-</body></html>
+</body>
+</html>
 

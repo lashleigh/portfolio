@@ -6,7 +6,6 @@
   <% end %>
 </div>
 <div class="answer">
-  <%= red(faq.answer) %>
-  <div class="updated_at">Updated <%= time_ago_in_words(faq.updated_at) %> ago.</div>
+  <%= markdown(faq.answer)%>
 </div>
 

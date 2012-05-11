@@ -1,8 +1,0 @@
-<h2>Show me the recipes</h2>
-<div id="notice"></div>
-<div id="recipe_container"> 
-  <% @recipes.each do |r| %>
-    <%= link_to r.title, edit_recipe_path(r) %></br>
-  <%end%>
-</div>
-
