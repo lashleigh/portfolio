@@ -2,40 +2,6 @@
 @orange: #ffee01;
 @width: 900px;
 @white: #eee;
-body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, p, blockquote, a {
-  margin: 0;
-  padding: 0;
-}
-html {
-  height: 100%;
-}
-body {
-  height: 100%;
-  //background: -moz-radial-gradient(@white, @white - #222);
-  //background: -webkit-gradient(radial, center center, 0, center center, 95, from(@white), to(@white - #222));
-  background: -webkit-gradient(linear, left top, right bottom, from(#EEE), to(#E9E9E9)) fixed;
-}
-ul {
-  list-style: none;
-}
-p {
-  margin: 5px 0 10px 0;
-}
-.padded {
-  margin: 20px;
-  padding: 40px 20px;
-}
-.draft {
-  border: 1px dashed red;
-}
-.preview {
-  width: @width;
-  position: relative;
-  margin: 40px 0;
-  .faqs_answer{
-    padding-left: 30px;
-  }
-}
 .transition(@duration: 10s) {
   -moz-transition: -moz-transform @duration ease;
   -webkit-transition: -webkit-transform @duration ease;
@@ -47,10 +13,29 @@ p {
   -webkit-transform: rotate(@deg);
   -o-transform: rotate(@deg);
 }
+.rounded_top_corners (@radius: 35px) {
+  border-top-left-radius: @radius;
+}
+.rounded-bottom-corners (@radius: 35px) {
+  border-bottom-right-radius: @radius;
+}
+.drop_shadow(@blur: 10px, @offset: 1px, @color: rgba(0,0,0,0.5)) {
+  box-shadow: @color 0px 0px @blur @offset; 
+}
+
+body {
+  background: #ccc;
+  padding-top: 30px;
+}
+#about {
+  padding-left: 100px;
+}
+#up_arrow_span {
+  text-align: center;
+}
 #arrow {
   width: 30px;
-  margin: 5px 10px;
-  float: left;
+  margin-top: 5px;
 }
 .arrow_down {
   .rotate(180deg);
@@ -64,95 +49,36 @@ p {
 .slow_transition {
   .transition(10s);
 }
-.hidden {
-  display: none;
-}
 .updated_at {
   float: right;
   margin-right: 25px;
   color: #888;
   font-size: 75%;
 }
-.rounded_top_corners (@radius: 35px) {
-  //-moz-border-radius: @radius 0;
-  //border-radius: @radius 0; /* includes Opera 10.5+ */
-  -webkit-border-top-left-radius: @radius;
-  //-webkit-border-top-right-radius: @radius;
-}
-.rounded-bottom-corners (@radius: 35px) {
-  //-moz-border-radius: 0 @radius;
-  //border-radius: 0 @radius;
-  -webkit-border-bottom-right-radius: @radius;
-  //-webkit-border-bottom-left-radius: @radius;
-}
-
-.drop_shadow(@blur: 10px, @offset: 1px, @color: rgba(0,0,0,0.5)) {
-  box-shadow: @color 0px 0px @blur @offset; 
-}
-#page_wrap {
-  padding: 40px;
-}
-#content_wrap {
-  width: @width;
-  margin: 0 auto;
-  overflow: hidden;
-  margin-bottom: -150px;
+#name_header {
+  position: relative;
   .rounded_top_corners();
-  .rounded-bottom-corners();
-  .drop_shadow();
-  #name_header {
-    position: relative;
-    .rounded_top_corners();
-    overflow: hidden;
-    background: @blue;
-    background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(@blue+#222), to(@blue));
-    height: 140px;
-    h1 {
-      position: absolute;
-      top: 60px;
-      left: 40px;
-      text-shadow: rgba(0, 0, 0, 0.6) 2px 2px 5px;
-      color: @white;
-      font-size: 30px;
-    }
-  }
-}
-#content {
-  background: white;
-  .rounded-bottom-corners();
-  padding: 20px;
-}
-#about {
-  clear: both;
-  margin: 30px 80px;
-  width: @width - 220px;
-  p {
-    font-size: 20px;
-    line-height: 24px;
+  overflow: hidden;
+  background: @blue;
+  background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(@blue+#222), to(@blue));
+  height: 140px;
+  h1 {
+    position: absolute;
+    top: 50px;
+    left: 40px;
+    text-shadow: rgba(0, 0, 0, 0.6) 2px 2px 5px;
+    color: @white;
+    font-size: 30px;
   }
 }
 .gravatar {
-  -webkit-border-radius: 3px;  
-  //-webkit-box-reflect: below 10px -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.49)));
+  border-radius: 3px;  
   position: absolute;
   right: 20px;
   top: 20px;
 }
 #qanda {
-  padding: 20px;
-  overflow: hidden;
-  span {
-    float: left;
-  }
-  h2 {
-    float: left;
-    font-weight:bold;
-    font-size: 20px;
-    line-height: 24px;
-  }
   .question {
-    margin: 4px 0 0 10px;
-    clear: both;
     cursor: s-resize;
     :hover {
       color: @blue;
@@ -160,16 +86,13 @@ p {
   }
   .answer {
     display: none;
-    margin: 10px 20px;
-    width: @width - 200px;
-    float: left;
     p {
       font-size: 16px;
+      font-weight: 200;
       line-height: 22px;
     }
   }
 }
-
 ul#networks {
   position: absolute;
   left: 100px;
@@ -181,10 +104,12 @@ ul#networks {
     float: left;
     padding: 0 1em 0 0;
   }
-  img {
-  }
 }
-
+#content {
+  border-bottom-right-radius: 35px;
+  background: #EEE;
+  padding-bottom: 20px;
+}
 #ribbon_wrapper {
   overflow: hidden;
   position: relative;
@@ -221,11 +146,4 @@ ul#networks {
   text-decoration: none !important;
   /* shadow */
   text-shadow: 0 0 0.5em #444;
-}
-#user_nav {
-  .rounded_top_corners();
-  overflow: hidden;
-  background: @blue;
-  background: -webkit-gradient(radial, 430 50, 0, 430 50, 464, from(@blue+#222), to(@blue));
-  padding: 30px 40px;
 }

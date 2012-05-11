@@ -1,11 +1,13 @@
 <% if @about %>
-  <div id="about">
-    <%= red(@about.answer) %>
+  <div id="about" class="hero-unit">
+    <%= markdown(@about.answer) %>
   </div>
 <% end %>
-<div id="qanda">
+<div class="row">
+  <div class="span1" id='up_arrow_span'>
   <%= image_tag 'up_arrow.png', :id => "arrow", :class=> 'arrow_up fast_transition' %>
-  <span>
+</div>
+  <div class="span9"  id='qanda'>
     <%= render :partial => 'faq', :collection => @faqs %>
-  </span>
+  </div>
 </div>

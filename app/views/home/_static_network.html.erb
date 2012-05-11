@@ -1,4 +1,5 @@
-<% [['github',      "http://github.com/lashleigh"], 
+<ul id="networks" class='unstyled'>
+  <% [['github',      "http://github.com/lashleigh"], 
     ['stackoverflow', "http://stackoverflow.com/users/337582/lashleigh"],
     ['facebook',      "http://www.facebook.com/#!/profile.php?id=25902647"],
     ['linkedin',      "http://linkedin.com/in/lashleigh"],
@@ -8,4 +9,5 @@
     <li> 
     <%= link_to image_tag('networks/'+name+'.png', :alt => name), href=url, :title => name %> 
     </li>
-<% end %>
+  <% end %>
+</ul>
